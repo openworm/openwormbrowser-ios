@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/iRateDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/iRateDelegate</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>
+			
+			<NodeRef refid="2"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateCouldNotConnectToAppStore:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (void)iRateCouldNotConnectToAppStore:(NSError *)error</Declaration>
+			
+			
+			<Anchor>//api/name/iRateCouldNotConnectToAppStore:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateDidDetectAppUpdate</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (void)iRateDidDetectAppUpdate</Declaration>
+			
+			
+			<Anchor>//api/name/iRateDidDetectAppUpdate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateShouldPromptForRating</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)iRateShouldPromptForRating</Declaration>
+			
+			
+			<Anchor>//api/name/iRateShouldPromptForRating</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateUserDidAttemptToRateApp</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (void)iRateUserDidAttemptToRateApp</Declaration>
+			
+			
+			<Anchor>//api/name/iRateUserDidAttemptToRateApp</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateUserDidDeclineToRateApp</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (void)iRateUserDidDeclineToRateApp</Declaration>
+			
+			
+			<Anchor>//api/name/iRateUserDidDeclineToRateApp</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateUserDidRequestReminderToRateApp</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (void)iRateUserDidRequestReminderToRateApp</Declaration>
+			
+			
+			<Anchor>//api/name/iRateUserDidRequestReminderToRateApp</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateShouldOpenAppStore</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)iRateShouldOpenAppStore</Declaration>
+			
+			
+			<Anchor>//api/name/iRateShouldOpenAppStore</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateDidPresentStoreKitModal</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (void)iRateDidPresentStoreKitModal</Declaration>
+			
+			
+			<Anchor>//api/name/iRateDidPresentStoreKitModal</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/iRateDelegate/iRateDidDismissStoreKitModal</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>iRate.h</DeclaredIn>			
+			
+			<Declaration>- (void)iRateDidDismissStoreKitModal</Declaration>
+			
+			
+			<Anchor>//api/name/iRateDidDismissStoreKitModal</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

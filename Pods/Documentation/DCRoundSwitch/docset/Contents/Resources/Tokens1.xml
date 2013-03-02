@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/DCRoundSwitch.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/DCRoundSwitch</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>
+			
+			<NodeRef refid="1"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitch/setOnTintColor:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) UIColor *onTintColor</Declaration>
+			
+			
+			<Anchor>//api/name/onTintColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitch/onTintColor</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) UIColor *onTintColor</Declaration>
+			
+			
+			<Anchor>//api/name/onTintColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitch/setOn:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, getter=isOn) BOOL on</Declaration>
+			
+			
+			<Anchor>//api/name/on</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitch/on</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, getter=isOn) BOOL on</Declaration>
+			
+			
+			<Anchor>//api/name/on</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitch/setOnText:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) NSString *onText</Declaration>
+			
+			
+			<Anchor>//api/name/onText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitch/onText</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) NSString *onText</Declaration>
+			
+			
+			<Anchor>//api/name/onText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitch/setOffText:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) NSString *offText</Declaration>
+			
+			
+			<Anchor>//api/name/offText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitch/offText</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) NSString *offText</Declaration>
+			
+			
+			<Anchor>//api/name/offText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/DCRoundSwitch/knobLayerClass</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>+ (Class)knobLayerClass</Declaration>
+			
+			
+			<Anchor>//api/name/knobLayerClass</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/DCRoundSwitch/outlineLayerClass</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>+ (Class)outlineLayerClass</Declaration>
+			
+			
+			<Anchor>//api/name/outlineLayerClass</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/DCRoundSwitch/toggleLayerClass</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>+ (Class)toggleLayerClass</Declaration>
+			
+			
+			<Anchor>//api/name/toggleLayerClass</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitch/setOn:animated:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>- (void)setOn:(BOOL)newOn animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setOn:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitch/setOn:animated:ignoreControlEvents:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitch.h</DeclaredIn>			
+			
+			<Declaration>- (void)setOn:(BOOL)newOn animated:(BOOL)animated ignoreControlEvents:(BOOL)ignoreControlEvents</Declaration>
+			
+			
+			<Anchor>//api/name/setOn:animated:ignoreControlEvents:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

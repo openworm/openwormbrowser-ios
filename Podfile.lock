@@ -1,0 +1,26 @@
+
+COCOAPODS: 0.16.2
+
+SPEC CHECKSUMS: 
+  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
+  RegexKitLite: 293ff6f3cf8f34277989a37802162c6961a2b35a
+  DCRoundSwitch: c08f58330d242f182450b5e4ad32e5238f53d6d4
+  CocoaLumberjack: 0f2fa7090a23f13261072d882e017c688300efbe
+  iRate: eb1d02ff0a2bfee220f5fe028583b4ce5f3ef3bd
+  TestFlightSDK: 2a2cdb82967c7f05655683c61854c92d36e9104d
+
+PODS: 
+- CocoaLumberjack (1.6)
+- DCRoundSwitch (0.0.1)
+- Reachability (3.1.0)
+- RegexKitLite (4.0)
+- TestFlightSDK (1.1)
+- iRate (1.7.2)
+
+DEPENDENCIES: 
+- CocoaLumberjack
+- DCRoundSwitch (~> 0.0.1)
+- Reachability
+- RegexKitLite
+- TestFlightSDK (= 1.1)
+- iRate

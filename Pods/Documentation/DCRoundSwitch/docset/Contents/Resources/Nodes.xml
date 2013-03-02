@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocSetNodes version="1.0">
+    <TOC>
+        <Node type="folder">
+            <Name>DCRoundSwitch 0.0.1</Name>
+            <Path>index.html</Path>
+			<Subnodes>
+                
+				
+				<Node type="folder">
+					<Name>Classes</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="1"/>
+						<NodeRef refid="2"/>
+						<NodeRef refid="3"/>
+						<NodeRef refid="4"/>
+						
+					</Subnodes>
+				</Node>
+				
+				
+				
+			</Subnodes>
+        </Node>
+    </TOC>
+	<Library>
+		
+		<Node id="1">
+			<Name>DCRoundSwitch</Name>
+			<Path>Classes/DCRoundSwitch.html</Path>
+		</Node>
+		<Node id="2">
+			<Name>DCRoundSwitchKnobLayer</Name>
+			<Path>Classes/DCRoundSwitchKnobLayer.html</Path>
+		</Node>
+		<Node id="3">
+			<Name>DCRoundSwitchOutlineLayer</Name>
+			<Path>Classes/DCRoundSwitchOutlineLayer.html</Path>
+		</Node>
+		<Node id="4">
+			<Name>DCRoundSwitchToggleLayer</Name>
+			<Path>Classes/DCRoundSwitchToggleLayer.html</Path>
+		</Node>
+		
+		
+		
+	</Library>
+</DocSetNodes>

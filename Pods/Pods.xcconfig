@@ -1,0 +1,8 @@
+ALWAYS_SEARCH_USER_PATHS = YES
+HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS}
+LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/TestFlightSDK"
+OTHER_LDFLAGS = -ObjC -lTestFlight -licucore -lz -framework QuartzCore -framework StoreKit -framework SystemConfiguration -framework UIKit
+PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/CocoaLumberjack" "${PODS_ROOT}/BuildHeaders/DCRoundSwitch" "${PODS_ROOT}/BuildHeaders/Reachability" "${PODS_ROOT}/BuildHeaders/RegexKitLite" "${PODS_ROOT}/BuildHeaders/TestFlightSDK" "${PODS_ROOT}/BuildHeaders/iRate"
+PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
+PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CocoaLumberjack" "${PODS_ROOT}/Headers/DCRoundSwitch" "${PODS_ROOT}/Headers/Reachability" "${PODS_ROOT}/Headers/RegexKitLite" "${PODS_ROOT}/Headers/TestFlightSDK" "${PODS_ROOT}/Headers/iRate"
+PODS_ROOT = ${SRCROOT}/Pods

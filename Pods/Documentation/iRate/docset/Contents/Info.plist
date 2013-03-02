@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.cocoapods.iRate-1.7.2</string>
+	<key>CFBundleName</key>
+	<string>iRate 1.7.2 Documentation</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	
+	
+	<key>DocSetDescription</key>
+	<string>A handy class that prompts users of your iPhone or Mac App Store app to rate your application after using it for a while. Similar to Appirater, but with a simpler, cleaner interface and automatic support for iOS fast application switching.</string>
+	
+	<key>DocSetFeedName</key>
+	<string>iRate 1.7.2 Documentation</string>
+	
+	<key>DocSetMinimumXcodeVersion</key>
+	<string>3.0</string>
+	
+	<key>DashDocSetFamily</key>
+	<string>appledoc</string>
+	<key>DocSetPublisherIdentifier</key>
+	<string>org.cocoapods.documentation</string>
+	<key>DocSetPublisherName</key>
+	<string>Nick Lockwood</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Nick Lockwood</string>
+</dict>
+</plist>

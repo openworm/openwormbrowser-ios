@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/DCRoundSwitchToggleLayer.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/DCRoundSwitchToggleLayer</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>
+			
+			<NodeRef refid="4"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitchToggleLayer/setOnTintColor:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) UIColor *onTintColor</Declaration>
+			
+			
+			<Anchor>//api/name/onTintColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitchToggleLayer/onTintColor</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) UIColor *onTintColor</Declaration>
+			
+			
+			<Anchor>//api/name/onTintColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitchToggleLayer/setOnString:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *onString</Declaration>
+			
+			
+			<Anchor>//api/name/onString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitchToggleLayer/onString</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *onString</Declaration>
+			
+			
+			<Anchor>//api/name/onString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitchToggleLayer/setOffString:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *offString</Declaration>
+			
+			
+			<Anchor>//api/name/offString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitchToggleLayer/offString</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *offString</Declaration>
+			
+			
+			<Anchor>//api/name/offString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitchToggleLayer/setLabelFont:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly) UIFont *labelFont</Declaration>
+			
+			
+			<Anchor>//api/name/labelFont</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitchToggleLayer/labelFont</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly) UIFont *labelFont</Declaration>
+			
+			
+			<Anchor>//api/name/labelFont</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitchToggleLayer/setDrawOnTint:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL drawOnTint</Declaration>
+			
+			
+			<Anchor>//api/name/drawOnTint</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitchToggleLayer/drawOnTint</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL drawOnTint</Declaration>
+			
+			
+			<Anchor>//api/name/drawOnTint</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitchToggleLayer/setClip:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL clip</Declaration>
+			
+			
+			<Anchor>//api/name/clip</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DCRoundSwitchToggleLayer/clip</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL clip</Declaration>
+			
+			
+			<Anchor>//api/name/clip</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DCRoundSwitchToggleLayer/initWithOnString:offString:onTintColor:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>DCRoundSwitchToggleLayer.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithOnString:(NSString *)anOnString offString:(NSString *)anOffString onTintColor:(UIColor *)anOnTintColor</Declaration>
+			
+			
+			<Anchor>//api/name/initWithOnString:offString:onTintColor:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

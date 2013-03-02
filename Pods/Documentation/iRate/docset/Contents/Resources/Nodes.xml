@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocSetNodes version="1.0">
+    <TOC>
+        <Node type="folder">
+            <Name>iRate 1.7.2</Name>
+            <Path>index.html</Path>
+			<Subnodes>
+                
+				
+				<Node type="folder">
+					<Name>Classes</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="1"/>
+						
+					</Subnodes>
+				</Node>
+				
+				
+				
+				<Node type="folder">
+					<Name>Protocols</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="2"/>
+						
+					</Subnodes>
+				</Node>
+				
+			</Subnodes>
+        </Node>
+    </TOC>
+	<Library>
+		
+		<Node id="1">
+			<Name>iRate</Name>
+			<Path>Classes/iRate.html</Path>
+		</Node>
+		
+		
+		<Node id="2">
+			<Name>iRateDelegate</Name>
+			<Path>Protocols/iRateDelegate.html</Path>
+		</Node>
+		
+	</Library>
+</DocSetNodes>

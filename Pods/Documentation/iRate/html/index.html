@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>iRate 1.7.2 Reference</title>
+		<link rel="stylesheet" type="text/css" href="css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="index.html">iRate 1.7.2 </a></h1>
+				<a id="developerHome" href="index.html">Nick Lockwood</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">iRate 1.7.2 Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar"></ul>
+		</header>
+		<article>
+			<div id="overview_contents" role="main">
+				<div class="main-navigation navigation-top">
+					<a href="hierarchy.html">Next</a>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">iRate 1.7.2 Reference</h1>
+					</div>		
+				</div>
+				<div id="container">
+					
+					<div class="section section-overview index-overview">
+						
+						
+						<h2>Purpose</h2>
+
+<p><a href="Classes/iRate.html">iRate</a> is a library to help you promote your iPhone and Mac App Store apps by prompting users to rate the app after using it for a few days. This approach is one of the best ways to get positive app reviews by targeting only regular users (who presumably like the app or they wouldn&rsquo;t keep using it!).</p>
+
+<h2>Supported OS &amp; SDK Versions</h2>
+
+<ul>
+<li>Supported build target &ndash; iOS 6.0 / Mac OS 10.8 (Xcode 4.5, Apple LLVM compiler 4.1)</li>
+<li>Earliest supported deployment target &ndash; iOS 5.0 / Mac OS 10.7</li>
+<li>Earliest compatible deployment target &ndash; iOS 4.3 / Mac OS 10.6</li>
+</ul>
+
+
+<p>NOTE: &lsquo;Supported&rsquo; means that the library has been tested with this version. &lsquo;Compatible&rsquo; means that the library should work on this OS version (i.e. it doesn&rsquo;t rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.</p>
+
+<h2>ARC Compatibility</h2>
+
+<p>As of version 1.7, <a href="Classes/iRate.html">iRate</a> requires ARC. If you wish to use <a href="Classes/iRate.html">iRate</a> in a non-ARC project, just add the -fobjc-arc compiler flag to the <a href="Classes/iRate.html">iRate</a>.m class. To do this, go to the Build Phases tab in your target settings, open the Compile Sources group, double-click <a href="Classes/iRate.html">iRate</a>.m in the list and type -fobjc-arc into the popover.</p>
+
+<p>If you wish to convert your whole project to ARC, comment out the #error line in <a href="Classes/iRate.html">iRate</a>.m, then run the Edit > Refactor > Convert to Objective-C ARC&hellip; tool in Xcode and make sure all files that you wish to use ARC for (including <a href="Classes/iRate.html">iRate</a>.m) are checked.</p>
+
+<h2>Thread Safety</h2>
+
+<p><a href="Classes/iRate.html">iRate</a> uses threading internally to avoid blocking the UI, but none of the <a href="Classes/iRate.html">iRate</a> external interfaces are thread safe and you should not call any methods or set any properties on <a href="Classes/iRate.html">iRate</a> except from the main thread.</p>
+
+<h2>Installation</h2>
+
+<p>To install <a href="Classes/iRate.html">iRate</a> into your app, drag the <a href="Classes/iRate.html">iRate</a>.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised text. On iOS you will also need to add the StoreKit framework.</p>
+
+<p><a href="Classes/iRate.html">iRate</a> typically requires no configuration at all and will simply run automatically, using the application&rsquo;s bundle ID to look the app ID up on the App Store.</p>
+
+<p><strong>Note:</strong> If you have apps with matching bundle IDs on both the Mac and iOS app stores (even if they use different capitalisation), the lookup mechanism won&rsquo;t work, so you&rsquo;ll need to manually set the appStoreID property, which is a numeric ID that can be found in iTunes Connect after you set up an app. Also, if you are creating a sandboxed Mac app and your app does not request the network access permission then you will need to set the appStoreID because it cannot be retrieved from the iTunes service.</p>
+
+<p>If you do wish to customise <a href="Classes/iRate.html">iRate</a>, the best time to do this is <em>before</em> the app has finished launching. The easiest way to do this is to add the iRate configuration code in your AppDelegate&rsquo;s <code>initialize</code> method, like this:</p>
+
+<pre><code>#import "iRate.h"
+
++ (void)initialize
+{
+    //configure iRate
+    [iRate sharedInstance].daysUntilPrompt = 5;
+    [iRate sharedInstance].usesUntilPrompt = 15;
+}
+</code></pre>
+
+<h2>Configuration</h2>
+
+<p>To configure <a href="Classes/iRate.html">iRate</a>, there are a number of properties of the <a href="Classes/iRate.html">iRate</a> class that can alter the behaviour and appearance of <a href="Classes/iRate.html">iRate</a>. These should be mostly self- explanatory, but they are documented below:</p>
+
+<pre><code>@property (nonatomic, assign) NSUInteger appStoreID;
+</code></pre>
+
+<p>This should match the iTunes app ID of your application, which you can get from iTunes connect after setting up your app. This value is not normally necessary and is generally only required if you have the aforementioned conflict between bundle IDs for your Mac and iOS apps, or in the case of Sandboxed Mac apps, if your app does not have network permission because it won&rsquo;t be able to fetch the appStoreID automatically using iTunes services.</p>
+
+<pre><code>@property (nonatomic, assign) NSUInteger appStoreGenreID;
+</code></pre>
+
+<p>This is the type of app, used to determine the default text for the rating dialog. This is set automatically by calling an iTunes service, so you shouldn&rsquo;t need to set it manually for most purposes. If you do wish to override this value, setting it to the <code>iRateAppStoreGameGenreID</code> constant will cause <a href="Classes/iRate.html">iRate</a> to use the &ldquo;game&rdquo; version of the rating dialog, and setting it to any other value will use the &ldquo;app&rdquo; version of the rating dialog.</p>
+
+<pre><code>@property (nonatomic, copy) NSString *appStoreCountry;
+</code></pre>
+
+<p>This is the two-letter country code used to specify which iTunes store to check. It is set automatically from the device locale preferences, so shouldn&rsquo;t need to be changed in most cases. You can override this to point to the US store, or another specific store if you prefer, which may be a good idea if your app is only available in certain countries.</p>
+
+<pre><code>@property (nonatomic, copy) NSString *applicationName;
+</code></pre>
+
+<p>This is the name of the app displayed in the <a href="Classes/iRate.html">iRate</a> alert. It is set automatically from the application&rsquo;s info.plist, but you may wish to override it with a shorter or longer version.</p>
+
+<pre><code>@property (nonatomic, copy) NSString *applicationBundleID;
+</code></pre>
+
+<p>This is the application bundle ID, used to retrieve the <code>appStoreID</code> and <code>appStoreGenreID</code> from iTunes. This is set automatically from the app&rsquo;s info.plist, so you shouldn&rsquo;t need to change it except for testing purposes.</p>
+
+<pre><code>@property (nonatomic, assign) float daysUntilPrompt;
+</code></pre>
+
+<p>This is the number of days the user must have had the app installed before they are prompted to rate it. The time is measured from the first time the app is launched. This is a floating point value, so it can be used to specify a fractional number of days (e.g. 0.5). The default value is 10 days.</p>
+
+<pre><code>@property (nonatomic, assign) NSUInteger usesUntilPrompt;
+</code></pre>
+
+<p>This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoids the scenario where a user runs the app once, doesn&rsquo;t look at it for weeks and then launches it again, only to be immediately prompted to rate it. The minimum use count ensures that only frequent users are prompted. The prompt will appear only after the specified number of days AND uses has been reached. This defaults to 10 events. This defaults to 10 uses.</p>
+
+<pre><code>@property (nonatomic, assign) NSUInteger eventsUntilPrompt;
+</code></pre>
+
+<p>For some apps, launches are not a good metric for usage. For example the app might be a daemon that runs constantly, or a game where the user can&rsquo;t write an informed review until they&rsquo;ve reached a particular level. In this case you can manually log significant events and have the prompt appear after a predetermined number of these events. Like the usesUntilPrompt setting, the prompt will appear only after the specified number of days AND events, however once the day threshold is reached, the prompt will appear if EITHER the event threshold OR uses threshold is reached. This defaults to 10 events.</p>
+
+<pre><code>@property (nonatomic, assign) float usesPerWeekForPrompt;
+</code></pre>
+
+<p>If you are less concerned with the total number of times the app is used, but would prefer to use the <em>frequency</em> of times the app is used, you can use the <code>usesPerWeekForPrompt</code> property to set a minimum threshold for the number of times the user must launch the app per week (on average) for the prompt to be shown. Note that this is the average since the app was installed, so if the user goes for a long period without running the app, it may throw off the average. The default value is zero.</p>
+
+<pre><code>@property (nonatomic, assign) float remindPeriod;
+</code></pre>
+
+<p>How long the app should wait before reminding a user to rate after they select the &ldquo;remind me later&rdquo; option (measured in days). A value of zero means the app will remind the user next launch. Note that this value supersedes the other criteria, so the app won&rsquo;t prompt for a rating during the reminder period, even if a new version is released in the meantime.  This defaults to 1 day.</p>
+
+<pre><code>@property (nonatomic, copy) NSString *messageTitle;
+</code></pre>
+
+<p>The title displayed for the rating prompt. If you don&rsquo;t want to display a title then set this to <code>@""</code>;</p>
+
+<pre><code>@property (nonatomic, copy) NSString *message;
+</code></pre>
+
+<p>The rating prompt message. This should be polite and courteous, but not too wordy. If you don&rsquo;t want to display a message then set this to <code>@""</code>;</p>
+
+<pre><code>@property (nonatomic, copy) NSString *cancelButtonLabel;
+</code></pre>
+
+<p>The button label for the button to dismiss the rating prompt without rating the app.</p>
+
+<pre><code>@property (nonatomic, copy) NSString *rateButtonLabel;
+</code></pre>
+
+<p>The button label for the button the user presses if they do want to rate the app.</p>
+
+<pre><code>@property (nonatomic, copy) NSString *remindButtonLabel;
+</code></pre>
+
+<p>The button label for the button the user presses if they don&rsquo;t want to rate the app immediately, but do want to be reminded about it in future. Set this to <code>@""</code> if you don&rsquo;t want to display the remind me button &ndash; e.g. if you don&rsquo;t have space on screen.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL useAllAvailableLanguages;
+</code></pre>
+
+<p>By default, <a href="Classes/iRate.html">iRate</a> will use all available languages in the <a href="Classes/iRate.html">iRate</a>.bundle, even if used in an app that does not support localisation. If you would prefer to restrict <a href="Classes/iRate.html">iRate</a> to only use the same set of languages that your application already supports, set this property to NO. (Defaults to YES).</p>
+
+<pre><code>@property (nonatomic, assign) BOOL disableAlertViewResizing;
+</code></pre>
+
+<p>On iOS, <a href="Classes/iRate.html">iRate</a> includes some logic to resize the alert view to ensure that your rating message is visible in both portrait and landscape mode, and that it doesn&rsquo;t scroll or become truncated. The code to do this is a rather nasty hack, so if your alert text is very short and/or your app only needs to function in portrait mode on iPhone, you may wish to set this property to YES, which may help make your app more robust against future iOS updates. Try the <em>Resizing Disabled</em> example for a demonstration of the effect.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL promptAgainForEachNewVersion;
+</code></pre>
+
+<p>Because iTunes ratings are version-specific, you ideally want users to rate each new version of your app. However, it&rsquo;s debatable whether many users will actually do this, and if you update frequently this may get annoying. Set <code>promptAgainForEachNewVersion</code> to <code>NO</code>, and <a href="Classes/iRate.html">iRate</a> won&rsquo;t prompt the user again each time they install an update if they&rsquo;ve already rated the app. It will still prompt them each new version if they have <em>not</em> rated the app, but you can override this using the <code>iRateShouldShouldPromptForRating</code> delegate method if you wish.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
+</code></pre>
+
+<p>Set this to NO to enabled the rating prompt to be displayed even if the user is not running the latest version of the app. This defaults to YES because that way users won&rsquo;t leave bad reviews due to bugs that you&rsquo;ve already fixed, etc.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
+</code></pre>
+
+<p>This setting is applicable to Mac OS only. By default, on Mac OS the <a href="Classes/iRate.html">iRate</a> alert is displayed as sheet on the main window. Some applications do not have a main window, so this approach doesn&rsquo;t work. For such applications, set this property to NO to allow the <a href="Classes/iRate.html">iRate</a> alert to be displayed as a regular modal window.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL displayAppUsingStorekitIfAvailable;
+</code></pre>
+
+<p>By default, if <a href="Classes/iRate.html">iRate</a> is running on iOS 6 or above then when the user agrees to rate the app, the ratings page will be displayed directly within the app instead of linking to the App Store app. If you don&rsquo;t want that, set this property to NO.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL promptAtLaunch;
+</code></pre>
+
+<p>Set this to NO to disable the rating prompt appearing automatically when the application launches or returns from the background. The rating criteria will continue to be tracked, but the prompt will not be displayed automatically while this setting is in effect. You can use this option if you wish to manually control display of the rating prompt.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL verboseLogging;
+</code></pre>
+
+<p>This option will cause <a href="Classes/iRate.html">iRate</a> to send detailed logs to the console about the prompt decision process. If your app is not correctly prompting for a rating when you would expect it to, this will help you figure out why. Verbose logging is enabled by default on debug builds, and disabled on release and deployment builds.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL previewMode;
+</code></pre>
+
+<p>If set to YES, <a href="Classes/iRate.html">iRate</a> will always display the rating prompt on launch, regardless of how long the app has been in use or whether it&rsquo;s the latest version. Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release (defaults to NO).</p>
+
+<h2>Advanced properties</h2>
+
+<p>If the default <a href="Classes/iRate.html">iRate</a> behaviour doesn&rsquo;t meet your requirements, you can implement your own by using the advanced properties, methods and delegate. The properties below let you access internal state and override it:</p>
+
+<pre><code>@property (nonatomic, strong) NSURL *ratingsURL;
+</code></pre>
+
+<p>The URL that the app will direct the user to so they can write a rating for the app. This is set to the correct value for the given platform automatically. On iOS 5 and below this takes users directly to the ratings page, but on iOS 6 and Mac OS it takes users to the main app page (if there is a way to directly link to the ratings page on those platforms, I&rsquo;ve yet to find it). If you are implementing your own rating prompt, you should probably use the <code>openRatingsPageInAppStore</code> method instead, especially on Mac OS, as the process for opening the Mac app store is more complex than merely opening the URL.</p>
+
+<pre><code>@property (nonatomic, strong) NSDate *firstUsed;
+</code></pre>
+
+<p>The first date on which the user launched the current version of the app. This is used to calculate whether the daysUntilPrompt criterion has been met.</p>
+
+<pre><code>@property (nonatomic, strong) NSDate *lastReminded;
+</code></pre>
+
+<p>The date on which the user last requested to be reminded of an update.</p>
+
+<pre><code>@property (nonatomic, assign) NSUInteger usesCount;
+</code></pre>
+
+<p>The number of times the current version of the app has been used (launched).</p>
+
+<pre><code>@property (nonatomic, assign) NSUInteger eventCount;
+</code></pre>
+
+<p>The number of significant application events that have been recorded since the current version was installed. This is incremented by the logEvent method, but can also be manipulated directly. Check out the <em>Events Demo</em> to see how this os used.</p>
+
+<pre><code>@property (nonatomic, readonly) float usesPerWeek;
+</code></pre>
+
+<p>The average number of times per week that the current version of the app has been used (launched).</p>
+
+<pre><code>@property (nonatomic, assign) BOOL declinedThisVersion;
+</code></pre>
+
+<p>This flag indicates whether the user has declined to rate the current version (YES) or not (NO).</p>
+
+<pre><code>@property (nonatomic, assign) BOOL declinedAnyVersion;
+</code></pre>
+
+<p>This flag indicates whether the user has declined to rate any previous version of the app (YES) or not (NO). This is not currently used by the <a href="Classes/iRate.html">iRate</a> prompting logic, but may be useful for implementing your own rules using the <code>iRateShouldPromptForRating</code> delegate method.</p>
+
+<pre><code>@property (nonatomic, assign) BOOL ratedThisVersion;
+</code></pre>
+
+<p>This flag indicates whether the user has already rated the current version (YES) or not (NO).</p>
+
+<pre><code>@property (nonatomic, readonly) BOOL ratedAnyVersion;
+</code></pre>
+
+<p>This (readonly) flag indicates whether the user has previously rated any version of the app (YES) or not (NO).</p>
+
+<pre><code>@property (nonatomic, assign) idiRateDelegate delegate;
+</code></pre>
+
+<p>An object you have supplied that implements the <a href="Protocols/iRateDelegate.html"><code>iRateDelegate</code></a> protocol, documented below. Use this to detect and/or override iRate&rsquo;s default behaviour. This defaults to the App Delegate, so if you are using your App Delegate as your <a href="Classes/iRate.html">iRate</a> delegate, you don&rsquo;t need to set this property.</p>
+
+<h2>Methods</h2>
+
+<p>Besides configuration, <a href="Classes/iRate.html">iRate</a> has the following methods:</p>
+
+<pre><code>- (void)logEvent:(BOOL)deferPrompt;
+</code></pre>
+
+<p>This method can be called from anywhere in your app (after <a href="Classes/iRate.html">iRate</a> has been configured) and increments the <a href="Classes/iRate.html">iRate</a> significant event count. When the predefined number of events is reached, the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be shown immediately (NO) or if the app will wait until the next launch (YES).</p>
+
+<pre><code>- (BOOL)shouldPromptForRating;
+</code></pre>
+
+<p>Returns YES if the prompt criteria have been met, and NO if they have not. You can use this to decide when to display a rating prompt if you have disabled the automatic display at app launch.</p>
+
+<pre><code>- (void)promptForRating;
+</code></pre>
+
+<p>This method will immediately trigger the rating prompt without checking that the  app store is available, and without calling the iRateShouldShouldPromptForRating delegate method. Note that this method depends on the <code>appStoreID</code> and <code>applicationGenre</code> properties, which are only retrieved after polling the iTunes server, so if you intend to call this method directly, you will need to set these properties yourself beforehand, or use the <code>promptIfNetworkAvailable</code> method instead.</p>
+
+<pre><code>- (void)promptIfNetworkAvailable;
+</code></pre>
+
+<p>This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it. Note that if your app is sandboxed and does not have the network access permission, this method will ignore the network availability status, however in this case you will need to manually set the appStoreID or <a href="Classes/iRate.html">iRate</a> cannot function.</p>
+
+<pre><code>- (void)openRatingsPageInAppStore;
+</code></pre>
+
+<p>This method skips the user alert and opens the application ratings page in the Mac or iPhone app store, or directly within the app, depending on which platform and OS version is running. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call any delegate methods. You should use this method to open the ratings page instead of the ratingsURL property, as the process for launching the app store is more complex than merely opening the URL in many cases. Note that this method depends on the <code>appStoreID</code> which is only retrieved after polling the iTunes server, so if you intend to call this method directly, you will need to set the <code>appStoreID</code> property yourself beforehand.</p>
+
+<h2>Delegate methods</h2>
+
+<p>The <a href="Protocols/iRateDelegate.html">iRateDelegate</a> protocol provides the following methods that can be used intercept <a href="Classes/iRate.html">iRate</a> events and override the default behaviour. All methods are optional.</p>
+
+<pre><code>- (void)iRateCouldNotConnectToAppStore:(NSError *)error;
+</code></pre>
+
+<p>This method is called if <a href="Classes/iRate.html">iRate</a> cannot connect to the App Store, usually because the network connection is down. This may also fire if your app does not have access to the network due to Sandbox permissions, in which case you will need to manually set the appStoreID so that <a href="Classes/iRate.html">iRate</a> can still function.</p>
+
+<pre><code>- (void)iRateDidDetectAppUpdate;
+</code></pre>
+
+<p>This method is called if <a href="Classes/iRate.html">iRate</a> detects that the application has been updated since the last time it was launched.</p>
+
+<pre><code>- (BOOL)iRateShouldShouldPromptForRating;
+</code></pre>
+
+<p>This method is called immediately before the rating prompt is displayed to the user. You can use this method to block the standard prompt alert and display the rating prompt in a different way, or bypass it altogether.</p>
+
+<pre><code>- (void)iRateUserDidAttemptToRateApp;
+</code></pre>
+
+<p>This is called when the user pressed the rate button in the rating prompt. This is useful if you want to log user interaction with <a href="Classes/iRate.html">iRate</a>. This method is only called if you are using the standard <a href="Classes/iRate.html">iRate</a> alert view prompt and will not be called automatically if you provide a custom rating implementation or call the <code>openRatingsPageInAppStore</code> method directly.</p>
+
+<pre><code>- (void)iRateUserDidDeclineToRateApp;
+</code></pre>
+
+<p>This is called when the user declines to rate the app. This is useful if you want to log user interaction with <a href="Classes/iRate.html">iRate</a>. This method is only called if you are using the standard <a href="Classes/iRate.html">iRate</a> alert view prompt and will not be called automatically if you provide a custom rating implementation.</p>
+
+<pre><code>- (void)iRateUserDidRequestReminderToRateApp;
+</code></pre>
+
+<p>This is called when the user asks to be reminded to rate the app. This is useful if you want to log user interaction with <a href="Classes/iRate.html">iRate</a>. This method is only called if you are using the standard <a href="Classes/iRate.html">iRate</a> alert view prompt and will not be called automatically if you provide a custom rating implementation.</p>
+
+<pre><code>- (BOOL)iRateShouldOpenAppStore;
+</code></pre>
+
+<p>This method is called immediately before <a href="Classes/iRate.html">iRate</a> attempts to open the app store, either via a URL or using the StoreKit in-app product view controller. Return NO if you wish to implement your own ratings page display logic.</p>
+
+<pre><code>- (void)iRateDidPresentStoreKitModal;
+</code></pre>
+
+<p>This method is called just after <a href="Classes/iRate.html">iRate</a> presents the StoreKit in-app product view controller. It is useful if you want to implement some additional functionality, such as displaying instructions to the user for how to write a review, since the StoreKit controller doesn&rsquo;t open on the review page. You may also wish to pause certain functionality in your app, etc.</p>
+
+<pre><code>- (void)iRateDidDismissStoreKitModal;
+</code></pre>
+
+<p>This method is called when the user dismisses the StoreKit in-app product view controller. This is useful if you want to resume any functionality that you paused when the modal was displayed.</p>
+
+<h2>Localisation</h2>
+
+<p>The default strings for <a href="Classes/iRate.html">iRate</a> are already localised for many languages. By default, <a href="Classes/iRate.html">iRate</a> will use all the localisations in the <a href="Classes/iRate.html">iRate</a>.bundle even in an app that is not localised, or which is only localised to a subset of the languages that <a href="Classes/iRate.html">iRate</a> supports.</p>
+
+<p>If you would prefer <a href="Classes/iRate.html">iRate</a> to only use the localisations that are enabled in your application (so that if your app only supports English, French and Spanish, <a href="Classes/iRate.html">iRate</a> will automatically be localised for those languages, but not for German, even though <a href="Classes/iRate.html">iRate</a> includes a German language file), set the <code>useAllAvailableLanguages</code> option to NO.</p>
+
+<p>It is not recommended that you modify the strings files in the <a href="Classes/iRate.html">iRate</a>.bundle, as it will complicate updating to newer versions of <a href="Classes/iRate.html">iRate</a>. The exception to this is if you would like to submit additional languages or improvements or corrections to the localisations in the <a href="Classes/iRate.html">iRate</a> project on github (which are greatly appreciated).</p>
+
+<p>If you want to add an additional language for <a href="Classes/iRate.html">iRate</a> in your app without submitting them back to the github project, you can add these strings directly to the appropriate Localizable.strings file in your project folder. If you wish to replace some or all of the default <a href="Classes/iRate.html">iRate</a> strings, the simplest option is to copy just those strings into your own Localizable.strings file and then modify them. <a href="Classes/iRate.html">iRate</a> will automatically use strings in the main application bundle in preference to the ones in the <a href="Classes/iRate.html">iRate</a> bundle so you can override any string in this way.</p>
+
+<p>If you do not want to use <em>any</em> of the default localisations, you can omit the <a href="Classes/iRate.html">iRate</a>.bundle altogether. Note that if you only want to support a subset of languages that <a href="Classes/iRate.html">iRate</a> supports, it is not neccesary to delete the other strings files from <a href="Classes/iRate.html">iRate</a>.bundle &ndash; just set <code>useAllAvailableLanguages</code> to NO, and iRate will only use the languages that your app already supports.</p>
+
+<p>The old method of overriding iRate&rsquo;s default strings by using individual setter methods (see below) is still supported, however the recommended approach is now to add those strings to your project&rsquo;s Localizable.strings file, which will be detected automatically by iRate.</p>
+
+<pre><code>+ (void)initialize
+{
+    //overriding the default iRate strings
+    [iRate sharedInstance].messageTitle = NSLocalizedString(@"Rate MyApp", @"iRate message title");
+    [iRate sharedInstance].message = NSLocalizedString(@"If you like MyApp, please take the time, etc", @"iRate message");
+    [iRate sharedInstance].cancelButtonLabel = NSLocalizedString(@"No, Thanks", @"iRate decline button");
+    [iRate sharedInstance].remindButtonLabel = NSLocalizedString(@"Remind Me Later", @"iRate remind button");
+    [iRate sharedInstance].rateButtonLabel = NSLocalizedString(@"Rate It Now", @"iRate accept button");
+}
+</code></pre>
+
+<h2>Example Projects</h2>
+
+<p>When you build and run the basic Mac or iPhone example project for the first time, it will show an alert asking you to rate the app. This is because the previewMode option is set.</p>
+
+<p>Disable the previewMode option and play with the other settings to see how the app behaves in practice.</p>
+
+<h2>Advanced Example</h2>
+
+<p>The advanced example demonstrates how you might implement a completely bespoke <a href="Classes/iRate.html">iRate</a> interface using the <a href="Protocols/iRateDelegate.html">iRateDelegate</a> methods. Automatic prompting is disabled and instead the user can opt to rate the app by pressing the &ldquo;Rate this app&rdquo; button.</p>
+
+<p>When pressed, the app first checks that the app store is available (it may not be if the computer has no Internet connection or apple.com is down), and then launches the Mac App Store.</p>
+
+<p>The example is for Mac OS, but the same thing can be applied on iOS.</p>
+						
+						
+					</div>
+					
+                        
+                    
+					
+					
+					<div class="index-column">
+						<h2 class="index-title">Class References</h2>
+						<ul>
+							
+							<li><a href="Classes/iRate.html">iRate</a></li>
+							
+						</ul>
+					</div>
+					
+					
+						
+					<div class="index-column">
+						
+						<h2 class="index-title">Protocol References</h2>
+						<ul>
+							
+							<li><a href="Protocols/iRateDelegate.html">iRateDelegate</a></li>
+							
+						</ul>
+						
+						
+					</div>
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<a href="hierarchy.html">Next</a>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 Nick Lockwood. All rights reserved. (Last updated: 2013-01-17)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
+						
+	
+					</div>
+				</div>
+			</div>
+		</article>		
+	</body>
+</html>

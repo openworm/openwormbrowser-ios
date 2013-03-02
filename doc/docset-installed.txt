@@ -1,0 +1,4 @@
+Documentation set was installed to Xcode!
+
+Path: /Users/stonerri/Library/Developer/Shared/Documentation/DocSets/com.wholeslide.openwormbrowser.docset
+Time: 2013-03-02 06:23:38 +0000
