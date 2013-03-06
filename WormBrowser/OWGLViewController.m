@@ -189,26 +189,18 @@
     
     
     
-    
-    UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleZoomFromGestureRecognizer:)];
-
-
-    [self.view addGestureRecognizer:pinchRecognizer];
-//
-    UIPanGestureRecognizer* scrollNavigation = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDragGesture:)];
-    [scrollNavigation setMinimumNumberOfTouches:2];
-    [self.view addGestureRecognizer:scrollNavigation];
-
     UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(updatePan:)];
-    [panRecognizer setMaximumNumberOfTouches:1];
-//    [panRecognizer requireGestureRecognizerToFail:pinchRecognizer];
+    [panRecognizer setDelegate:self];
     [self.view addGestureRecognizer:panRecognizer];
     
 
+    UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleZoomFromGestureRecognizer:)];
+    [pinchRecognizer setDelegate:self];
+    [self.view addGestureRecognizer:pinchRecognizer];
+    
     
     UITapGestureRecognizer* doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     [doubleTapRecognizer setNumberOfTapsRequired:2];
-//    [doubleTapRecognizer requireGestureRecognizerToFail:pinchRecognizer];
     [self.view addGestureRecognizer:doubleTapRecognizer];
 
     UITapGestureRecognizer* singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -224,12 +216,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetView:) name:kResetAllNotification object:nil];
     
-    
-    
-    
     [self setupGL];
     
-//    [self performSelector:@selector(animateToBaseEntity:) withObject:nil];
     [self performSelector:@selector(animateToBaseEntity:) withObject:nil afterDelay:0.1];
 }
 
@@ -512,6 +500,10 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
             break;
     }
     
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 
 -(void) updatePan:(UIPanGestureRecognizer*)r

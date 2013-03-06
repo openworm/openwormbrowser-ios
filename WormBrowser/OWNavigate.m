@@ -558,9 +558,12 @@ typedef enum {
 -(void) doNavigateDeltaX:(float)dx DeltaY:(float)dy DeltaZ:(float)dz
 {
     float camera_scale = mDollyZ.present / 80;
+    
+    float constant_scale = 0.25;
+    
     //    NSLog(@"camera scale: %f, %f %f %f", camera_scale, mTheta.future + camera_scale*dx, mDollyY.future + camera_scale*dy, mDollyZ.future + camera_scale*dz);
     
-    [self doNavigateWithAngle:mTheta.future + camera_scale*dx
+    [self doNavigateWithAngle:mTheta.future + constant_scale*dx
                          forY:mDollyY.future + camera_scale*dy
                       forZoom:mDollyZ.future + camera_scale*dz withUrgency:1.0f];
 }
