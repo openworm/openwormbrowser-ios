@@ -564,7 +564,7 @@ typedef enum {
     //    NSLog(@"camera scale: %f, %f %f %f", camera_scale, mTheta.future + camera_scale*dx, mDollyY.future + camera_scale*dy, mDollyZ.future + camera_scale*dz);
     
     [self doNavigateWithAngle:mTheta.future + constant_scale*dx
-                         forY:mDollyY.future + camera_scale*dy
+                         forY:mDollyY.future + 1.1*camera_scale*dy
                       forZoom:mDollyZ.future + camera_scale*dz withUrgency:1.0f];
 }
 
