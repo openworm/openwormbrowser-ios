@@ -1,9 +1,34 @@
 //
+//    OpenWorm Browser for iOS **
+//
+//    Developed for the OpenWorm.org project.
+//    Inspired / ported from Google Body Browser (now https://code.google.com/p/open-3d-viewer/)
+//    Released under MIT license
+//
+//    Copyright 2012 Rich Stoner
+//
+//    Permission is hereby granted, free of charge, to any person obtaining
+//    a copy of this software and associated documentation files (the
+//    "Software"), to deal in the Software without restriction, including
+//    without limitation the rights to use, copy, modify, merge, publish,
+//    distribute, sublicense, and/or sell copies of the Software, and to
+//    permit persons to whom the Software is furnished to do so, subject to
+//    the following conditions:
+//
+//    The above copyright notice and this permission notice shall be
+//    included in all copies or substantial portions of the Software.
+//
+//    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+//    LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+//    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+//    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+//
 //  OWNavigate.m
 //  WormBrowser
-//
-//  Created by Rich Stoner on 12/2/12.
-//  Copyright (c) 2012 Rich Stoner. All rights reserved.
 //
 
 #import "OWNavigate.h"
@@ -359,53 +384,9 @@ typedef enum {
 
 -(void) goToForEntity:(OWEntityInfo*)entity withUrgency:(float) urgency
 {
+    currentCameraState = cameraStateReturning;
 
-        // part of the new camera integration
-    
-        currentCameraState = cameraStateReturning;
-
-        [self performSelector:@selector(delayedEntityNavigation:) withObject:entity afterDelay:0.0];
-    
-    
-//    if (currentCameraState == cameraStateFree) {
-//        
-//        currentCameraState = cameraStateReturning;
-//        
-//        [self performSelector:@selector(delayedEntityNavigation:) withObject:entity afterDelay:0.5];
-//    }
-//    else
-//    {
-//        
-//        
-//        GLKVector3 centerPoint = GLKVector3DivideScalar(GLKVector3Add(entity.bbl, entity.bbh), 2);
-//        
-//        float dYAxis = sqrtf(powf(centerPoint.z, 2) + powf(centerPoint.x, 2));
-//        float x = (atanf(centerPoint.z / centerPoint.x) ) + M_PI_2;
-//        float projectedHeight = [self projectedMinMaxForEntity:entity forVector:camera.up];
-//        
-//        //    NSLog(@"x: %f , projected height: %f", x, projectedHeight);
-//        
-//        float y_angle = 0.5f * GLKMathDegreesToRadians(camera.fov);
-//        float zy_dist = projectedHeight / tanf(y_angle);
-//        
-//        GLKVector3 sideVector = GLKVector3CrossProduct(camera.up, GLKVector3Subtract(camera.eye, camera.target));
-//        sideVector = GLKVector3Normalize(sideVector);
-//        
-//        float projectedWidth = [self projectedMinMaxForEntity:entity forVector:sideVector];
-//        
-//        //    NSLog(@"This alg thinks the object is %f x %f", projectedWidth, projectedHeight); // 12 x 2... this sounds correct
-//        
-//        float x_angle = 0.5f * GLKMathDegreesToRadians(camera.fov * self.aspectRatio);
-//        float zx_dist = projectedWidth / tanf(x_angle);
-//        float z_dist = MAX(zy_dist, zx_dist);
-//        
-//        //    NSLog(@"xyz: %f %f %f %f %f : %f", 180 * x / M_PI, centerPoint.y, dYAxis + z_dist, camera.fov, self.aspectRatio, dYAxis);
-//        
-//        [self doNavigateWithAngle:x forY:centerPoint.y forZoom:dYAxis + z_dist withUrgency:urgency];
-//        
-//        
-//    }
-    
+    [self performSelector:@selector(delayedEntityNavigation:) withObject:entity afterDelay:0.0];
 }
 
 

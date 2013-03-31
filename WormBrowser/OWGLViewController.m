@@ -130,15 +130,16 @@
     [self.mShowMetadata setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
     [self.mShowMetadata addTarget:self action:@selector(handleShowMetaData:) forControlEvents:UIControlEventTouchUpInside];
     
+#warning Uncomment this to enable the metadata viewer
 //    [self.mLabelView addSubview:self.mShowMetadata];
     
     [self.view addSubview:self.mLabelView];
     
     // v1 contained the Navigate here
     self.mNavigate = [[OWNavigate alloc] init];
+    
 //    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
 //    NSLog(@"initializing camera with aspect ratio: %f", aspect);
-    
     
     UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     
@@ -168,7 +169,6 @@
 //    [mNavigate setAspectRatio:aspect];
     
     // v1 contained an array of layers here
-    
     self.mLayers = [[NSMutableArray alloc] init];
     self.mLayerOpacityInterpolants = [[NSMutableArray alloc] init];
     self.selectedObjects = [[NSMutableArray alloc] init];
@@ -186,9 +186,6 @@
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     view.drawableMultisample = GLKViewDrawableMultisample4X;
     
-    
-    
-    
     UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(updatePan:)];
     [panRecognizer setDelegate:self];
     [panRecognizer setMaximumNumberOfTouches:1];
@@ -203,9 +200,6 @@
     UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleZoomFromGestureRecognizer:)];
     [pinchRecognizer setDelegate:self];
     [self.view addGestureRecognizer:pinchRecognizer];
-    
-    
-    
     
     UITapGestureRecognizer* doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
 // RMS: changed this to 3 taps since we're using a lot of 2-finger gestures to navigate
@@ -636,16 +630,6 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
                 
                 [mNavigate handleSecondaryTouchDelta:deltaPoint withAbsolute:translatedPoint];
                 
-                //                [mNavigate expLook:translatedPoint];
-                //                if (abs(deltaPoint.x) > abs(deltaPoint.y)) {
-                //
-                //
-                //
-                //                }
-                //                else
-                //                {
-                //                    
-                //                }
             }
             break;
         default:
@@ -671,49 +655,6 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
 
 
 #pragma mark - GL setup and teardown
-
-//- (void) updateRenderSettings
-//{
-//    
-//    switch (currentRenderSetting) {
-//            
-//        case renderSettingHigh:
-//        case renderSettingHigh4X:
-//            
-//            // set scale to 1.0
-//            
-//            [self.view setContentScaleFactor:0.5f];
-//            
-//            break;
-//        
-//        case renderSettingMedium:
-//        case renderSettingMedium4X:
-//            
-//            // set scale 1.5
-//            [self.view setContentScaleFactor:1.0f];
-//            
-//            break;
-//            
-//        case renderSettingLow:
-//        case renderSettingLow4X:
-//            
-//            // set scale 2.0
-//            [self.view setContentScaleFactor:3.0f];
-//            
-//            break;
-//            
-//        default:
-//            break;
-//    }
-//    
-//    if (currentRenderSetting % 2 == 0) {
-//        
-//        GLKView* view = (GLKView*)self.view;
-//        view.drawableMultisample = GLKViewDrawableMultisampleNone;
-//        
-//    }
-//    
-//}
 
 - (void)setupGL
 {
@@ -1088,52 +1029,7 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
 
 #pragma mark - selection function
 
-
-//    if (x < 0 || x > mClientWidth || y < 0 || y > mClientHeight)
-//        return "";
-//
-//    final int kSelectionRectWidth = 20;
-//
-//    // Render at a much smaller resolution (only 20x20 pixel around touch point).
-//    int fboWidth = kSelectionRectWidth;
-//    int fboHeight = kSelectionRectWidth;
-//
-//    OffscreenSurface selection = createOffscreenSurface(fboWidth, fboHeight);
-//    if (selection == null) {
-//        Log.w("Body", "Failed to create framebuffer");
-//        return "";
-//    }
-//    int selectionSurfaceSize = fboWidth * fboHeight * 4;
-//    mSelectionSurfaceBuffer = ByteBuffer.allocateDirect(selectionSurfaceSize);
-//
-//    GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, selection.framebuffer);
-//
-//    drawBodyForSelection(x, mClientHeight - 1 - y, fboWidth, fboHeight);
-//
-//    GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-//
-//    int sx = kSelectionRectWidth / 2, sy = kSelectionRectWidth / 2;
-//    int value = findPixelInRect(
-//                                sx, sy, kSelectionRectWidth, fboWidth, fboHeight, mSelectionSurfaceBuffer);
-//
-//    // Clear stuff.
-//    mSelectionSurfaceBuffer = null;
-//    int[] framebuffers = { selection.framebuffer };
-//    GLES20.glDeleteFramebuffers(1, framebuffers, 0);
-//    int[] renderbuffers = { selection.renderbuffer };
-//    GLES20.glDeleteRenderbuffers(1, renderbuffers, 0);
-//    int[] textures = { selection.colorTexture };
-//    GLES20.glDeleteTextures(1, textures, 0);
-//
-//    value = (int)Math.floor(value / selectionColorScale);
-//    if (value != 0 && mSelectionColorMap.containsKey(value)) {
-//        return mSelectionColorMap.get(value).geometry;
-//    } else {
-//        return "";
-//    }
-
-
-
+#pragma mark TODO -> fix selection issue (currently selects from the back out)
 
 - (NSUInteger)findObjectByPoint:(CGPoint)point
 {
@@ -1175,10 +1071,10 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
     
     // off screen buffer created, now perform render using updated matrices
     
-    
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+// very possible the face cull is the cause of the back select
     glEnable(GL_CULL_FACE);
 //    glCullFace(GL_CCW);
     glEnable(GL_DEPTH_TEST);
@@ -1199,14 +1095,11 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
     // get 1 pixel, modify for larger selection region to scan
     glReadPixels(point.x * scale, (height - (point.y * scale)), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixelColor);
     
-    //    NSLog(@"%f %f %f", pixelColor[0]/(63.75) , pixelColor[1]/25.50, pixelColor[2]/25.50 );
     int layerValue = (int)(pixelColor[0]) ; // -> 64 / 256
     int dgValue = (pixelColor[1]);
     int dValue = (pixelColor[2]);
     
-//    NSLog(@"%d %d %d", layerValue, dgValue, dValue);
     if (layerValue != 255) {
-        //
 
         OWLayer* selectedLayer = (OWLayer*)[self.mLayers objectAtIndex:layerValue];
         OWDrawGroup* selectedDG = [selectedLayer.drawGroups objectAtIndex:dgValue];
@@ -1236,7 +1129,6 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
     CGImageRef iref = CGImageCreate(width, height, 8, 32, width * 4, colorspace, kCGBitmapByteOrder32Big | kCGImageAlphaPremultipliedLast,
                                     ref, NULL, true, kCGRenderingIntentDefault);
     
-    
     UIGraphicsBeginImageContext(CGSizeMake(width, height));
     CGContextRef cgcontext = UIGraphicsGetCurrentContext();
     CGContextSetBlendMode(cgcontext, kCGBlendModeCopy);
@@ -1248,7 +1140,7 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
     CFRelease(ref);
     CFRelease(colorspace);
     CGImageRelease(iref);
-    
+
     
     NSString  *pngPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.png"];
 //    NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Test.jpg"];
@@ -1350,26 +1242,15 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
         NSLog(@"Time to load layer %d: %f sec", layer.type, executionTime);
 
 
-        //        [layer printDebugString];
+        // [layer printDebugString];
         
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationAllLayersLoaded object:nil];
 }
 
-//-(void) prepareDrawForLayer:(OWLayer*) _layer withOpacity:(GLfloat) _opacity
-//{
-//    GLfloat renderOpacity = _opacity;
-//    renderOpacity = (renderOpacity > 1 ? 1 : renderOpacity);
-//    renderOpacity = (renderOpacity < 0 ? 0 : renderOpacity);
-//    
-//}
-
-
 -(void) drawOneGeometryOnly:(OWLayer*) _layer withGeometry:(NSString*) _geometry
 {
-//    [self prepareDrawForLayer:_layer withOpacity:1.0];
-    
     for (OWDrawGroup* drawGroup in _layer.drawGroups) {
         
         for (OWDraw* draw in drawGroup.draws) {
@@ -1388,8 +1269,6 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
 
 -(void) drawSelectOWLayer:(OWLayer *)_layer withOpacity:(GLfloat)_opacity
 {
-//    [self prepareDrawForLayer:_layer withOpacity:_opacity];
-    
     for (OWDrawGroup* dg in _layer.drawGroups) {
         
         for (OWDraw* draw in dg.draws) {
@@ -1453,8 +1332,6 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
 {
     float _opacity = 0.1;
     
-//    [self prepareDrawForLayer:_layer withOpacity:_opacity];
-    
     // just draw the layer straight through
     for (OWDrawGroup* drawGroup in _layer.drawGroups) {
         
@@ -1475,18 +1352,13 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
         return;
     }
     
-//    [self prepareDrawForLayer:_layer withOpacity:_opacity];
-    
     if (_opacity > 0.95) {
         
         // just draw the layer straight through
         for (OWDrawGroup* drawGroup in _layer.drawGroups) {
             
             self.effect.material.diffuseColor = GLKVector4Make(drawGroup.diffuseColor.x, drawGroup.diffuseColor.y, drawGroup.diffuseColor.z, _opacity);
-            
-//            self.effect.light0.diffuseColor =GLKVector4Make(drawGroup.diffuseColor.x, drawGroup.diffuseColor.y, drawGroup.diffuseColor.z, _opacity);
-//            self.effect.material.diffuseColor = GLKVector4Make(0, 0, 1, 1);
-            
+
             [self.effect prepareToDraw];
             
             [self drawElementsForVB:drawGroup.vertexBuffer forIB:drawGroup.indexBuffer withOffset:0 forNumIndices:drawGroup.numIndices];
