@@ -1,19 +1,20 @@
 openwormbrowser (v1.0.0)
 ===============
 
+![image](https://raw.github.com/richstoner/openwormbrowser/master/owbscreenshot.jpg?login=richstoner&token=2dc1494a9816411d611e8142d1ebbc99)
+
 Inspired by Google [Open-3d-Viewer](https://code.google.com/p/open-3d-viewer/), Developed by Rich Stoner @ [WholeSlide Inc.](http://www.wholeslide.com), For the [OpenWorm Project](http://www.openworm.org/), With data from the [Virtual Worm Project @ CalTech](http://caltech.wormbase.org/virtualworm/), And support from [MetaCell, LLC](http://www.metacell.us), Icons by [Glyphish](http://glyphish.com).
 
-___
+#### [Available on the Apple iTunes App Store for iPad and iPhone as a universal binary.](https://itunes.apple.com/us/app/openworm-browser/id595581306?mt=8&uo=4)
 
-### Usage:
+
+### Simple usage:
 1. Clone repository
 2. Open OpenWorm.xcworkspace
 3. Build
 
+
 **Appledoc required to generate documentation** [http://gentlebytes.com/appledoc/](http://gentlebytes.com/appledoc/) 
-
----
-
 
 ___
 
