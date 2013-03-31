@@ -32,6 +32,8 @@ typedef enum {
 
 @synthesize aspectRatio;
 @synthesize mTheta, mDollyY,mDollyZ;
+@synthesize mTranslateLocalX, mTranslateLocalY, mTranslateLocalZ;
+@synthesize mRotateLocalX, mRotateLocalY;
 
 #pragma mark - initialization methods -
 
@@ -46,10 +48,23 @@ typedef enum {
         mDollyY = [[OWInterpolant alloc] initWithValue:0];
         mDollyZ = [[OWInterpolant alloc] initWithValue:35.0f];
         
+        mRotateLocalX = [[OWInterpolant alloc] initWithValue:0];
+        mRotateLocalY = [[OWInterpolant alloc] initWithValue:0];
+        
+        mTranslateLocalX = [[OWInterpolant alloc] initWithValue:0];
+        mTranslateLocalY = [[OWInterpolant alloc] initWithValue:0];
+        mTranslateLocalZ = [[OWInterpolant alloc] initWithValue:0];
+        
+        
         mInterpolants = [[NSMutableArray alloc] init];
         [mInterpolants addObject:mTheta];
         [mInterpolants addObject:mDollyY];
         [mInterpolants addObject:mDollyZ];
+        [mInterpolants addObject:mRotateLocalX];
+        [mInterpolants addObject:mRotateLocalY];
+        [mInterpolants addObject:mTranslateLocalX];
+        [mInterpolants addObject:mTranslateLocalY];
+        [mInterpolants addObject:mTranslateLocalZ];
         
         camera = [[OWCamera alloc] init];
         
@@ -193,7 +208,8 @@ typedef enum {
         //    NSLog(@"future: %f %f %f", mTheta.future, mDollyY.future, mDollyZ.future);
         //
     
-    if (currentCameraState == cameraStatePill) {
+    // part of integration
+    if (currentCameraState == cameraStatePill || currentCameraState == cameraStateFree) {
         
         
         float angle = mTheta.present;
@@ -243,7 +259,33 @@ typedef enum {
         }
         
         camera.eye = GLKVector3Make(cx, cy, cz);
-        camera.target = GLKVector3Make(0, ty, 0);
+        
+        #define RADIANS_PER_PIXEL (M_PI / 320.f)
+        
+// Added 3/26/13 - Adding a local camera transform on top of pill camera
+// Built on quaternians. Not the most efficient but will suffice
+        
+        GLKVector3 up = camera.up;
+        GLKVector3 baseTargetVector = GLKVector3Make(0, ty, 0);
+        
+        GLKVector3 right = GLKVector3Normalize(GLKVector3CrossProduct(GLKVector3Subtract(baseTargetVector, camera.eye), camera.up));
+        
+        GLKQuaternion quarternion = GLKQuaternionMake(0.f, 0.f, 0.f, 1.f);
+        quarternion = GLKQuaternionMultiply(quarternion, GLKQuaternionMakeWithAngleAndVector3Axis(mRotateLocalX.present * RADIANS_PER_PIXEL, up));
+        
+        quarternion = GLKQuaternionMultiply(quarternion, GLKQuaternionMakeWithAngleAndVector3Axis(mRotateLocalY.present * RADIANS_PER_PIXEL, right));
+  
+        GLKVector3 rotatedTarget = GLKQuaternionRotateVector3(quarternion, GLKVector3Subtract(baseTargetVector, camera.eye));
+        
+        GLKVector3 translationVector = GLKVector3Make(mTranslateLocalX.present, mTranslateLocalY.present, mTranslateLocalZ.present);
+        
+        camera.target = GLKVector3Add(rotatedTarget, translationVector);
+        camera.eye = GLKVector3Add(camera.eye, translationVector);
+        
+        
+        
+//        camera.target = rotatedTarget;
+        
         
     }
     else if(currentCameraState == cameraStateReturning)
@@ -317,44 +359,52 @@ typedef enum {
 
 -(void) goToForEntity:(OWEntityInfo*)entity withUrgency:(float) urgency
 {
-    if (currentCameraState == cameraStateFree) {
-        
+
+        // part of the new camera integration
+    
         currentCameraState = cameraStateReturning;
-        
-        [self performSelector:@selector(delayedEntityNavigation:) withObject:entity afterDelay:0.5];
-    }
-    else
-    {
-        
-        
-        GLKVector3 centerPoint = GLKVector3DivideScalar(GLKVector3Add(entity.bbl, entity.bbh), 2);
-        
-        float dYAxis = sqrtf(powf(centerPoint.z, 2) + powf(centerPoint.x, 2));
-        float x = (atanf(centerPoint.z / centerPoint.x) ) + M_PI_2;
-        float projectedHeight = [self projectedMinMaxForEntity:entity forVector:camera.up];
-        
-        //    NSLog(@"x: %f , projected height: %f", x, projectedHeight);
-        
-        float y_angle = 0.5f * GLKMathDegreesToRadians(camera.fov);
-        float zy_dist = projectedHeight / tanf(y_angle);
-        
-        GLKVector3 sideVector = GLKVector3CrossProduct(camera.up, GLKVector3Subtract(camera.eye, camera.target));
-        sideVector = GLKVector3Normalize(sideVector);
-        
-        float projectedWidth = [self projectedMinMaxForEntity:entity forVector:sideVector];
-        
-        //    NSLog(@"This alg thinks the object is %f x %f", projectedWidth, projectedHeight); // 12 x 2... this sounds correct
-        
-        float x_angle = 0.5f * GLKMathDegreesToRadians(camera.fov * self.aspectRatio);
-        float zx_dist = projectedWidth / tanf(x_angle);
-        float z_dist = MAX(zy_dist, zx_dist);
-        
-        //    NSLog(@"xyz: %f %f %f %f %f : %f", 180 * x / M_PI, centerPoint.y, dYAxis + z_dist, camera.fov, self.aspectRatio, dYAxis);
-        
-        [self doNavigateWithAngle:x forY:centerPoint.y forZoom:dYAxis + z_dist withUrgency:urgency];
-        
-        
-    }
+
+        [self performSelector:@selector(delayedEntityNavigation:) withObject:entity afterDelay:0.0];
+    
+    
+//    if (currentCameraState == cameraStateFree) {
+//        
+//        currentCameraState = cameraStateReturning;
+//        
+//        [self performSelector:@selector(delayedEntityNavigation:) withObject:entity afterDelay:0.5];
+//    }
+//    else
+//    {
+//        
+//        
+//        GLKVector3 centerPoint = GLKVector3DivideScalar(GLKVector3Add(entity.bbl, entity.bbh), 2);
+//        
+//        float dYAxis = sqrtf(powf(centerPoint.z, 2) + powf(centerPoint.x, 2));
+//        float x = (atanf(centerPoint.z / centerPoint.x) ) + M_PI_2;
+//        float projectedHeight = [self projectedMinMaxForEntity:entity forVector:camera.up];
+//        
+//        //    NSLog(@"x: %f , projected height: %f", x, projectedHeight);
+//        
+//        float y_angle = 0.5f * GLKMathDegreesToRadians(camera.fov);
+//        float zy_dist = projectedHeight / tanf(y_angle);
+//        
+//        GLKVector3 sideVector = GLKVector3CrossProduct(camera.up, GLKVector3Subtract(camera.eye, camera.target));
+//        sideVector = GLKVector3Normalize(sideVector);
+//        
+//        float projectedWidth = [self projectedMinMaxForEntity:entity forVector:sideVector];
+//        
+//        //    NSLog(@"This alg thinks the object is %f x %f", projectedWidth, projectedHeight); // 12 x 2... this sounds correct
+//        
+//        float x_angle = 0.5f * GLKMathDegreesToRadians(camera.fov * self.aspectRatio);
+//        float zx_dist = projectedWidth / tanf(x_angle);
+//        float z_dist = MAX(zy_dist, zx_dist);
+//        
+//        //    NSLog(@"xyz: %f %f %f %f %f : %f", 180 * x / M_PI, centerPoint.y, dYAxis + z_dist, camera.fov, self.aspectRatio, dYAxis);
+//        
+//        [self doNavigateWithAngle:x forY:centerPoint.y forZoom:dYAxis + z_dist withUrgency:urgency];
+//        
+//        
+//    }
     
 }
 
@@ -368,7 +418,7 @@ typedef enum {
         case cameraStateFree:
             printf("free -> pill");
             
-            currentCameraState = cameraStateReturning;
+            currentCameraState = cameraStatePill;
             
             break;
             
@@ -392,31 +442,16 @@ typedef enum {
     switch (currentCameraState) {
         case cameraStateFree:
             
-            [self expLook:delta];
+            [self translateLocalDX:delta.x DY:delta.y];
             
             break;
             
         case cameraStatePill:
             
-//            -(void) doNavigateDeltaX:(float)dx DeltaY:(float)dy DeltaZ:(float)dz
             [self doNavigateDeltaX:delta.x/40 DeltaY:delta.y/40 DeltaZ:0];
             
-            
             break;
-            
-        case cameraStateReturning:
-        
-//            currentCameraState = cameraStateFree;
-//            
-//            [self expLook:absolute];
-            
-            break;
-            
-        case cameraStateGoing:
-            
-            
-            break;
-            
+                        
         default:
             break;
     }
@@ -429,23 +464,13 @@ typedef enum {
     switch (currentCameraState) {
         case cameraStateFree:
             
-    
-            [self expPan:absolute];
+             [self rotateLocalDX:delta.x DY:delta.y];            
             
             break;
             
         case cameraStatePill:
             
-            
-            
-            break;
-            
-        case cameraStateReturning:
-            
-            break;
-            
-        case cameraStateGoing:
-            
+             [self rotateLocalDX:delta.x DY:delta.y];
             
             break;
             
@@ -455,6 +480,42 @@ typedef enum {
 }
 
 
+-(void) rotateLocalDX:(float)dx DY:(float)dy
+{
+
+    [mRotateLocalX setFuture:(mRotateLocalX.future + dx*1) withUrgency:1.0];
+    [mRotateLocalY setFuture:(mRotateLocalY.future + dy*1) withUrgency:1.0];
+    
+}
+
+-(void) translateLocalDX:(float)dx DY:(float)dy
+{
+    // get local transform, translate
+     
+    GLKVector3 sideVector = GLKVector3CrossProduct(camera.up, GLKVector3Subtract(camera.target, camera.eye));
+    sideVector = GLKVector3Normalize(sideVector);
+    
+    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.05);
+    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.05);
+    
+    [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0];
+    [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0];
+    [mTranslateLocalZ setFuture:(mTranslateLocalZ.future + camDX.z + camDY.z) withUrgency:1.0];
+
+}
+
+-(void) zoomLocalScale:(float)scale
+{
+    GLKVector3 lookVector = GLKVector3Subtract(camera.eye, camera.target);
+//    float mag = sqrtf(powf(lookVector.x, 2) + powf(lookVector.y, 2));
+    float mag = 1.0f; // using this instead
+    
+    GLKVector3 movementVector = GLKVector3MultiplyScalar(lookVector, 0.01*scale);
+    [mTranslateLocalX setFuture:(mTranslateLocalX.future + movementVector.x) withUrgency:1.0];
+    [mTranslateLocalY setFuture:(mTranslateLocalY.future + movementVector.y) withUrgency:1.0];
+    [mTranslateLocalZ setFuture:(mTranslateLocalZ.future + movementVector.z) withUrgency:1.0];
+
+}
 
 
 -(void) handleZoomScale:(float)scale
@@ -462,26 +523,16 @@ typedef enum {
     switch (currentCameraState) {
         case cameraStateFree:
             
-            [self expZoom:(-1 * (scale - 1))];
+            [self zoomLocalScale:(-1 * (scale - 1))];
+
+// Removed old zoom, broken
+//            [self expZoom:(-1 * (scale - 1))];
             
             break;
             
         case cameraStatePill:
             
-//            [mNavigate fastZoomDZ:-1*([sender scale] - 1)];
-            
-//            [self fastZoomDZ:(-1 * (scale - 1))];
             [self scaledZoom:scale];
-
-            
-            break;
-            
-        case cameraStateReturning:
-            
-            break;
-            
-        case cameraStateGoing:
-            
             
             break;
             
@@ -510,8 +561,6 @@ typedef enum {
     float verticalLowerLimit = -VERTICAL_ADJUSTMENT;
     float verticalUpperLimit = VERTICAL_PAN_LIMIT + VERTICAL_ADJUSTMENT;
 
-//    NSLog(@"%f %f %f", verticalLowerLimit, verticalUpperLimit, y);
-    
     if (y < verticalLowerLimit) {
         
         y = verticalLowerLimit;
@@ -519,7 +568,7 @@ typedef enum {
     
     if (y > verticalUpperLimit)
     {
-//        NSLog(@"at upper limit");
+        //  at upper limit
         y = verticalUpperLimit;
     }
     
@@ -539,7 +588,6 @@ typedef enum {
 -(void) reset
 {
     [self doNavigateWithAngle:M_PI forY:0 forZoom:11];
-    
 }
 
 -(void) updateDeltDollyY:(float)dy
@@ -562,7 +610,6 @@ typedef enum {
     float constant_scale = 0.25;
     
     //    NSLog(@"camera scale: %f, %f %f %f", camera_scale, mTheta.future + camera_scale*dx, mDollyY.future + camera_scale*dy, mDollyZ.future + camera_scale*dz);
-    
     [self doNavigateWithAngle:mTheta.future + constant_scale*dx
                          forY:mDollyY.future + 1.1*camera_scale*dy
                       forZoom:mDollyZ.future + camera_scale*dz withUrgency:1.0f];
@@ -580,16 +627,10 @@ typedef enum {
         initialDollyZ = sqrtf(powf(lookVector.x, 2) + powf(lookVector.y, 2));
     }
     
+    // resets dolly zoom to 2 as a way to quickly pull out.
     if (initialDollyZ < 2) {
         initialDollyZ = 2;
     }
-//
-//    if (initialDollyZ > 20)
-//    {
-//        initialDollyZ = 20;
-//    }
-    
-//    NSLog(@"dolly z: %f", mDollyZ.future);
 }
 
 -(void) scaledZoom:(float) dz
@@ -597,10 +638,8 @@ typedef enum {
 
     float offset = initialDollyZ + (1 - dz)*initialDollyZ / 2;
     
-    //    float offset = (1 - (dz - 1)) * initialDollyZ/2 ;
-    
+//    float offset = (1 - (dz - 1)) * initialDollyZ/2 ;
 //    NSLog(@"dz %f, %f, %f",dz, 1 - (dz - 1) , offset);
-    
 //    float offset = 2*initialDollyZ - ( dz * initialDollyZ );
 //    float offset = dz * initialDollyZ;
 //    NSLog(@"%f", offset);
@@ -612,109 +651,12 @@ typedef enum {
     
 }
 
-
--(void) fastZoomDZ:(float) dz
-{
-    float camera_scale = 0.025 / mDollyZ.present ;
-    
-    NSLog(@"camera scale: %f", camera_scale);
-    
-    [self doNavigateWithAngle:mTheta.future
-                         forY:mDollyY.future
-                      forZoom:mDollyZ.future + camera_scale*dz
-                  withUrgency:1.0f];
-    
-}
-
--(void) expZoom:(float) val
-{
-    GLKVector3 lookVector = GLKVector3Subtract(camera.eye, camera.target);
-    float mag = sqrtf(powf(lookVector.x, 2) + powf(lookVector.y, 2));
-    
-//    GLKVector3 normLook = GLKVector3Normalize(lookVector);
-    GLKVector3 movementVector = GLKVector3MultiplyScalar(lookVector, 0.01*val);
-    
-    camera.target = GLKVector3Add(camera.target, movementVector);
-    camera.eye = GLKVector3Add(camera.eye, movementVector);
-    
-}
-
--(void) expPan:(CGPoint)deltaPoint
-{
-
-    GLKVector3 sideVector = GLKVector3CrossProduct(camera.up, GLKVector3Subtract(camera.eye, camera.target));
-    sideVector = GLKVector3Normalize(sideVector);
-
-    
-    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, deltaPoint.x*0.01);
-    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, deltaPoint.y*0.01);
-    
-    camera.target = GLKVector3Add(GLKVector3Add(camera.target, camDX), camDY);
-    camera.eye = GLKVector3Add(GLKVector3Add(camera.eye, camDX), camDY);
-    
-    
-    
-    
-    
-//    float mag = sqrtf(powf(lookVector.x, 2) + powf(lookVector.y, 2));
-//    
-//    //    GLKVector3 normLook = GLKVector3Normalize(lookVector);
-//    GLKVector3 movementVector = GLKVector3MultiplyScalar(lookVector, 0.01*val);
-//    
-//    camera.target = GLKVector3Add(camera.target, movementVector);
-//    camera.eye = GLKVector3Add(camera.eye, movementVector);
-//    
-//    currentCameraState = cameraStateFree;
-//    
-//    GLKVector3 lookVector = GLKVector3Subtract(camera.eye, camera.target);
-//    
-//    float mag = sqrtf(powf(deltaPoint.x, 2) + powf(deltaPoint.y, 2));
-//    
-//    GLKMatrix3 rotationMatrixCombined = GLKMatrix3MakeRotation(mag/40 * M_PI / 180, 0, deltaPoint.x/(20*mag), deltaPoint.y/(20*mag));
-//    
-//    //    GLKMatrix3 combinedRotation = GLKMatrix3Multiply(rotationMatrixYaw, rotationMatrixPitch);
-//    
-//    GLKVector3 newLookVector =  GLKMatrix3MultiplyVector3(rotationMatrixCombined, lookVector);
-//    //
-//    [self printVector3:newLookVector];
-//    
-//    
-//    
-//    GLKVector3 reproject = GLKVector3Subtract(camera.eye, newLookVector);
-//    
-//    [self printVector3:reproject];
-//    
-//    camera.target = reproject;
-//    
-}
-
-
--(void) expLook:(CGPoint)deltaPoint
-{
-    currentCameraState = cameraStateFree;
-    
-    GLKVector3 lookVector = GLKVector3Subtract(camera.eye, camera.target);
-    
-    float mag = sqrtf(powf(deltaPoint.x, 2) + powf(deltaPoint.y, 2));
-    
-    GLKMatrix3 rotationMatrixCombined = GLKMatrix3MakeRotation(mag/10 * M_PI / 180, 0, deltaPoint.x/(2*mag), deltaPoint.y/(mag));
-
-    GLKVector3 newLookVector =  GLKMatrix3MultiplyVector3(rotationMatrixCombined, lookVector);
-    //
-//    [self printVector3:newLookVector];
-    
-    GLKVector3 reproject = GLKVector3Subtract(camera.eye, newLookVector);
-    
-//    [self printVector3:reproject];
-    
-    camera.target = reproject;
-    
-}
-
 -(void) printVector3:(GLKVector3)inputVec
 {
     NSLog(@"vec3: %f %f %f", inputVec.x, inputVec.y, inputVec.z);
 }
+
+
 
 -(void) dragDeltaX:(float)dx DeltaY:(float)dy
 {
@@ -722,8 +664,6 @@ typedef enum {
     float deltaPan = VERTICAL_REDUCTION * dy;
     
     deltaPan = [self absoluteLimit:deltaPan forLimit:START_PAN withNewValue:0];
-    
-//    NSLog(@"delta rotate: %f pan: %f", deltaRotate, deltaPan);
     
     [self doNavigateDeltaX:deltaRotate DeltaY:deltaPan DeltaZ:0];
 }

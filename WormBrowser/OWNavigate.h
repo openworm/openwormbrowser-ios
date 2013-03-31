@@ -31,6 +31,12 @@
     OWInterpolant* mDollyZ;
     OWInterpolant* mTheta;
     
+    OWInterpolant* mRotateLocalX;
+    OWInterpolant* mRotateLocalY;
+    OWInterpolant* mTranslateLocalX;
+    OWInterpolant* mTranslateLocalY;
+    OWInterpolant* mTranslateLocalZ;
+    
     OWCamera* camera;
     
     float initialDollyZ;
@@ -40,6 +46,13 @@
 @property(nonatomic, strong) OWInterpolant* mDollyZ;
 @property(nonatomic, strong) OWInterpolant* mDollyY;
 @property(nonatomic, strong) OWInterpolant* mTheta;
+
+@property(nonatomic, strong) OWInterpolant* mRotateLocalX;
+@property(nonatomic, strong) OWInterpolant* mRotateLocalY;
+
+@property(nonatomic, strong) OWInterpolant* mTranslateLocalX;
+@property(nonatomic, strong) OWInterpolant* mTranslateLocalY;
+@property(nonatomic, strong) OWInterpolant* mTranslateLocalZ;
 
 
 /** returns current camera (not needed since we put camera in public interface)

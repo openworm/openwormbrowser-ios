@@ -191,7 +191,13 @@
     
     UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(updatePan:)];
     [panRecognizer setDelegate:self];
+    [panRecognizer setMaximumNumberOfTouches:1];
     [self.view addGestureRecognizer:panRecognizer];
+    
+    UIPanGestureRecognizer* twofingerPanRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDragGesture:)];
+    [twofingerPanRecognizer setDelegate:self];
+    [twofingerPanRecognizer setMinimumNumberOfTouches:2];
+    [self.view addGestureRecognizer:twofingerPanRecognizer];
     
 
     UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleZoomFromGestureRecognizer:)];
@@ -199,8 +205,12 @@
     [self.view addGestureRecognizer:pinchRecognizer];
     
     
+    
+    
     UITapGestureRecognizer* doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-    [doubleTapRecognizer setNumberOfTapsRequired:2];
+// RMS: changed this to 3 taps since we're using a lot of 2-finger gestures to navigate
+    
+    [doubleTapRecognizer setNumberOfTapsRequired:3];
     [self.view addGestureRecognizer:doubleTapRecognizer];
 
     UITapGestureRecognizer* singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -274,6 +284,13 @@
     [info printDebugString];
     
     [mNavigate goToForEntity:info withUrgency:0.12];
+    [mNavigate.mRotateLocalY setFuture:0 withUrgency:0.12];
+    [mNavigate.mRotateLocalX setFuture:0 withUrgency:0.12];
+    
+    [mNavigate.mTranslateLocalX setFuture:0 withUrgency:0.12];
+    [mNavigate.mTranslateLocalY setFuture:0 withUrgency:0.12];
+    [mNavigate.mTranslateLocalZ setFuture:0 withUrgency:0.12];
+    
     
 }
 
