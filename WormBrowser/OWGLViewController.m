@@ -186,6 +186,9 @@
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     view.drawableMultisample = GLKViewDrawableMultisample4X;
     
+
+    
+    
     UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(updatePan:)];
     [panRecognizer setDelegate:self];
     [panRecognizer setMaximumNumberOfTouches:1];
@@ -195,7 +198,6 @@
     [twofingerPanRecognizer setDelegate:self];
     [twofingerPanRecognizer setMinimumNumberOfTouches:2];
     [self.view addGestureRecognizer:twofingerPanRecognizer];
-    
 
     UIPinchGestureRecognizer* pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleZoomFromGestureRecognizer:)];
     [pinchRecognizer setDelegate:self];
@@ -514,6 +516,28 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    
+    // starting with pan then pinch
+    if([gestureRecognizer class] == [UIPanGestureRecognizer class] && [otherGestureRecognizer class] == [UIPinchGestureRecognizer class])
+    {
+        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)gestureRecognizer;
+        if (panGR.minimumNumberOfTouches == 2) {
+            // only cancel on the drag,
+            return NO;
+        }
+    }
+    
+    // evaluate opposite scenario as well
+    if([gestureRecognizer class] == [UIPinchGestureRecognizer class] && [otherGestureRecognizer class] == [UIPanGestureRecognizer class])
+    {
+        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)otherGestureRecognizer;
+        if (panGR.minimumNumberOfTouches == 2) {
+            // only cancel on the drag,
+            return NO;
+        }
+    }
+    
+    // otherwise return YES for all other combinations
     return YES;
 }
 
