@@ -1,7 +1,7 @@
 openwormbrowser (v1.0.0)
 ===============
 
-![image](https://raw.github.com/richstoner/openwormbrowser-ios/master/owbscreenshot.jpg)
+![image](https://raw.github.com/openworm/openwormbrowser-ios/master/owbscreenshot.jpg)
 
 #### [Available on the Apple iTunes App Store for iPad and iPhone as a universal binary.](https://itunes.apple.com/us/app/openworm-browser/id595581306?mt=8&uo=4)
 
