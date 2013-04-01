@@ -9,7 +9,8 @@ openwormbrowser (v1.0.0)
 * Developed by Rich Stoner @ [WholeSlide Inc.](http://www.wholeslide.com)
 * For the [OpenWorm Project](http://www.openworm.org/)
 * Data from the [Virtual Worm Project @ CalTech](http://caltech.wormbase.org/virtualworm/)
-* Support from [MetaCell, LLC](http://www.metacell.us), Icons by [Glyphish](http://glyphish.com).
+* Support from [MetaCell, LLC](http://www.metacell.us)
+* Icons by [Glyphish](http://glyphish.com).
 
 ___
 
