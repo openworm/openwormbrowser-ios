@@ -464,20 +464,24 @@ typedef enum {
 -(void) rotateLocalDX:(float)dx DY:(float)dy
 {
 
-    [mRotateLocalX setFuture:(mRotateLocalX.future + dx*1) withUrgency:1.0];
-    [mRotateLocalY setFuture:(mRotateLocalY.future + dy*1) withUrgency:1.0];
+    // RMS 4/1/13
+    // decreased sensitivity on rotate ( 1.0 to 0.5)
+    
+    [mRotateLocalX setFuture:(mRotateLocalX.future + dx*0.5) withUrgency:1.0];
+    [mRotateLocalY setFuture:(mRotateLocalY.future + dy*0.5) withUrgency:1.0];
     
 }
 
 -(void) translateLocalDX:(float)dx DY:(float)dy
 {
-    // get local transform, translate
-     
+    // get local coordinate frame, translate
     GLKVector3 sideVector = GLKVector3CrossProduct(camera.up, GLKVector3Subtract(camera.target, camera.eye));
     sideVector = GLKVector3Normalize(sideVector);
     
-    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.05);
-    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.05);
+// RMS 4/1/13
+// decreased sensitivity on translate (0.05 to 0.04)
+    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.04);
+    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.04);
     
     [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0];
     [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0];
@@ -489,9 +493,9 @@ typedef enum {
 {
     GLKVector3 lookVector = GLKVector3Subtract(camera.eye, camera.target);
 //    float mag = sqrtf(powf(lookVector.x, 2) + powf(lookVector.y, 2));
-    float mag = 1.0f; // using this instead
+    float mag = 0.01f; // using this instead, zoom occurs at fixed speed invariant of position relative to model
     
-    GLKVector3 movementVector = GLKVector3MultiplyScalar(lookVector, 0.01*scale);
+    GLKVector3 movementVector = GLKVector3MultiplyScalar(lookVector, mag*scale);
     [mTranslateLocalX setFuture:(mTranslateLocalX.future + movementVector.x) withUrgency:1.0];
     [mTranslateLocalY setFuture:(mTranslateLocalY.future + movementVector.y) withUrgency:1.0];
     [mTranslateLocalZ setFuture:(mTranslateLocalZ.future + movementVector.z) withUrgency:1.0];
@@ -503,12 +507,11 @@ typedef enum {
 {
     switch (currentCameraState) {
         case cameraStateFree:
+
             
+            // recenter scale to 0 +/- change
             [self zoomLocalScale:(-1 * (scale - 1))];
 
-// Removed old zoom, broken
-//            [self expZoom:(-1 * (scale - 1))];
-            
             break;
             
         case cameraStatePill:
