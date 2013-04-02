@@ -517,28 +517,32 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     
-    // starting with pan then pinch
-    if([gestureRecognizer class] == [UIPanGestureRecognizer class] && [otherGestureRecognizer class] == [UIPinchGestureRecognizer class])
-    {
-        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)gestureRecognizer;
-        if (panGR.minimumNumberOfTouches == 2) {
-            // only cancel on the drag,
-            return NO;
-        }
-    }
-    
-    // evaluate opposite scenario as well
-    if([gestureRecognizer class] == [UIPinchGestureRecognizer class] && [otherGestureRecognizer class] == [UIPanGestureRecognizer class])
-    {
-        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)otherGestureRecognizer;
-        if (panGR.minimumNumberOfTouches == 2) {
-            // only cancel on the drag,
-            return NO;
-        }
-    }
-    
-    // otherwise return YES for all other combinations
-    return YES;
+    return NO;
+
+// RMS 4/2/13 -> multiple gestures leads to unusual feedforward rotations (bug)
+
+//    // starting with pan then pinch
+//    if([gestureRecognizer class] == [UIPanGestureRecognizer class] && [otherGestureRecognizer class] == [UIPinchGestureRecognizer class])
+//    {
+//        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)gestureRecognizer;
+//        if (panGR.minimumNumberOfTouches == 2) {
+//            // only cancel on the drag,
+//            return NO;
+//        }
+//    }
+//    
+//    // evaluate opposite scenario as well
+//    if([gestureRecognizer class] == [UIPinchGestureRecognizer class] && [otherGestureRecognizer class] == [UIPanGestureRecognizer class])
+//    {
+//        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)otherGestureRecognizer;
+//        if (panGR.minimumNumberOfTouches == 2) {
+//            // only cancel on the drag,
+//            return NO;
+//        }
+//    }
+//    
+//    // otherwise return YES for all other combinations
+//    return YES;
 }
 
 -(void) updatePan:(UIPanGestureRecognizer*)r

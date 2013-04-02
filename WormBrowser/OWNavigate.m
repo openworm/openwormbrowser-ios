@@ -451,7 +451,10 @@ typedef enum {
             
         case cameraStatePill:
             
-             [self rotateLocalDX:delta.x DY:delta.y];
+// RMS 4/2/13 -> combined camera controls (removing 'free' mode)
+//             [self rotateLocalDX:delta.x DY:delta.y];
+            
+            [self translateLocalDX:delta.x DY:delta.y];            
             
             break;
             
