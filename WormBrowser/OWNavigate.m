@@ -483,8 +483,16 @@ typedef enum {
     
 // RMS 4/1/13
 // decreased sensitivity on translate (0.05 to 0.04)
-    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.04);
-    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.04);
+    
+// RMS 4/2/13
+// Greatly reduced sensitivity on translate (0.04 to 0.01)
+
+// Readjusted to 0.06
+// Added zoom-sensitive scaling
+    float camera_scale = mDollyZ.present / 80;
+    
+    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.1*camera_scale);
+    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.1*camera_scale);
     
     [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0];
     [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0];
