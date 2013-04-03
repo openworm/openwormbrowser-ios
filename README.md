@@ -1,9 +1,9 @@
 openwormbrowser (v1.0.0)
 ===============
 
-![image](https://raw.github.com/openworm/openwormbrowser-ios/master/owbscreenshot.jpg)
+![image](https://raw.github.com/richstoner/openwormbrowser-ios/master/owbscreenshot.jpg)
 
-#### [Available on the Apple iTunes App Store for iPad and iPhone as a universal binary.](https://itunes.apple.com/us/app/openworm-browser/id595581306?mt=8&uo=4)
+#### Note: this fork is my (RMS) experimental repo. For all development, please fork/branch the original openworm repository
 
 * Inspired by Google [Open-3d-Viewer](https://code.google.com/p/open-3d-viewer/)
 * Developed by Rich Stoner @ [WholeSlide Inc.](http://www.wholeslide.com)
@@ -21,6 +21,7 @@ ___
 
 
 **Appledoc required to generate documentation** [http://gentlebytes.com/appledoc/](http://gentlebytes.com/appledoc/) 
+
 
 ___
 
