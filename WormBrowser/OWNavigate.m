@@ -428,7 +428,7 @@ typedef enum {
             break;
             
         case cameraStatePill:
-            
+
             [self doNavigateDeltaX:delta.x/40 DeltaY:delta.y/40 DeltaZ:0];
             
             break;
@@ -494,10 +494,26 @@ typedef enum {
     GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.1*camera_scale);
     GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.1*camera_scale);
     
-    [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0];
-    [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0];
-    [mTranslateLocalZ setFuture:(mTranslateLocalZ.future + camDX.z + camDY.z) withUrgency:1.0];
+// RMS 4/11/13 - > modified to keep translation along Z axis (Anterior - Posterior translation)
 
+    //    [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0]; -> uncomment to enable ML translation
+    //    [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0]; -> uncomment to enable SI translation
+    
+    // adding clamp to domain (there has to be a more efficient comparison, this was done on little sleep with no internet)
+    float futureVal = mTranslateLocalZ.future + camDX.z + camDY.z;
+    float APoffset = 5.0;
+    
+    if (futureVal > APoffset)
+    {
+        futureVal = APoffset;
+    }
+    else if (futureVal < - APoffset)
+    {
+        futureVal = - APoffset;
+    }
+    
+    [mTranslateLocalZ setFuture:(futureVal) withUrgency:1.0];
+    
 }
 
 -(void) zoomLocalScale:(float)scale
