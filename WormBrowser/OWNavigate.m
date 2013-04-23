@@ -428,7 +428,7 @@ typedef enum {
             break;
             
         case cameraStatePill:
-            
+
             [self doNavigateDeltaX:delta.x/40 DeltaY:delta.y/40 DeltaZ:0];
             
             break;
@@ -451,7 +451,10 @@ typedef enum {
             
         case cameraStatePill:
             
-             [self rotateLocalDX:delta.x DY:delta.y];
+// RMS 4/2/13 -> combined camera controls (removing 'free' mode)
+//             [self rotateLocalDX:delta.x DY:delta.y];
+            
+            [self translateLocalDX:delta.x DY:delta.y];            
             
             break;
             
@@ -480,13 +483,42 @@ typedef enum {
     
 // RMS 4/1/13
 // decreased sensitivity on translate (0.05 to 0.04)
-    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.04);
-    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.04);
     
-    [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0];
-    [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0];
-    [mTranslateLocalZ setFuture:(mTranslateLocalZ.future + camDX.z + camDY.z) withUrgency:1.0];
+// RMS 4/2/13
+// Greatly reduced sensitivity on translate (0.04 to 0.01)
 
+// Readjusted to 0.06
+// Added zoom-sensitive scaling
+    float camera_scale = mDollyZ.present / 80;
+    
+    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.1*camera_scale);
+    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.1*camera_scale);
+    
+// RMS 4/11/13 - > modified to keep translation along Z axis (Anterior - Posterior translation)
+
+    // adding clamp to domain (there has to be a more efficient comparison, this was done on little sleep with no internet)
+    float futureVal = mTranslateLocalZ.future + camDX.z + camDY.z;
+    float APoffset = 5.0;
+    
+    if (futureVal > APoffset)
+    {
+        futureVal = APoffset;
+    }
+    else if (futureVal < - APoffset)
+    {
+        futureVal = - APoffset;
+    }
+
+// RMS 4/18/13 - > this change has been deprecated. version 1.0.0 will ship with all degrees of freedom enabled.
+    
+    // -> uncomment to enable ML translation
+    [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0];
+    
+    // -> uncomment to enable SI translation
+    [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0];
+    
+    [mTranslateLocalZ setFuture:(futureVal) withUrgency:1.0];
+    
 }
 
 -(void) zoomLocalScale:(float)scale

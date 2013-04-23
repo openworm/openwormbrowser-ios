@@ -236,9 +236,7 @@
 
 -(void) tapSliderView:(UITapGestureRecognizer*) recognizer
 {
-    CGPoint tapPoint = [recognizer locationInView:recognizer.view];
     
-
     
     if (bSliderIsVertical) {
         
