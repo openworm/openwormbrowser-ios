@@ -1,9 +1,7 @@
 openwormbrowser (v1.0.0)
 ===============
 
-![image](https://raw.github.com/richstoner/openwormbrowser-ios/master/owbscreenshot.jpg)
-
-#### Note: this fork is my (RMS) experimental repo. For all development, please fork/branch the original openworm repository
+![image](https://raw.github.com/openworm/openwormbrowser-ios/master/owbscreenshot.jpg)
 
 * Inspired by Google [Open-3d-Viewer](https://code.google.com/p/open-3d-viewer/)
 * Developed by Rich Stoner @ [WholeSlide Inc.](http://www.wholeslide.com)
