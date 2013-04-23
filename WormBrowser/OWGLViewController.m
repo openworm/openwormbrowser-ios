@@ -1320,7 +1320,7 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
     float opacity_step = 1.0 / _layer.totalDrawCount;
     
     int threshold = _opacity / opacity_step;
-    int initialThreshold = threshold;
+//    int initialThreshold = threshold;
     
     // handles last object
     BOOL drawSolid = _opacity > 0;

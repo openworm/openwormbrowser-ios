@@ -496,9 +496,6 @@ typedef enum {
     
 // RMS 4/11/13 - > modified to keep translation along Z axis (Anterior - Posterior translation)
 
-    //    [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0]; -> uncomment to enable ML translation
-    //    [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0]; -> uncomment to enable SI translation
-    
     // adding clamp to domain (there has to be a more efficient comparison, this was done on little sleep with no internet)
     float futureVal = mTranslateLocalZ.future + camDX.z + camDY.z;
     float APoffset = 5.0;
@@ -511,6 +508,14 @@ typedef enum {
     {
         futureVal = - APoffset;
     }
+
+// RMS 4/18/13 - > this change has been deprecated. version 1.0.0 will ship with all degrees of freedom enabled.
+    
+    // -> uncomment to enable ML translation
+    [mTranslateLocalX setFuture:(mTranslateLocalX.future + camDX.x + camDY.x) withUrgency:1.0];
+    
+    // -> uncomment to enable SI translation
+    [mTranslateLocalY setFuture:(mTranslateLocalY.future + camDX.y + camDY.y) withUrgency:1.0];
     
     [mTranslateLocalZ setFuture:(futureVal) withUrgency:1.0];
     
