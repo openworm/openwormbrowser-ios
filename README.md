@@ -3,11 +3,14 @@ openwormbrowser (v1.0.0)
 
 ![image](https://raw.github.com/openworm/openwormbrowser-ios/master/owbscreenshot.jpg)
 
+#### [Available on the Apple iTunes App Store for iPad and iPhone as a universal binary.](https://itunes.apple.com/us/app/openworm-browser/id595581306?mt=8&uo=4)
+
 * Inspired by Google [Open-3d-Viewer](https://code.google.com/p/open-3d-viewer/)
 * Developed by Rich Stoner @ [WholeSlide Inc.](http://www.wholeslide.com)
 * For the [OpenWorm Project](http://www.openworm.org/)
 * Data from the [Virtual Worm Project @ CalTech](http://caltech.wormbase.org/virtualworm/)
-* Support from [MetaCell, LLC](http://www.metacell.us), Icons by [Glyphish](http://glyphish.com).
+* Support from [MetaCell, LLC](http://www.metacell.us)
+* Icons by [Glyphish](http://glyphish.com).
 
 ___
 
@@ -18,7 +21,6 @@ ___
 
 
 **Appledoc required to generate documentation** [http://gentlebytes.com/appledoc/](http://gentlebytes.com/appledoc/) 
-
 
 ___
 
@@ -44,4 +46,3 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
