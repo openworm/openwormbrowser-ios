@@ -857,7 +857,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/appledoc --create-html --no-create-docset --project-name openwormbrowser --project-company \"WholeSlide, Inc.\" --company-id com.wholeslide --output /Users/stonerri/Documents/OpenWorm/openwormbrowser/doc --no-repeat-first-par /Users/stonerri/Documents/OpenWorm/openwormbrowser/WormBrowser";
+			shellScript = "/usr/local/bin/appledoc --create-html --no-create-docset --project-name openwormbrowser --project-company \"WholeSlide, Inc.\" --company-id us.metacell --output /Users/stonerri/Documents/OpenWorm/openwormbrowser-ios/doc --no-repeat-first-par /Users/stonerri/Documents/OpenWorm/openwormbrowser-ios/WormBrowser";
 		};
 		E8206EDB2B304A59AE9560BF /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

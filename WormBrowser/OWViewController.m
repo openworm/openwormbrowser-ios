@@ -120,7 +120,9 @@
     [mCameraButton setBackgroundColor:kButtonViewBackground];
     [mCameraButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
     [mCameraButton setTag:1];
-    [self.view addSubview:mCameraButton];
+
+//  RMS 4/2/13 moving to single view mode
+//  [self.view addSubview:mCameraButton];
     
     mAboutButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [mAboutButton setFrame:CGRectMake(0,0,40,40)];

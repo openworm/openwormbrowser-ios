@@ -517,28 +517,32 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     
-    // starting with pan then pinch
-    if([gestureRecognizer class] == [UIPanGestureRecognizer class] && [otherGestureRecognizer class] == [UIPinchGestureRecognizer class])
-    {
-        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)gestureRecognizer;
-        if (panGR.minimumNumberOfTouches == 2) {
-            // only cancel on the drag,
-            return NO;
-        }
-    }
-    
-    // evaluate opposite scenario as well
-    if([gestureRecognizer class] == [UIPinchGestureRecognizer class] && [otherGestureRecognizer class] == [UIPanGestureRecognizer class])
-    {
-        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)otherGestureRecognizer;
-        if (panGR.minimumNumberOfTouches == 2) {
-            // only cancel on the drag,
-            return NO;
-        }
-    }
-    
-    // otherwise return YES for all other combinations
-    return YES;
+    return NO;
+
+// RMS 4/2/13 -> multiple gestures leads to unusual feedforward rotations (bug)
+
+//    // starting with pan then pinch
+//    if([gestureRecognizer class] == [UIPanGestureRecognizer class] && [otherGestureRecognizer class] == [UIPinchGestureRecognizer class])
+//    {
+//        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)gestureRecognizer;
+//        if (panGR.minimumNumberOfTouches == 2) {
+//            // only cancel on the drag,
+//            return NO;
+//        }
+//    }
+//    
+//    // evaluate opposite scenario as well
+//    if([gestureRecognizer class] == [UIPinchGestureRecognizer class] && [otherGestureRecognizer class] == [UIPanGestureRecognizer class])
+//    {
+//        UIPanGestureRecognizer* panGR = (UIPanGestureRecognizer*)otherGestureRecognizer;
+//        if (panGR.minimumNumberOfTouches == 2) {
+//            // only cancel on the drag,
+//            return NO;
+//        }
+//    }
+//    
+//    // otherwise return YES for all other combinations
+//    return YES;
 }
 
 -(void) updatePan:(UIPanGestureRecognizer*)r
@@ -1316,7 +1320,7 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
     float opacity_step = 1.0 / _layer.totalDrawCount;
     
     int threshold = _opacity / opacity_step;
-    int initialThreshold = threshold;
+//    int initialThreshold = threshold;
     
     // handles last object
     BOOL drawSolid = _opacity > 0;
