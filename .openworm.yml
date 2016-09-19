@@ -1,0 +1,15 @@
+repo: openworm/openwormbrowser-ios
+shortDescription: "OpenWorm Browser for iOS, based on the open-3d-viewer, which was based on Google Body Browser"
+coordinator: stephen@openworm.org
+documentation: "https://github.com/openworm/openwormbrowser-ios/blob/master/README.md"
+keywords: 
+  - iOs
+  - data
+  - anatomy
+  - cells
+languages: 
+  - Objective-C
+members: 
+  - stonerri@gmail.com
+parent: 
+  - openworm/OpenWorm
