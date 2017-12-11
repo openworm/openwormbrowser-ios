@@ -239,7 +239,12 @@
     }
     else
     {
-        frameToReturn = self.view.frame;
+        if (@available(iOS 11.0, *)) {
+            frameToReturn = CGRectMake(self.view.frame.origin.x - self.view.safeAreaInsets.right, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+        } else {
+            frameToReturn = self.view.frame;
+            // Fallback on earlier versions
+        }
     }
     
     NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
@@ -272,7 +277,12 @@
     }
     else
     {
-        frameToReturn = self.view.frame;
+        if (@available(iOS 11.0, *)) {
+            frameToReturn = CGRectMake(self.view.frame.origin.x - self.view.safeAreaInsets.right, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+        } else {
+            frameToReturn = self.view.frame;
+            // Fallback on earlier versions
+        }
     }
     
     NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
@@ -304,7 +314,13 @@
 //        float width = [UIScreen mainScreen].bounds.size.height;
 //        float height = [UIScreen mainScreen].bounds.size.width;
         
-        frameToReturn = CGRectMake(20, 0, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
+        CGFloat leftSafeArea = 0;
+        
+        if (@available(iOS 11.0, *)) {
+            leftSafeArea = self.view.safeAreaInsets.left;
+        }
+        
+        frameToReturn = CGRectMake(10 + leftSafeArea, 0, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
         
     }
     
