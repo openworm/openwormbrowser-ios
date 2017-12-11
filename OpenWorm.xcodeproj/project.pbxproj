@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		52F3D240624B4916A96B0A0D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B88B158F30C54BD7BD50DE53 /* libPods.a */; };
+		4665D4FAE2DCAE7EE239D100 /* libPods-OpenWorm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C860757F52D22F3BE815183 /* libPods-OpenWorm.a */; };
 		A805275B168913FB0037CA87 /* bootstrap in Resources */ = {isa = PBXBuildFile; fileRef = A805275A168913FB0037CA87 /* bootstrap */; };
 		A807F437169A5A2900FA84D7 /* reduced.json in Resources */ = {isa = PBXBuildFile; fileRef = A807F436169A5A2900FA84D7 /* reduced.json */; };
 		A83D379816ACF64E00A72AA3 /* OpenWormLogoNew.png in Resources */ = {isa = PBXBuildFile; fileRef = A83D379716ACF64E00A72AA3 /* OpenWormLogoNew.png */; };
@@ -161,7 +161,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		76D74B3BCB6B468F977418CA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		1C860757F52D22F3BE815183 /* libPods-OpenWorm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OpenWorm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E5D471CB7A11E9A37C13B83 /* Pods-OpenWorm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenWorm.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenWorm/Pods-OpenWorm.debug.xcconfig"; sourceTree = "<group>"; };
+		4B85887CB2F838B648E9BD81 /* Pods-OpenWorm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenWorm.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenWorm/Pods-OpenWorm.release.xcconfig"; sourceTree = "<group>"; };
 		A805275A168913FB0037CA87 /* bootstrap */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bootstrap; sourceTree = "<group>"; };
 		A807F436169A5A2900FA84D7 /* reduced.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = reduced.json; path = ../Metadata/reduced.json; sourceTree = "<group>"; };
 		A83D379716ACF64E00A72AA3 /* OpenWormLogoNew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OpenWormLogoNew.png; path = ImageAssets/OpenWormLogoNew.png; sourceTree = SOURCE_ROOT; };
@@ -332,10 +334,16 @@
 		A8F838DE1682FE430052531F /* OWMetaDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWMetaDataViewController.h; sourceTree = "<group>"; };
 		A8F838DF1682FE430052531F /* OWMetaDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWMetaDataViewController.m; sourceTree = "<group>"; };
 		A8FC9F7A1676ADED000883F3 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = data.json; path = ../Metadata/data.json; sourceTree = "<group>"; };
-		B88B158F30C54BD7BD50DE53 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8551735063F3FBAAA586D945 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A8C710D7166C329D0067DCAC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -346,13 +354,22 @@
 				A8C710DF166C329D0067DCAC /* UIKit.framework in Frameworks */,
 				A8C710E1166C329D0067DCAC /* Foundation.framework in Frameworks */,
 				A8C710E3166C329D0067DCAC /* CoreGraphics.framework in Frameworks */,
-				52F3D240624B4916A96B0A0D /* libPods.a in Frameworks */,
+				4665D4FAE2DCAE7EE239D100 /* libPods-OpenWorm.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		63DFC24DF665E0D0DAAB9FE6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2E5D471CB7A11E9A37C13B83 /* Pods-OpenWorm.debug.xcconfig */,
+				4B85887CB2F838B648E9BD81 /* Pods-OpenWorm.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A807F3ED169A599700FA84D7 /* WormData75PolyCount */ = {
 			isa = PBXGroup;
 			children = (
@@ -507,7 +524,7 @@
 				A8C710E4166C329D0067DCAC /* WormBrowser */,
 				A8C710DD166C329D0067DCAC /* Frameworks */,
 				A8C710DB166C329D0067DCAC /* Products */,
-				76D74B3BCB6B468F977418CA /* Pods.xcconfig */,
+				63DFC24DF665E0D0DAAB9FE6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -529,7 +546,7 @@
 				A8C710DE166C329D0067DCAC /* UIKit.framework */,
 				A8C710E0166C329D0067DCAC /* Foundation.framework */,
 				A8C710E2166C329D0067DCAC /* CoreGraphics.framework */,
-				B88B158F30C54BD7BD50DE53 /* libPods.a */,
+				1C860757F52D22F3BE815183 /* libPods-OpenWorm.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -650,10 +667,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A8C71101166C329D0067DCAC /* Build configuration list for PBXNativeTarget "OpenWorm" */;
 			buildPhases = (
+				E7CF2FC48A7CC11108A89D7B /* [CP] Check Pods Manifest.lock */,
 				A8C710D6166C329D0067DCAC /* Sources */,
 				A8C710D7166C329D0067DCAC /* Frameworks */,
 				A8C710D8166C329D0067DCAC /* Resources */,
-				E8206EDB2B304A59AE9560BF /* Copy Pods Resources */,
+				1BEEA5709906A53D594CD143 /* [CP] Embed Pods Frameworks */,
+				BFA7801D7F1BF033291B1CFC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -669,6 +688,7 @@
 			buildConfigurationList = A8CC4A5416E1BE5F00A94962 /* Build configuration list for PBXNativeTarget "Docs" */;
 			buildPhases = (
 				A8CC4A5916E1BE6B00A94962 /* ShellScript */,
+				8551735063F3FBAAA586D945 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -688,6 +708,12 @@
 				CLASSPREFIX = OW;
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Rich Stoner";
+				TargetAttributes = {
+					A8C710D9166C329D0067DCAC = {
+						DevelopmentTeam = 487H46VFS2;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = A8C710D4166C329D0067DCAC /* Build configuration list for PBXProject "OpenWorm" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -846,6 +872,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1BEEA5709906A53D594CD143 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OpenWorm/Pods-OpenWorm-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A8CC4A5916E1BE6B00A94962 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -859,19 +900,41 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/appledoc --create-html --no-create-docset --project-name openwormbrowser --project-company \"WholeSlide, Inc.\" --company-id us.metacell --output /Users/stonerri/Documents/OpenWorm/openwormbrowser-ios/doc --no-repeat-first-par /Users/stonerri/Documents/OpenWorm/openwormbrowser-ios/WormBrowser";
 		};
-		E8206EDB2B304A59AE9560BF /* Copy Pods Resources */ = {
+		BFA7801D7F1BF033291B1CFC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-OpenWorm/Pods-OpenWorm-resources.sh",
+				"${PODS_ROOT}/iRate/iRate/iRate.bundle",
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OpenWorm/Pods-OpenWorm-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E7CF2FC48A7CC11108A89D7B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OpenWorm-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -983,41 +1046,48 @@
 		};
 		A8C71102166C329D0067DCAC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 76D74B3BCB6B468F977418CA /* Pods.xcconfig */;
+			baseConfigurationReference = 2E5D471CB7A11E9A37C13B83 /* Pods-OpenWorm.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 487H46VFS2;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WormBrowser/OpenWorm-Prefix.pch";
 				INFOPLIST_FILE = "WormBrowser/OpenWorm-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_BUNDLE_IDENTIFIER = us.metacell.openworm.david.wong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		A8C71103166C329D0067DCAC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 76D74B3BCB6B468F977418CA /* Pods.xcconfig */;
+			baseConfigurationReference = 4B85887CB2F838B648E9BD81 /* Pods-OpenWorm.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 487H46VFS2;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WormBrowser/OpenWorm-Prefix.pch";
 				INFOPLIST_FILE = "WormBrowser/OpenWorm-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_BUNDLE_IDENTIFIER = us.metacell.openworm.david.wong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
 		A8CC4A5516E1BE5F00A94962 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 76D74B3BCB6B468F977418CA /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -1034,7 +1104,6 @@
 		};
 		A8CC4A5616E1BE5F00A94962 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 76D74B3BCB6B468F977418CA /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";

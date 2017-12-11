@@ -13,7 +13,6 @@
     #import <Foundation/Foundation.h>
     #import <GLKit/GLKit.h>
     #import <QuartzCore/QuartzCore.h>
-    #import <TestFlight.h>
     #import "OWDefines.h"
     #import "OWAppDelegate.h"
 #endif

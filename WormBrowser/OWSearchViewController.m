@@ -82,7 +82,7 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    [TestFlight passCheckpoint:@"Search view displayed"];
+
 }
 
 - (void)didReceiveMemoryWarning
