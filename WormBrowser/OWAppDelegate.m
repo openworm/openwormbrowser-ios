@@ -44,7 +44,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [TestFlight takeOff:kTestFlightTeamToken];
 
     //configure iRate
     [iRate sharedInstance].daysUntilPrompt = 1;

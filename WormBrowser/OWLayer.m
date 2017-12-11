@@ -261,8 +261,8 @@
             int bboffset = [[meshDictionary objectForKey:@"bboxes"] intValue];
             
             if (bboffset > 0) {
-                
-                int numBBoxen = [[meshDictionary objectForKey:@"names"] count];
+                NSArray *meshes = [meshDictionary objectForKey:@"names"];
+                int numBBoxen = [meshes count];
                 
                 int numFloats = numBBoxen * 6;
                 int inputStart = bboffset;
