@@ -3,6 +3,7 @@ GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CocoaLumberjack" "${PODS_ROOT}/Headers/Public/DCRoundSwitch" "${PODS_ROOT}/Headers/Public/Reachability" "${PODS_ROOT}/Headers/Public/iRate"
 LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/CocoaLumberjack" "${PODS_CONFIGURATION_BUILD_DIR}/DCRoundSwitch" "${PODS_CONFIGURATION_BUILD_DIR}/Reachability" "${PODS_CONFIGURATION_BUILD_DIR}/iRate"
 OTHER_LDFLAGS = $(inherited) -ObjC -l"CocoaLumberjack" -l"DCRoundSwitch" -l"Reachability" -l"iRate" -framework "QuartzCore" -framework "SystemConfiguration"
+OTHER_MODULE_VERIFIER_FLAGS = $(inherited) "-F${PODS_CONFIGURATION_BUILD_DIR}/CocoaLumberjack" "-F${PODS_CONFIGURATION_BUILD_DIR}/DCRoundSwitch" "-F${PODS_CONFIGURATION_BUILD_DIR}/Reachability" "-F${PODS_CONFIGURATION_BUILD_DIR}/iRate"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.

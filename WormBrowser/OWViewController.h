@@ -34,7 +34,7 @@
 
 #import <UIKit/UIKit.h>
 #import "OWSearchViewController.h"
-#import "OWGLViewController.h"
+#import "OWMetalViewController.h"
 #import "WSOpacityViewController.h"
 #import "OWMetaDataViewController.h"
 
@@ -52,9 +52,9 @@
 
 
 /**
- GLKit Viewcontroller -> mView
+ Metal Viewcontroller -> mView
  */
-@property(nonatomic, strong)    OWGLViewController*     mView;
+@property(nonatomic, strong)    OWMetalViewController*  mView;
 
 /**
  Search UIViewController  -> mSearchView
