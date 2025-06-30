@@ -67,7 +67,7 @@
     
     self.mCurrentLayer = layerCuticle;
     
-    self.mView = [[OWGLViewController alloc] init];
+    self.mView = [[OWMetalViewController alloc] init];
     [self.mView.view setFrame:[self frameForGLView]];
     [self.view addSubview:self.mView.view];
     
