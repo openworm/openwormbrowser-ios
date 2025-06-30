@@ -154,10 +154,12 @@
 		A8F42AF9166E9F5B005503A4 /* OWGLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42AF8166E9F5A005503A4 /* OWGLViewController.m */; };
 		A8F42B0A166EB097005503A4 /* OWResource.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B09166EB097005503A4 /* OWResource.m */; };
 		A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */ = {isa = PBXBuildFile; fileRef = A8F42B0B166EB14B005503A4 /* mesh_data_clean.json */; };
-		A8F42B5A166ED6D1005503A4 /* OWCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B59166ED6D0005503A4 /* OWCamera.m */; };
-		A8F838E01682FE430052531F /* OWMetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F838DF1682FE430052531F /* OWMetaDataViewController.m */; };
-		A8FC9F7B1676ADED000883F3 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = A8FC9F7A1676ADED000883F3 /* data.json */; };
-		FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */; };
+               A8F42B5A166ED6D1005503A4 /* OWCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B59166ED6D0005503A4 /* OWCamera.m */; };
+               A8F838E01682FE430052531F /* OWMetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F838DF1682FE430052531F /* OWMetaDataViewController.m */; };
+               A8FC9F7B1676ADED000883F3 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = A8FC9F7A1676ADED000883F3 /* data.json */; };
+               FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */; };
+               31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */; };
+               4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -186,8 +188,10 @@
 		A89379CC1672C591000097BF /* WSOpacityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSOpacityViewController.m; sourceTree = "<group>"; };
 		A89379CE1672C592000097BF /* toggle_single_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggle_single_slider.png; path = ImageAssets/toggle_single_slider.png; sourceTree = SOURCE_ROOT; };
 		A89379CF1672C592000097BF /* toggle_multiple_sliders.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggle_multiple_sliders.png; path = ImageAssets/toggle_multiple_sliders.png; sourceTree = SOURCE_ROOT; };
-		A89379D01672C592000097BF /* sample_layer_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sample_layer_icons.png; path = ImageAssets/sample_layer_icons.png; sourceTree = SOURCE_ROOT; };
-		A89D9E7F16AE2C2F0021852F /* owInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owInfo.png; path = ImageAssets/owInfo.png; sourceTree = SOURCE_ROOT; };
+               A89379D01672C592000097BF /* sample_layer_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sample_layer_icons.png; path = ImageAssets/sample_layer_icons.png; sourceTree = SOURCE_ROOT; };
+               c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = WormBrowser/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+               3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+               A89D9E7F16AE2C2F0021852F /* owInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owInfo.png; path = ImageAssets/owInfo.png; sourceTree = SOURCE_ROOT; };
 		A89D9E8016AE2C2F0021852F /* owInfo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "owInfo@2x.png"; path = "ImageAssets/owInfo@2x.png"; sourceTree = SOURCE_ROOT; };
 		A89D9E8116AE2C2F0021852F /* owPan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owPan.png; path = ImageAssets/owPan.png; sourceTree = SOURCE_ROOT; };
 		A89D9E8216AE2C2F0021852F /* owPan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "owPan@2x.png"; path = "ImageAssets/owPan@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -463,11 +467,12 @@
 				A89379C01672C2D8000097BF /* 06-magnify.png */,
 				A89379C11672C2D8000097BF /* 06-magnify@2x.png */,
 				A89379B01672B445000097BF /* subtlenet2_@2X.png */,
-				A89379B11672B445000097BF /* subtlenet2.png */,
-			);
-			name = Images;
-			sourceTree = "<group>";
-		};
+                               A89379B11672B445000097BF /* subtlenet2.png */,
+                               c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */,
+                       );
+                       name = Images;
+                       sourceTree = "<group>";
+               };
 		A8AF67C216878AA500771CAB /* SearchView */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,11 +584,12 @@
 				A886AA5E16E1CCBB00E2714F /* OpenWorm-Docs.plist */,
 				A8C710E7166C329D0067DCAC /* InfoPlist.strings */,
 				A8C710EA166C329D0067DCAC /* main.m */,
-				A8C710EC166C329D0067DCAC /* OpenWorm-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
+                               A8C710EC166C329D0067DCAC /* OpenWorm-Prefix.pch */,
+                               3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */,
+                       );
+                       name = "Supporting Files";
+                       sourceTree = "<group>";
+               };
 		A8C7111E166C3DCD0067DCAC /* RenderClasses */ = {
 			isa = PBXGroup;
 			children = (
@@ -743,8 +749,10 @@
 				A805275B168913FB0037CA87 /* bootstrap in Resources */,
 				A807F437169A5A2900FA84D7 /* reduced.json in Resources */,
 				A8F42AEC166E9A73005503A4 /* entity_metadata.json in Resources */,
-				A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */,
-				A8DE67F916A0999D00640298 /* Icon.png in Resources */,
+                               A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */,
+                               31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */,
+                               4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */,
+                               A8DE67F916A0999D00640298 /* Icon.png in Resources */,
 				A8DE67FC16A099BE00640298 /* Icon@2x.png in Resources */,
 				A8DE67FE16A099C900640298 /* Default-Landscape~ipad.png in Resources */,
 				A8DE680016A099CF00640298 /* Default-Landscape@2x~ipad.png in Resources */,

@@ -178,25 +178,15 @@
 
 
 
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    BOOL iPad = NO;
-#ifdef UI_USER_INTERFACE_IDIOM
-    iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-#endif
-    if (iPad) {
-        return YES;        
-        
-    }
-    else
-    {
-        return YES;
-    }
+    return UIInterfaceOrientationMaskAll;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [self.mView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self.mView viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
 - (void)didReceiveMemoryWarning
@@ -225,15 +215,11 @@
 #endif
     if (iPad) {
         
-        UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-        
-        if (toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-            
-            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
-        }
-        else
-        {
+        BOOL isLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
+        if (isLandscape) {
             frameToReturn = CGRectMake(self.view.frame.size.height - 320 - 10, 10, 320, 400);
+        } else {
+            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
         }
         
     }
@@ -258,15 +244,11 @@
 #endif
     if (iPad) {
         
-        UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-        
-        if (toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-            
-            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
-        }
-        else
-        {
+        BOOL isLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
+        if (isLandscape) {
             frameToReturn = CGRectMake(self.view.frame.size.height - 320 - 10, 10, 320, 400);
+        } else {
+            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
         }
         
     }

@@ -1,0 +1,1538 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/AGENTS.md b/AGENTS.md
+index 763074797faba193298f65f4fea9b125891cb3cd..2b7c3da57b3564bf5ecedaec29f8690e24218633 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -1,4 +1,5 @@
+ # AGENT Instructions
+-
+ - After modifying `Podfile` or any pod dependency, run `pod install --allow-root` to regenerate the workspace.
+ - Ensure project build settings in `OpenWorm.xcodeproj/project.pbxproj` are updated accordingly when bumping deployment target or architectures.
++
++This repository contains the Objective-C implementation of the OpenWorm Browser for iOS. The project relies on CocoaPods and OpenGL for rendering worm models. Open `OpenWorm.xcworkspace` in Xcode to build the app. When changing resources or configuration files, keep the project file in sync so it continues to build on recent Xcode versions.
+diff --git a/OpenWorm.xcodeproj/project.pbxproj b/OpenWorm.xcodeproj/project.pbxproj
+index 2d1b50529a77069158ea32d4a0b0b83e315ed642..da9bba39e6df8b09362b583afffa10ccebb296d2 100644
+--- a/OpenWorm.xcodeproj/project.pbxproj
++++ b/OpenWorm.xcodeproj/project.pbxproj
+@@ -132,84 +132,88 @@
+ 		A8CC4AE316E1C74300A94962 /* 6552778e.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4ABF16E1C74300A94962 /* 6552778e.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8CC4AE416E1C74300A94962 /* a9801760.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4AC016E1C74300A94962 /* a9801760.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8CC4AE516E1C74300A94962 /* b6770d01.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4AC116E1C74300A94962 /* b6770d01.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8CC4AE616E1C74300A94962 /* c793ac89.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4AC216E1C74300A94962 /* c793ac89.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8CC4AE716E1C74300A94962 /* cfdebe32.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4AC316E1C74300A94962 /* cfdebe32.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8CC4AE816E1C74300A94962 /* d2e6a57a.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4AC416E1C74300A94962 /* d2e6a57a.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8CC4AE916E1C74300A94962 /* d8a552b4.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4AC516E1C74300A94962 /* d8a552b4.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8CC4AEA16E1C74300A94962 /* f9a83b85.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4AC616E1C74300A94962 /* f9a83b85.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8CC4AEB16E1C74300A94962 /* fc6fd068.Virtual_Worm_February_2012-red75.utf8 in Resources */ = {isa = PBXBuildFile; fileRef = A8CC4AC716E1C74300A94962 /* fc6fd068.Virtual_Worm_February_2012-red75.utf8 */; };
+ 		A8DE67F916A0999D00640298 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE67F816A0999D00640298 /* Icon.png */; };
+ 		A8DE67FC16A099BE00640298 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE67FB16A099BE00640298 /* Icon@2x.png */; };
+ 		A8DE67FE16A099C900640298 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE67FD16A099C900640298 /* Default-Landscape~ipad.png */; };
+ 		A8DE680016A099CF00640298 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE67FF16A099CF00640298 /* Default-Landscape@2x~ipad.png */; };
+ 		A8DE680216A099D600640298 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE680116A099D600640298 /* Default-Portrait@2x~ipad.png */; };
+ 		A8DE680416A099EA00640298 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE680316A099EA00640298 /* Default-Portrait~ipad.png */; };
+ 		A8DE680616A09A2300640298 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE680516A09A2300640298 /* Default.png */; };
+ 		A8DE680816A09A2B00640298 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE680716A09A2B00640298 /* Default-568h@2x.png */; };
+ 		A8DE680A16A09A3D00640298 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8DE680916A09A3D00640298 /* Default@2x.png */; };
+ 		A8E941D916A9E9620076F27C /* iPadIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = A8E941D816A9E9620076F27C /* iPadIcon.png */; };
+ 		A8E941DB16A9E96D0076F27C /* iPadIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8E941DA16A9E96D0076F27C /* iPadIcon@2x.png */; };
+ 		A8F42AEC166E9A73005503A4 /* entity_metadata.json in Resources */ = {isa = PBXBuildFile; fileRef = A8F42AEB166E9A73005503A4 /* entity_metadata.json */; };
+ 		A8F42AF0166E9D5A005503A4 /* OWSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42AEF166E9D5A005503A4 /* OWSearchViewController.m */; };
+ 		A8F42AF9166E9F5B005503A4 /* OWGLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42AF8166E9F5A005503A4 /* OWGLViewController.m */; };
+ 		A8F42B0A166EB097005503A4 /* OWResource.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B09166EB097005503A4 /* OWResource.m */; };
+ 		A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */ = {isa = PBXBuildFile; fileRef = A8F42B0B166EB14B005503A4 /* mesh_data_clean.json */; };
+-		A8F42B5A166ED6D1005503A4 /* OWCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B59166ED6D0005503A4 /* OWCamera.m */; };
+-		A8F838E01682FE430052531F /* OWMetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F838DF1682FE430052531F /* OWMetaDataViewController.m */; };
+-		A8FC9F7B1676ADED000883F3 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = A8FC9F7A1676ADED000883F3 /* data.json */; };
+-		FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */; };
++               A8F42B5A166ED6D1005503A4 /* OWCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B59166ED6D0005503A4 /* OWCamera.m */; };
++               A8F838E01682FE430052531F /* OWMetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F838DF1682FE430052531F /* OWMetaDataViewController.m */; };
++               A8FC9F7B1676ADED000883F3 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = A8FC9F7A1676ADED000883F3 /* data.json */; };
++               FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */; };
++               31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */; };
++               4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */; };
+ /* End PBXBuildFile section */
+ 
+ /* Begin PBXFileReference section */
+ 		674C096515004CCE671FEA3D /* Pods-OpenWorm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenWorm.release.xcconfig"; path = "Target Support Files/Pods-OpenWorm/Pods-OpenWorm.release.xcconfig"; sourceTree = "<group>"; };
+ 		6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OpenWorm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+ 		8C21A8EDBC495042D3400A13 /* Pods-OpenWorm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenWorm.debug.xcconfig"; path = "Target Support Files/Pods-OpenWorm/Pods-OpenWorm.debug.xcconfig"; sourceTree = "<group>"; };
+ 		A805275A168913FB0037CA87 /* bootstrap */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bootstrap; sourceTree = "<group>"; };
+ 		A807F436169A5A2900FA84D7 /* reduced.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = reduced.json; path = ../Metadata/reduced.json; sourceTree = "<group>"; };
+ 		A83D379716ACF64E00A72AA3 /* OpenWormLogoNew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OpenWormLogoNew.png; path = ImageAssets/OpenWormLogoNew.png; sourceTree = SOURCE_ROOT; };
+ 		A83D379A16AD264F00A72AA3 /* aboutIpad.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = aboutIpad.html; path = ../Metadata/aboutIpad.html; sourceTree = "<group>"; };
+ 		A84DF2F616A8B779006881CD /* model_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = model_icon.png; path = ImageAssets/model_icon.png; sourceTree = SOURCE_ROOT; };
+ 		A84DF2F716A8B779006881CD /* model_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "model_icon@2x.png"; path = "ImageAssets/model_icon@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A84DF30116A8F1A3006881CD /* 37-circle-question.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37-circle-question.png"; path = "ImageAssets/37-circle-question.png"; sourceTree = SOURCE_ROOT; };
+ 		A84DF30216A8F1A3006881CD /* 37-circle-question@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37-circle-question@2x.png"; path = "ImageAssets/37-circle-question@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A84DF30A16A8F2C0006881CD /* 37-circle-x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37-circle-x.png"; path = "ImageAssets/37-circle-x.png"; sourceTree = SOURCE_ROOT; };
+ 		A84DF30B16A8F2C0006881CD /* 37-circle-x@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37-circle-x@2x.png"; path = "ImageAssets/37-circle-x@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A84DF30E16A90C16006881CD /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = about.html; path = ../Metadata/about.html; sourceTree = "<group>"; };
+ 		A886AA5E16E1CCBB00E2714F /* OpenWorm-Docs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenWorm-Docs.plist"; sourceTree = "<group>"; };
+ 		A893799216729EB0000097BF /* SearchTermCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTermCell.h; sourceTree = "<group>"; };
+ 		A893799316729EB0000097BF /* SearchTermCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTermCell.m; sourceTree = "<group>"; };
+ 		A89379B01672B445000097BF /* subtlenet2_@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "subtlenet2_@2X.png"; path = "ImageAssets/subtlenet2_@2X.png"; sourceTree = SOURCE_ROOT; };
+ 		A89379B11672B445000097BF /* subtlenet2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = subtlenet2.png; path = ImageAssets/subtlenet2.png; sourceTree = SOURCE_ROOT; };
+ 		A89379C01672C2D8000097BF /* 06-magnify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "06-magnify.png"; path = "ImageAssets/06-magnify.png"; sourceTree = SOURCE_ROOT; };
+ 		A89379C11672C2D8000097BF /* 06-magnify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "06-magnify@2x.png"; path = "ImageAssets/06-magnify@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A89379CB1672C591000097BF /* WSOpacityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSOpacityViewController.h; sourceTree = "<group>"; };
+ 		A89379CC1672C591000097BF /* WSOpacityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSOpacityViewController.m; sourceTree = "<group>"; };
+ 		A89379CE1672C592000097BF /* toggle_single_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggle_single_slider.png; path = ImageAssets/toggle_single_slider.png; sourceTree = SOURCE_ROOT; };
+ 		A89379CF1672C592000097BF /* toggle_multiple_sliders.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggle_multiple_sliders.png; path = ImageAssets/toggle_multiple_sliders.png; sourceTree = SOURCE_ROOT; };
+-		A89379D01672C592000097BF /* sample_layer_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sample_layer_icons.png; path = ImageAssets/sample_layer_icons.png; sourceTree = SOURCE_ROOT; };
+-		A89D9E7F16AE2C2F0021852F /* owInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owInfo.png; path = ImageAssets/owInfo.png; sourceTree = SOURCE_ROOT; };
++               A89379D01672C592000097BF /* sample_layer_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sample_layer_icons.png; path = ImageAssets/sample_layer_icons.png; sourceTree = SOURCE_ROOT; };
++               c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = WormBrowser/Assets.xcassets; sourceTree = SOURCE_ROOT; };
++               3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
++               A89D9E7F16AE2C2F0021852F /* owInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owInfo.png; path = ImageAssets/owInfo.png; sourceTree = SOURCE_ROOT; };
+ 		A89D9E8016AE2C2F0021852F /* owInfo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "owInfo@2x.png"; path = "ImageAssets/owInfo@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A89D9E8116AE2C2F0021852F /* owPan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owPan.png; path = ImageAssets/owPan.png; sourceTree = SOURCE_ROOT; };
+ 		A89D9E8216AE2C2F0021852F /* owPan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "owPan@2x.png"; path = "ImageAssets/owPan@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A89D9E8316AE2C2F0021852F /* owPill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owPill.png; path = ImageAssets/owPill.png; sourceTree = SOURCE_ROOT; };
+ 		A89D9E8416AE2C2F0021852F /* owPill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "owPill@2x.png"; path = "ImageAssets/owPill@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A89D9E8516AE2C2F0021852F /* owSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owSearch.png; path = ImageAssets/owSearch.png; sourceTree = SOURCE_ROOT; };
+ 		A89D9E8616AE2C2F0021852F /* owSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "owSearch@2x.png"; path = "ImageAssets/owSearch@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A89DC861168181D000E38863 /* 19-gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "19-gear.png"; path = "ImageAssets/19-gear.png"; sourceTree = SOURCE_ROOT; };
+ 		A89DC862168181D000E38863 /* 19-gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "19-gear@2x.png"; path = "ImageAssets/19-gear@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A89DC8661681820E00E38863 /* 96-book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "96-book.png"; path = "ImageAssets/96-book.png"; sourceTree = SOURCE_ROOT; };
+ 		A89DC8671681820E00E38863 /* 96-book@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "96-book@2x.png"; path = "ImageAssets/96-book@2x.png"; sourceTree = SOURCE_ROOT; };
+ 		A8AF88A11688F94500210701 /* header.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = header.html; path = ../Metadata/header.html; sourceTree = "<group>"; };
+ 		A8C710DA166C329D0067DCAC /* OpenWorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenWorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+ 		A8C710DE166C329D0067DCAC /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+ 		A8C710E0166C329D0067DCAC /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+ 		A8C710E2166C329D0067DCAC /* CoreGraphics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+ 		A8C710E6166C329D0067DCAC /* OpenWorm-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenWorm-Info.plist"; sourceTree = "<group>"; };
+ 		A8C710E8166C329D0067DCAC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+ 		A8C710EA166C329D0067DCAC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+ 		A8C710EC166C329D0067DCAC /* OpenWorm-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenWorm-Prefix.pch"; sourceTree = "<group>"; };
+ 		A8C710ED166C329D0067DCAC /* OWAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWAppDelegate.h; sourceTree = "<group>"; };
+ 		A8C710EE166C329D0067DCAC /* OWAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWAppDelegate.m; sourceTree = "<group>"; };
+ 		A8C710F6166C329D0067DCAC /* OWViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWViewController.h; sourceTree = "<group>"; };
+ 		A8C710F7166C329D0067DCAC /* OWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWViewController.m; sourceTree = "<group>"; };
+ 		A8C710FA166C329D0067DCAC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/OWViewController_iPhone.xib; sourceTree = "<group>"; };
+@@ -441,55 +445,56 @@
+ 				A84DF30A16A8F2C0006881CD /* 37-circle-x.png */,
+ 				A84DF30B16A8F2C0006881CD /* 37-circle-x@2x.png */,
+ 				A8DE680916A09A3D00640298 /* Default@2x.png */,
+ 				A8DE680716A09A2B00640298 /* Default-568h@2x.png */,
+ 				A8C811F716A7B40000F3D3C0 /* sliderNew.png */,
+ 				A8C811F816A7B40100F3D3C0 /* sliderNew@2x.png */,
+ 				A84DF2F616A8B779006881CD /* model_icon.png */,
+ 				A84DF2F716A8B779006881CD /* model_icon@2x.png */,
+ 				A8DE680516A09A2300640298 /* Default.png */,
+ 				A8DE680316A099EA00640298 /* Default-Portrait~ipad.png */,
+ 				A8DE680116A099D600640298 /* Default-Portrait@2x~ipad.png */,
+ 				A8DE67FF16A099CF00640298 /* Default-Landscape@2x~ipad.png */,
+ 				A8DE67FD16A099C900640298 /* Default-Landscape~ipad.png */,
+ 				A8DE67FB16A099BE00640298 /* Icon@2x.png */,
+ 				A8DE67F816A0999D00640298 /* Icon.png */,
+ 				A89379CE1672C592000097BF /* toggle_single_slider.png */,
+ 				A89379CF1672C592000097BF /* toggle_multiple_sliders.png */,
+ 				A89379D01672C592000097BF /* sample_layer_icons.png */,
+ 				A89DC8661681820E00E38863 /* 96-book.png */,
+ 				A89DC8671681820E00E38863 /* 96-book@2x.png */,
+ 				A89DC861168181D000E38863 /* 19-gear.png */,
+ 				A89DC862168181D000E38863 /* 19-gear@2x.png */,
+ 				A89379C01672C2D8000097BF /* 06-magnify.png */,
+ 				A89379C11672C2D8000097BF /* 06-magnify@2x.png */,
+ 				A89379B01672B445000097BF /* subtlenet2_@2X.png */,
+-				A89379B11672B445000097BF /* subtlenet2.png */,
+-			);
+-			name = Images;
+-			sourceTree = "<group>";
+-		};
++                               A89379B11672B445000097BF /* subtlenet2.png */,
++                               c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */,
++                       );
++                       name = Images;
++                       sourceTree = "<group>";
++               };
+ 		A8AF67C216878AA500771CAB /* SearchView */ = {
+ 			isa = PBXGroup;
+ 			children = (
+ 				A893799216729EB0000097BF /* SearchTermCell.h */,
+ 				A893799316729EB0000097BF /* SearchTermCell.m */,
+ 				A8F42AEE166E9D5A005503A4 /* OWSearchViewController.h */,
+ 				A8F42AEF166E9D5A005503A4 /* OWSearchViewController.m */,
+ 			);
+ 			name = SearchView;
+ 			sourceTree = "<group>";
+ 		};
+ 		A8AF67C316878AB800771CAB /* UtilityClasses */ = {
+ 			isa = PBXGroup;
+ 			children = (
+ 				A8F42B08166EB097005503A4 /* OWResource.h */,
+ 				A8F42B09166EB097005503A4 /* OWResource.m */,
+ 				A8C71126166C426E0067DCAC /* OWEntityInfo.h */,
+ 				A8C71127166C426E0067DCAC /* OWEntityInfo.m */,
+ 				A8C71112166C38650067DCAC /* OWInterpolant.h */,
+ 				A8C71113166C38650067DCAC /* OWInterpolant.m */,
+ 			);
+ 			name = UtilityClasses;
+ 			sourceTree = "<group>";
+ 		};
+ 		A8AF67C416878ACA00771CAB /* RenderView */ = {
+@@ -557,55 +562,56 @@
+ 				A8F42AF1166E9E5A005503A4 /* OWDefines.h */,
+ 				A8AF88A11688F94500210701 /* header.html */,
+ 				A84DF30E16A90C16006881CD /* about.html */,
+ 				A83D379A16AD264F00A72AA3 /* aboutIpad.html */,
+ 				A8C710ED166C329D0067DCAC /* OWAppDelegate.h */,
+ 				A8C710EE166C329D0067DCAC /* OWAppDelegate.m */,
+ 				A8C710F6166C329D0067DCAC /* OWViewController.h */,
+ 				A8C710F7166C329D0067DCAC /* OWViewController.m */,
+ 				A805275A168913FB0037CA87 /* bootstrap */,
+ 				A8A87D6B168D8A52000B32B9 /* data */,
+ 				A8AF67C0168789EA00771CAB /* Images */,
+ 				A8C710E5166C329D0067DCAC /* Supporting Files */,
+ 			);
+ 			path = WormBrowser;
+ 			sourceTree = "<group>";
+ 		};
+ 		A8C710E5166C329D0067DCAC /* Supporting Files */ = {
+ 			isa = PBXGroup;
+ 			children = (
+ 				A8C710F9166C329D0067DCAC /* OWViewController_iPhone.xib */,
+ 				A8C710FC166C329D0067DCAC /* OWViewController_iPad.xib */,
+ 				A8C710E6166C329D0067DCAC /* OpenWorm-Info.plist */,
+ 				A886AA5E16E1CCBB00E2714F /* OpenWorm-Docs.plist */,
+ 				A8C710E7166C329D0067DCAC /* InfoPlist.strings */,
+ 				A8C710EA166C329D0067DCAC /* main.m */,
+-				A8C710EC166C329D0067DCAC /* OpenWorm-Prefix.pch */,
+-			);
+-			name = "Supporting Files";
+-			sourceTree = "<group>";
+-		};
++                               A8C710EC166C329D0067DCAC /* OpenWorm-Prefix.pch */,
++                               3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */,
++                       );
++                       name = "Supporting Files";
++                       sourceTree = "<group>";
++               };
+ 		A8C7111E166C3DCD0067DCAC /* RenderClasses */ = {
+ 			isa = PBXGroup;
+ 			children = (
+ 				A8C71115166C3A910067DCAC /* OWLayer.h */,
+ 				A8C71116166C3A910067DCAC /* OWLayer.m */,
+ 				A8C71118166C3B610067DCAC /* OWDrawGroup.h */,
+ 				A8C71119166C3B610067DCAC /* OWDrawGroup.m */,
+ 				A8C7111B166C3D8D0067DCAC /* OWDraw.h */,
+ 				A8C7111C166C3D8D0067DCAC /* OWDraw.m */,
+ 			);
+ 			name = RenderClasses;
+ 			sourceTree = "<group>";
+ 		};
+ 		A8F42B32166ECFA6005503A4 /* WormDataOriginal */ = {
+ 			isa = PBXGroup;
+ 			children = (
+ 				A8CC4A5A16E1C73600A94962 /* 00c50ff0.Virtual_Worm_February_2012.utf8 */,
+ 				A8CC4A5B16E1C73600A94962 /* 03c8448a.Virtual_Worm_February_2012.utf8 */,
+ 				A8CC4A5C16E1C73600A94962 /* 3fc12c12.Virtual_Worm_February_2012.utf8 */,
+ 				A8CC4A5D16E1C73600A94962 /* 5ec61bf2.Virtual_Worm_February_2012.utf8 */,
+ 				A8CC4A5E16E1C73600A94962 /* 8e763d75.Virtual_Worm_February_2012.utf8 */,
+ 				A8CC4A5F16E1C73600A94962 /* 9ef380e0.Virtual_Worm_February_2012.utf8 */,
+ 				A8CC4A6016E1C73600A94962 /* 53f3b3bd.Virtual_Worm_February_2012.utf8 */,
+ 				A8CC4A6116E1C73600A94962 /* 55bbb055.Virtual_Worm_February_2012.utf8 */,
+ 				A8CC4A6216E1C73600A94962 /* 57c495b3.Virtual_Worm_February_2012.utf8 */,
+@@ -721,52 +727,54 @@
+ 
+ /* Begin PBXResourcesBuildPhase section */
+ 		A8C710D8166C329D0067DCAC /* Resources */ = {
+ 			isa = PBXResourcesBuildPhase;
+ 			buildActionMask = 2147483647;
+ 			files = (
+ 				A8C710E9166C329D0067DCAC /* InfoPlist.strings in Resources */,
+ 				A8C710FB166C329D0067DCAC /* OWViewController_iPhone.xib in Resources */,
+ 				A8C710FE166C329D0067DCAC /* OWViewController_iPad.xib in Resources */,
+ 				A89379B21672B445000097BF /* subtlenet2_@2X.png in Resources */,
+ 				A89379B31672B445000097BF /* subtlenet2.png in Resources */,
+ 				A89379C21672C2D8000097BF /* 06-magnify.png in Resources */,
+ 				A89379C31672C2D8000097BF /* 06-magnify@2x.png in Resources */,
+ 				A89379D31672C592000097BF /* toggle_single_slider.png in Resources */,
+ 				A89379D41672C592000097BF /* toggle_multiple_sliders.png in Resources */,
+ 				A89379D51672C592000097BF /* sample_layer_icons.png in Resources */,
+ 				A8FC9F7B1676ADED000883F3 /* data.json in Resources */,
+ 				A89DC863168181D000E38863 /* 19-gear.png in Resources */,
+ 				A89DC864168181D000E38863 /* 19-gear@2x.png in Resources */,
+ 				A89DC8681681820E00E38863 /* 96-book.png in Resources */,
+ 				A89DC8691681820E00E38863 /* 96-book@2x.png in Resources */,
+ 				A8AF88A21688F94500210701 /* header.html in Resources */,
+ 				A805275B168913FB0037CA87 /* bootstrap in Resources */,
+ 				A807F437169A5A2900FA84D7 /* reduced.json in Resources */,
+ 				A8F42AEC166E9A73005503A4 /* entity_metadata.json in Resources */,
+-				A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */,
+-				A8DE67F916A0999D00640298 /* Icon.png in Resources */,
++                               A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */,
++                               31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */,
++                               4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */,
++                               A8DE67F916A0999D00640298 /* Icon.png in Resources */,
+ 				A8DE67FC16A099BE00640298 /* Icon@2x.png in Resources */,
+ 				A8DE67FE16A099C900640298 /* Default-Landscape~ipad.png in Resources */,
+ 				A8DE680016A099CF00640298 /* Default-Landscape@2x~ipad.png in Resources */,
+ 				A8DE680216A099D600640298 /* Default-Portrait@2x~ipad.png in Resources */,
+ 				A8DE680416A099EA00640298 /* Default-Portrait~ipad.png in Resources */,
+ 				A8DE680616A09A2300640298 /* Default.png in Resources */,
+ 				A8DE680816A09A2B00640298 /* Default-568h@2x.png in Resources */,
+ 				A8DE680A16A09A3D00640298 /* Default@2x.png in Resources */,
+ 				A8C811F916A7B40100F3D3C0 /* sliderNew.png in Resources */,
+ 				A8C811FA16A7B40100F3D3C0 /* sliderNew@2x.png in Resources */,
+ 				A8C8120716A7C41B00F3D3C0 /* 38-airplane.png in Resources */,
+ 				A8C8120816A7C41B00F3D3C0 /* 38-airplane@2x.png in Resources */,
+ 				A8C8120B16A7C49C00F3D3C0 /* 94-pill.png in Resources */,
+ 				A8C8120C16A7C49C00F3D3C0 /* 94-pill@2x.png in Resources */,
+ 				A84DF2F816A8B779006881CD /* model_icon.png in Resources */,
+ 				A84DF2F916A8B779006881CD /* model_icon@2x.png in Resources */,
+ 				A84DF30316A8F1A3006881CD /* 37-circle-question.png in Resources */,
+ 				A84DF30416A8F1A3006881CD /* 37-circle-question@2x.png in Resources */,
+ 				A84DF30C16A8F2C0006881CD /* 37-circle-x.png in Resources */,
+ 				A84DF30D16A8F2C0006881CD /* 37-circle-x@2x.png in Resources */,
+ 				A84DF30F16A90C16006881CD /* about.html in Resources */,
+ 				A8E941D916A9E9620076F27C /* iPadIcon.png in Resources */,
+ 				A8E941DB16A9E96D0076F27C /* iPadIcon@2x.png in Resources */,
+ 				A83D379816ACF64E00A72AA3 /* OpenWormLogoNew.png in Resources */,
+ 				A83D379B16AD264F00A72AA3 /* aboutIpad.html in Resources */,
+diff --git a/WormBrowser/Assets.xcassets/AppIcon.appiconset/Contents.json b/WormBrowser/Assets.xcassets/AppIcon.appiconset/Contents.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b91174d181c8133e52fae2e94e8e642bcde2d958
+--- /dev/null
++++ b/WormBrowser/Assets.xcassets/AppIcon.appiconset/Contents.json
+@@ -0,0 +1,38 @@
++{
++  "images" : [
++    {
++      "idiom" : "iphone",
++      "size" : "60x60",
++      "scale" : "2x",
++      "filename" : "Icon@2x.png"
++    },
++    {
++      "idiom" : "iphone",
++      "size" : "60x60",
++      "scale" : "3x",
++      "filename" : "Icon@2x.png"
++    },
++    {
++      "idiom" : "ipad",
++      "size" : "76x76",
++      "scale" : "1x",
++      "filename" : "iPadIcon.png"
++    },
++    {
++      "idiom" : "ipad",
++      "size" : "76x76",
++      "scale" : "2x",
++      "filename" : "iPadIcon@2x.png"
++    },
++    {
++      "idiom" : "ios-marketing",
++      "size" : "1024x1024",
++      "scale" : "1x",
++      "filename" : "Icon@2x.png"
++    }
++  ],
++  "info" : {
++    "version" : 1,
++    "author" : "xcode"
++  }
++}
+diff --git a/WormBrowser/Assets.xcassets/AppIcon.appiconset/Icon.png b/WormBrowser/Assets.xcassets/AppIcon.appiconset/Icon.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..5e5ce5eb61cebf2962b3872e8deb46f108ea6542
+GIT binary patch
+literal 5155
+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
+P{I=88GSn>9un+wgf1_LF
+
+literal 0
+HcmV?d00001
+
+diff --git a/WormBrowser/Assets.xcassets/AppIcon.appiconset/Icon@2x.png b/WormBrowser/Assets.xcassets/AppIcon.appiconset/Icon@2x.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..46c5a28c678b469b6874e119421805c041bddbba
+GIT binary patch
+literal 11292
+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
+XxIXe<CsqBkUROazRk}*jEaZOy2N^oM
+
+literal 0
+HcmV?d00001
+
+diff --git a/WormBrowser/Assets.xcassets/AppIcon.appiconset/iPadIcon.png b/WormBrowser/Assets.xcassets/AppIcon.appiconset/iPadIcon.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..c1d76c20f59a0ff1054634dd67320050342cd940
+GIT binary patch
+literal 6599
+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
+HZyEGo@k|5^
+
+literal 0
+HcmV?d00001
+
+diff --git a/WormBrowser/Assets.xcassets/AppIcon.appiconset/iPadIcon@2x.png b/WormBrowser/Assets.xcassets/AppIcon.appiconset/iPadIcon@2x.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..fee88baa4dc3bbaa689fe1872f788f9f2287ee39
+GIT binary patch
+literal 14939
+zcmbVzbC4&`wrATt)BSDRwr$(CZQHhO+n%;<+njdyw0q}w-@R`)HeT!>TM<>6C+nQg
+zVOC^DRYl0liowHR!T<pQ!Apn>EB<Zc|2d&R{$9<AU2gt17|tT<&PsNs&Ta;dCO`tl
+zc7`VS5;g{ACW<Bo#vTsiCfq<kpr#he>dxvi(ws(iHnax+@X)&3*#DIV0^;U#w>L1d
+zGI7Q?G%>TV<srQ3>LtXtFy<jtW09eku@^Eiw-EPqG*R-DRW|apGU6~M<m1KXcIW&H
+zU}NHJfbVW&ZR^D8&O`VwT+YA!e}?G@@&Co*Y{f(PUq-3R$m0vyIhx?J(9+Ww(X-Oy
+zvog>!Ffp^Su~FkQ(lgN0(KFI9Fw!uvaWXM-($nMr`yl+Q&C%GDQ&Cv--@5)%JcQ=X
+z&i0&ibZ%~Lv~Enac8+Fr3>+LB|6njO(){J1aq_TrHgKo0bt3u?g0P8`k)wsZvxS{4
+z{y&HYhITH_JcNHO{Vx}6>}6#B8`#$A-+}rYGCFqydpZVMdO91MfBgCvx0AD?$^SOv
+zf8=&j_OLghQ#5h1b8$5Kn-5c>{|Nt$-TzzBKa78^;goZ<_?r|1YhgPh7aJ2>X9-~*
+z!oPQDjV+8h=^5GS85r1@>Dd_RS=kx>y3Z`c!7f72#>~OaN-rYxAB_J=mWiF2g_(tc
+zgN2b*lz~BnQGktwMOc85NkoW&?H}SlvJ$pV&IYzdCjZfE@mKG^W!e9qvYbMWCI-%S
+zj>>j+*8iyhd2>5wJ128Hdwd}!7JL~4BMaMq=zr4lU)~CvI9j-x7>hdE+2H>xzMK~S
+zgMNDE|I2SSfxos3vI+|@vonY=F%te;*7*M?W^{jzq5G#e{*Pk$&(Plr{HOchrT>@s
+z@5y6g`*+4T{+${xD-qv7K&(*`!UD?f8&^Ki&Dvrfrpr2>UfXuNY&_={dN$+tr1cF9
+z=-BjYx#%DU07fH50<c7hfulZ&8EM7<W79_I83G|dY7hYjLLaRDuK*IF$yA#4)E4#0
+zq{nBU%kFnul?SzDovwEt9%zZw$1Pi)-5#Ht-<59{-`_XiRTp$04{CgI45Cmww?Ds}
+zehguJITWCkAb-_^ex>E*2hb(>^gDVgw3%F)8sP2W8Q`t!z2NPmwfjLM>fKq9w?H|}
+zL?vDQ^2xu2gh^kMNoP!cp;PdW;X_oTPWnmKC4DU4|1<yirLZ4Y8i#m@;Un%vcB39~
+zMHMLFxKMm@ju3<%66k6$+Q-??rN34<0gnug%2yhD>x^+YdO3^z7OGwNC#e9k#GZdQ
+zb*MH;b8s+&cYC}78q@p>`aXC7WdiHPVx&CpPs&d8gVkKhBbu`_0YMuUB|`Nj@Wi~9
+zW&9RBT20jN*cTTf2cRacOe~tCi$0N%AkMaS!ei7Q9N<qqC6f>gv*Ne0lba>N_2sjn
+zDPyP(^3~C(N%SuR1gL9D7Oajb%TDrgo;l@UlxkSiLJRwMvHtqtSE+L@Q=SQc3?y@n
+zgW@n$Lpu@f_4%;1lyi}g!eFEYz_Wlz9l)H1=$w+nC@KMuhETIqx<0-P*G7U;XmTYT
+z#t7re;402)MBe1`_=c-IdX8)Cb;?>oBo*<KoJD^~A-YzQ*tcj{!C}^^p(q(*?qD>S
+zvKIG{_$%8+OZ3C~v3&Nyo(7{JnO4pR-5g=x%foWc<Tq<Du{d%9jd3$J&5!iMkd8)0
+z*&kF5KjV~M3LK}aH-}THiqL2dJN1U-E}<QUXXb-v?gGstW`iq)wFn5WIt-&YbyMu`
+zBhM>^HERKBN%`PlQNSmT@M86-qLU4}zFcBp`r;1F*nn2+{_;@1PDJM>Zc4jRuJAab
+z1QXcwS;JS05U(9ESRMHD*RiEI)SwB&KMGOvo(DfM7Qk~{({90qCmcqsD`3QNZw#gE
+z&udjw^(fV4f0hyh{d`gq#(U4l)zoec7fBE1U<Sr7I*qiN1M+57CMLIBTCK6R&<afu
+zo;Tqkcz{)<CqI_Nb&%2I&_r!yIHaC`D!C<OM19=fHoqa1_wc8Y;!+i;&mL(Abe^9D
+zfabQ~(HIQ2<Be?MsRc%=Ua|GaJA;=8hd9NiG2GzGM!md>;1}+@wU%Gz6)?(}7nyMF
+zOc0jBf*axjgPsTt(5ll<NF=b?*IOGsmHZkkgRqc)dVL~>-=M*wVK5)D;Muwv0Z478
+zy&Yr(%p(cXM4{V8bL>%W_)K6F3jj>%ECSBPS#ZRW@ATr}-_8olm~8e1q6&}aJaIDx
+zQ4TtQE1U=#!X?Uqb6tp)wQw$@M>hr~TPlU=RbThApzV^7WvJ?~)&p~w9+l_CEk#%8
+zAAsoNe8(A6_iq^E8NT_Opt|2<Qi}jQD#AW}YlpME&B3<DlnK<-OSzxS5wr#rxE2=W
+z>vNiJK01YL#j12Ad#LlwL^*V_Cig_+*5BT(d^vbD7Z!qW5V^&)ys-O}G14k9_H&I4
+z_4t}YD0J~~r+p%mhT*U&;%Lx3gKebq`5Ii9w(9eqW<pP%8ZbF(D8>}nux$NZ4W>!#
+zMd#zMSL+o=`xUQ)59<QkV*vw4V-l<J;6=xQC`SRfNDXyFz7mcap+2I)cNJLY<>Wf3
+z%l#@=HM^a)4?S-eEofDo`|>tcpRVqM4xDVv41YGp9$^<Nc;~Vki^UT?f9s2OBjDV<
+zjtxQYt*b{cpu~!qG+*7BJtLP8r|wHO8=xM{pTtn{F040SE-Y7dR$}c~b@66T{D71B
+zjhnrdH5J=eM}<GC)>P@N?kv)Ozm(5b4QST#Z3e3&#-@1*_xm^?^9h!BM<_MHpvv6s
+z@Hnmu6Jkkg%GJLWE&G#)>tpDBO|LHF|GRQIsd>q>qd{NpL|Z0Yd(9j}lLQjRC9J)C
+z+c*+=r}c!*Q}d?tqXjHzb=#5amzm<I><>Oh_SZzy6J-i-l0j7k#24_%k&&ofSm+1;
+zJ7`sCGC1GKpU8gn1N2cU2_rd|e4Fy!*EKfa`sBAeTZ?|)XOL#2ZfG&plzIgVqUVAB
+z1ZwqxmUB#+v4u?`(rcZ7b%5w>!TZadPaXmvv}hIYywl<cUu9&owgL^v(9znS+idLT
+zFY_a04(huII5p^V`%`Im1ywT2aP5MI6oTG?Mr~vth-i0ey{|Jno0j>?>+P1;sCoOr
+z6jitSA|08ozEVJD)-2qaDX=iS7pSA!(I%P<4I(vH>wZL95vNYS;VI8L;gT0>QoWeo
+zOS^^TvWiWc&F4*m{3pte!|6g<Z1(5#`gpgzX?!cy%DL+qM57p9KTjid6rMwNd=!Es
+zWIwk=V+ADEgW;g=6oP#;$9X+9PqC=o&aIdlujVa?+wJq^m!Z<d+CJ0nMV|L~Go0z>
+z)_JR%WIpH}0uC&AAS2Xxf^ah{szo&no5*0yUTCGG^oV|<$@d(+wl%uQ;F1ed+AP__
+zuyQSZ+JtloBh$LK=psC>t~|0}v`u#}=**moa7IAfR>!BG49PCL<H>$NMH-8e+Ho7N
+z`~avssXl_D;BrH1=!J?5OBPlooAPLv(f-Io3_{23)Ulb_$vdRzj~)-xKkEraFMAPn
+zSL%Pxt5!vFByo8ipZ5dC(^!h~$10uI4Vu<2@L|t<RN6Z$Ty4}Ar)!?rmPkDNMLN!U
+zT|93^s<Aj!B69fdQ%#GRd32ah;F*46@(+Qckf5qo5*2L7mqX}{+#%Q7*!}SR^SE~X
+zD>Z=xLwU3Wl`Is%Kq65a%i6rE*H-xSyz+*Ve@EM~>85KGU19zGvK3JAT2%2NuPX)8
+z)*NoYz{77%mI&`RUWpwMY*|^wiCMMUwrp2dr;Dd}m<HTxZE&@8YvfZTH)}GA7-dI+
+zrY5HtiX;T{CM=`kWOg`%LURL>tz2?(|9UP3W^MSaayEeUFv?zqI+&QqG|fdX;y<f^
+zVjPx0baoYCu4A=rTCOFwSd$>XT~eDU5lN)vB?tfQ?tE=8Fe%7^BJpJs@8kd?rGa*H
+zrq8~;qunNxP-G{df1K@q9ElVr>*u3yNGA?JhxUbaFm+p-S_YoFS?FRyU*G#-uj$W$
+zTk+er(?RC6`*#eRPH3kIOpy>$7bIz3p5$}D;`A?BR!n>v1vMu?e>!e__?xhs+hWaj
+zO&jQLLVe&)p;|$@E*w3*a+xSD-^Ta$FIGs|I6DGr9=yI^Xk*zH8FQ92E>&!<eD#%w
+zxW@qXlgP1{S#0zS4+}~UZmslr85~&<o`(JhQj>dhgg-(29bwDnN-}n8hc!9VU6@v^
+zzf_d4nR&Q)eGK(q_A&}Ui<HPv!Qd?2o%i&}lI$7_M2KHY`E}U!ZRO~xk-k_-IoY1L
+z+e;sW(E2=S)wN0)KNl<5%96xR8qFGCEn=8RuZuv`6b2=!fup$_N=t09$h(EBA8PIq
+zOHXIuqI(wDUJmA75;~5UUkv7qjL!^6{56F0GP#!6-je3mSM$$-Y5bV42!T&n^Pocu
+z2<AO>Zv3=2p9&`V=7rc8MSOPZ?}IZLRfQ}Gt5<Yeca**;Ei>jTgnWW#|HS=b<X}ps
+zLoN8^N22fC8xp&%BKvMAt;D)2vo%#(4>*6!s<<LQqpbz4up3_;hMWq4x3#Fy@fqBZ
+zb7|WONZqAM$~wdIIe(nXEx2PlSzrpaU~q}ae>b!Xj^2QL>6-PK<4aNlX_`XLM{?+S
+z^p8k0z|d#))UxX_*fzTWSfzr>j!(_?o%QtWZx14gEp{{`keYkz-J+#{mfG7&N|A=@
+ze$8c1ypa9I+GJz?+*nEZsonNgFnPYEJ)=g+w!ru1y}LInW*U2XuYo{xt1V<1zEPnv
+zcMwyjE#cBnKms>27@)Mv!PWCV@|35$?)rx%NJ$_IJX;o?kBQNT7?wSNTS8JCzRQSQ
+z$~)GvL<MdMq>nW(%l%?6@45B!apb924@=ME>A+YsB%vbhJv0wHojrbL8Y!@^3c8BG
+zO|b8kSH6SsvZ7uepNFT_&iQ1nRRwRm^DQY7xuY{bQ=)sF?PF-Y;nZvq36+2`RfR-&
+zyJHh=i&4!!B_ouX+UGl>E)VDXb>^wJ>%ej^KK~7Z)YsMXvEr^HNkj)U8~H^JfP_RR
+zs@5}bNymI7ZF)8i>em?QFt%GGSKZAR#mVq~QIUWLFZ+8EIdN-TMKCfSa7LKOeq1R}
+z2b1+<iuq`4$_lHKx4z{MTU~aBAikp6Xx<f;k0YhWNV9r7if8&EgpP5eOdV>UHas-V
+z{aeOO9<G<`V&r#y#c9#L{BJGw{PUxPq`|mnxvOd969FXuiy(mR2fm7a_v$iOdKm$%
+zr|VxIa?pLfh5m%Cy7Ad#gu;XJ_GDmXulYD0H8iZV^$+R7WPeDJB=8)9M$r$cK%|3a
+zVJjM+t<vFqrxk(nsc$>1zSX|d33(f{`W!r-$@PgzpOmH-o^0G4NG2i)0n!b2Eg|<I
+zv~&C;(DGpL(H^HR%X+_0_To0NTB|L3%bH$s(0rnqmC!LV*PL7rPLsxYx5+`W<d5e>
+z(#VczVB12*+c-C(?sSIzUrS;T80kF_b|S=eyarpZPc}6%TgeJ>&_2`!r(dOa&mO<_
+z&(X>heV)gjL>7E|N)n&5*fHbo2~6zn%ex^)bS5I|Jo~H#0~^ksJa~Kzjc3Q_c@pGR
+ze126`xEeW4pLAZZ+=)}^MFgRVj**)?Wo(UUpDZnXB%D7+DBCKsu`mqorHziKX|94x
+zWcM$fN_R!hr+vY1W^}bT>k#>;Kw(EgXJEG17B!7B_zI^ihhxTtUK;Lm%BK^wNE%QX
+z8b@K4YRtt*3*^mO-O65=_8SLPN$*Ocfs*lw53N|IS8;K9Alx<5wyPT&45zQXqJ2JC
+z)w1+?Gm<p`1sUPody-a_kn?Eaq5?GbJZeED>gS>eC2BjJ1OVOx(^SWv7T);aNP1so
+zeT<PnsjIa5z~TsEhl$e+Ph}a8C6%JAa5EP~f}bAz2?+Rvdyl9x_+(vKIc70D!qinI
+z;f2S*YsbLQDWrlwOuHS%MevVh__Y9O=JMa0Qo>SaoBlf7@$q&Jcz2<vIc!MCY*ASE
+ziNLT@CwD?|*qoCo^*JFii%D(3TzGsI3h^J%LEMz#-ts9MtXEpCu^&}y;FE4QE~^fO
+zZ6wwdwF>|N05%S|$uKJE4LXuAD6T^v)&njs|NNgjn?70u;-eD7;T=6aQhC0XhXTb5
+z#P_8lssviK$0X^jR&u+bX5{z};PnuGLERY#>-S%=-<Jf4`R8jHt|!L!GzC~a+NrkA
+zk{(#Z%B;WC6%KQdh?NuL>$UM1*Sx0&MsYu{GwV}mn@N<`l8+%4JRBhL;MxJ=wPIJZ
+zC93^auHyvvH%rG6h%PjFX=2U+Y4@!o@5lUw0wL$%Ea7Eul1NvaiINq+8Q<x7SFJ&g
+zGr=t^5|wRJXMPs%wT<<bN$6{_ZK61-<GE~8JLh(xQ%<TUA~;S1;EPYobg@6V`6&@u
+z(1?SxLmbPKNp$<9G)VDjLiS#fHx4dr1>&>g)>I?L(zK5WZG6hKf8*1{ZY@CRf?p#@
+zOUI-^BzmPJX@3B$H!8K65}W<2ni1Uk`Y)xJcLsJ<6(hzrPih<U>ZyT>V5JsB98y5y
+z;C;LLzz<Y3sB~M?9Kj_QjvZ2FY*K5{<7=t=XwyT~AS?{fCwgf#pxY3{)qte!SoG79
+z_h^17iYQc>r`AsC&?HmA7lRL0!?sKEM)?^~e^3IQ-vhhOlUP7+88Dz;Pj^7o-&Tz`
+zbOigqo>ncCNG*7DN}fjF&;TtgcSglIHV{`Bo`uj7uq$H}4<G)3g$$b@pHeBkqovXR
+zvT4JKze2>hNUDD@*pGT|S}oP+Jo8uhj-4V=ibag#;Y!8xz@j5K`W<l|JxPFk^doId
+zrSq9zlTsgb9%@pzSX^BMKsdxmvrWudsGh1)R#4%0$$J1lx86mOi{{o&9}g#mR`Cvs
+zVze${a+<J4Tq+{n;4Nn06u2#8RzKW(ze^?2sQ%!w3}o8aU0B@ucDaFNS1nilBkY2>
+z8le#FaeaNMqToDj<TUm+So2x*vS)pGEhxs*%ZzqjMKk`3=8954>*ngyUhVM7w#X<q
+z`~1~NFK1SEB9XdsQKQ$@Y8Fz3q%!L@$mg3k2SX*ht`m#(TKyBhAaxB=IdzHY@cjoo
+z_q0>D_PRd@POCcB&3eO0LF(J3RBdhTg>6NbuhFbnXz6qJ%gJup!=m)k)%g2ZPK@-H
+zu{dy1OMLa-18{}%Zom)os@-1}!#rO}B0Ns{H@hcu?1mUw@g^BsYQFYjH)2C=jH!5h
+zw<f^o<uMzT&n`G_K&h>|1*Wa^GUrKZwUUockc*V8tG1msmw6#eV20zQvT(B3<H)4Q
+z92@H0t}2^42i|TEwHuY!c)!23Wu-R8UjwUVvsEnIq49H)Lg-ABl{p@hg7kPf9~a|x
+zzvK?4*0$zvu3nkX_=nfmB^8!ZH=eF(aNxCsB!#VC(G>^8!t${4`0liBUS-82FiiKc
+z_}+)CO^+0-ReRX|ITlehU^R!rMY47qj$uJkkp4bd*q>Ym7ly1q+0K>3AaFaJHuG4Q
+zs*e{|Tn;<Ka(TdXR9sxWoU1V%TL^Wqivdl-pqFi_6F7U<`x!>#TjDk-Qg-R#tPkEU
+z!o@Ky<P|Wh%*38smzRL;<@q;bTTOE5DD`}@;Na=vS=o}X5-Rsq{&7AVM4-)u2P?zz
+zbLWefNwQu6a@FH>LNWe<e9##au{^F1lEJBnEVY(h4J0e3h+((YqlnU+a{+s6^-x>P
+zP>W1!P_V1(D_I{ZR~grg3N46_mT<QSJ0(>?@;f7_-;)@@$A!?8wdTkWWx6PMhY2H@
+z>PcQ`$d$E~G#8s{QYIUPqaa1c+)cHWLPse$89qVB6VEkH`=4u!>d^41dkKk*KWxw#
+z%iALM7?-wD802A}YoO&wii=PCG1%=iZFepm`>xIjk)7SRS6U07Snq}-_VFAp3c}Yb
+z4B_GWSW__1^0v&P%8+eqHmfr*_4G<YlgZbv3JZW`6XbtYc$$cPhMsJwB*>?jn*XqV
+zZgvbx&#VYrt~|-ioe7PxY3XjTZ!t$c+eMwd8%$dg8L&*&Qgsi8Fte=6%&h9-7lsm>
+z(NX4Le~Ogi!~{^e(|T-<v8+}H208nBvu@MLwyxB=X@UK?Kzind9b^joXe`O%+|os|
+z0-9M^u5ak*<f;~SR%&uD^i24rkw`2*iO2$R4}&(?Ca+BHWK>wgJChjE_ex(S5^Psg
+zW+jUFXrm<KCFSF$LR^5=d6p;At*@a<sJgi_x2U`c5f@TNSuULBEp)7P*&2~7OFCbg
+zNCpJzHV<HCXn0Cx=JwII8TA_ee2PeMvwppbJjn{s9#=HKX{alHK-yIEEADbIV^2m{
+zHI7;&6Z3ukXz-)G@Q5%=4$~AU+HJf>s@mAe2xpC$yx;KtKKjzbelKfy4Zx||X|o#i
+zgRrb5FEDmJ((3YStFc{fP5JZOx}~YJ3{kvA4@1-x=J!0ZD^n5%CWDv5V~VI_-8ZM$
+z^*pxcWb0>JVFY1q{`Qp3x+y=c7}K&`<2DTSCT8?RscYq9_?1jfuuD3;(ReU}<%wrq
+zwM&dl%52q1?_lXX+jF=pd17X11pjmE{@A=-HbLmNi_iP+fv9P;PVcqnDaWm4#U@<j
+zV*kz96b!d~%z%7naQ17zvekxbWovcQ*NA%qtT&5}^k=U7RRh|Wop8)f>u*r56~Fp!
+z2OoB2@Ow4}r?*kB@2|OWG|92b1Dcu=sI$;**Wq(*hLCz{(@MqJT|@tAldyy)87J-y
+z#yp(b2)7AqGkxdHlUY@fwJ-6E0cTPk9kd$|{KJG&oGL%~sjuFzgFoq>3{Ne;*|yyt
+z^h5-$^EO_m5V(KwHV~rLZZ3U(U6<l~-%pL+Ycf`kR2kKT*9Csg#prFd-Vc5`3fZ06
+zfF3M<wd8$5oFQl=o;)Zqoqwfjwmx7qrxB0W3aw~QGYUq};z^yB*&am1VODtwxMHM;
+zq0^d|Un7!89GC4W1akQ7h0faDe5wE+IbXmfqrR!iRQsG}#yz!Ozdh&fu0(TxGy`Gj
+zW~puY%*N6&uX<*rI1`~k59&-y3#D(2UcW4?sPrDxi4d+hk3NST%)iZ?(AdE5#LRtn
+zYO#Gke}2E9ec$&toC~bC(Ul*N;tZ?TxH<yRnv?stq@%Zzi?2;L)G5s^^1mo&H*n#X
+zKlg6Y@_F&v@96f4^1(|!&a3=<O%3_dOES$5-`%_m%0ftZZmfU#UPk`8;kvuYdFuX~
+z?_MEGl<*}ZIzI#Z3;1W7!O)+(A0@)g;FW)Br}I3GzrVA^zutsyKGl3n!RI)+?iP9u
+z^`wr;tp3)p*EU|1tA)O%+vocDDnCWQ0ColkF_2Z|c}%eXy~VF!m8Wb6>9Seld#1ub
+zmb>Q*^FeD@kQZ=m{I!X-Ekt*5b!e+p*U^(*fO!t??)y=d-VAaQ{-~DM&iBscH~JB7
+z=jwZ_-&dCx-*?QZ@99pC9~{C!3S0FT%M0xF(A;B{o9*YPdinGE>i5afS<kHZ9^#p9
+z3=7XK@51-vLs)Mvohhr!uEQUh-a31qdZ$6qK3rU%FDbFvE9k0*KfCuCG*veTIyB8L
+z(>Ov%dJmu{YxII990%9#&{wI5PzH|a@eQDagwp!H)bMM)MRLaO*TRi)H&xTRba|dH
+zPhVzz(fut+75jL2FHX~Ak##FBThN|+u{C)R&3lIrVm<dKw^4zH+1Om|r(<eECRAB=
+zkz$ohA+PI?{_IRS7w<c;e(t9CbKbUZM{5COKfb^n$U*CI58Sus6kTUyT9<^ghD;$_
+z8d598d87{Gab(a;^V6U%werpkwFu;^NLSznrs3DHv~#OVFP^p7KFC%ao*t1Pza440
+z#+d>x-(|gT=GMiA<^JxJx?5TylXswcrG7nQzlM$Ky<QFmb>aD57u4}S?NyoOj-e`z
+zZ>7Ju>L2v=^86taN+L5;LXyM#IO#v+bGG}~zy7{E`m&QH8+{v<^L`(vD|K8v@OJWX
+zlQ;n#*Aat2m2zq2++%S_J0LvJq7-sZ*{TnW=a98#-h7ekt)w)37lNjySz56f&8%Fh
+z4Q1)Jxk0{uJ&#BmuuQk}juVnJcR!)uzpGX+CP0<sPly!N+=4n#VUC>p)4v&0IbY%I
+zH(>#;@`LM+*u?t_Ih~<EB)}Y@$1Y9Y&7SAczc3+haxDkwDtm1Z1RciIC&8Z$;tip)
+zwc&wQ#k3W>nx)=v4=TNZvVLJ=USP8zH1EuO4UVQT!{Z1HI~I-?UM03XLE3>gCl9m*
+z4$U8pj+UL{gL{szypfQqvM?Llx4-*tXzt6L9cF?95NUj0(cd5x3yDE-M^AhpCAMdq
+zf!}a-`UCOL^!2G3{U~-<BYA5KBEo=5XTm6OUYaz?JGK)*bKNm%O&cFpw3dF9?b%ez
+zh9P^P<$(1z(j6!yGxb`zVviSbjzyYCE1eQUJfIZ<mN^Rp8E^BFErORcnV8&Wn_7^7
+zOsNdJu>FUV)AGQ!<X-&4Izxob4(${3E_rQ+WX>H|&>Y!`V^O97sJz<pxJ2)DeCc{%
+zLV`P}6!q{gYVlsJsKNx7j34cUwdfhqf>^aTkTKj@m|9~fDpw&{{W#Yg6p7i74$SP%
+z16fP+l^qA!-AY6*hh_b=0S>ZRPCb3oEZwzjj}dM@!|<(vZE9#Y$X)XqeS0z3+P^E;
+z6U`i-waF`>xv{C|&aU=PGFh@AZNV0&fsNdyN#y{o1O&P1TmkNgnU*WTNA&^B20zG7
+zVuL>Jh{NVL+`|@!FurLU)9=DT$b_STg5&}{EPlJT!M#M>`v_|P)=`870`wdpUMzTN
+z6DdZlaN%pBK0521q3H|vDS3EtC=G7+)3l;VEXDjHaU$y3I!n<DU2Nw^6q3dCi!b0T
+zjoQjbrZ^k7b`WKAs>}Hjke$?4PYvBaU#-)70y+#}sWK{Hf7I?j0HVi59$7qZI+)m~
+zj1_MF@n}p$_BPlQ_OilDy+U$Jp0&{T23GdYDma7_uf7M)H`;A_SQuK0?XXG%Zykz%
+z++Yu?4?&EMt}x!nc!nHdUUYE91_@7)V<iUp2LuT8F_ArY63*x0G%xrq%~@hj6JnEG
+zp(VVfSU!gMeXSnO70MVV5}q66Omu#V#Bkc)l#>TY4aD%F<1R2aGSsq<tum@j$cwc7
+zfu7SVIRl$)?M4&=RijE}E>VhNpRVap#G@_+3>3@-a*Hkn%Z=Kjm|%YJ*_zx7jM>3z
+zTXd8t7u?r9c6*sTh8@>AQR55R0S*;bvM7tQp6(lK;-E893i|xD3l=@}b!&**35jF4
+zQfD*%41^`i_`_b))ay{(gNEmHjYB@S4`m-(J|W`~VJ}95eA0eeam(RC$7|fV)RGFi
+zK22V*?QKqK5A6eFR4l*#Rvt|RnXXwYb%3>p!YJZ7pOL_*No<>L#jR&_KOz7D<LvV(
+z=caW~jcC?5YTW69mhBc44t=T}RGnvyX^#pZhkn%4fV3AD<fN*C0BmOoG?J-+p2I`P
+z>&jyLyL^{$iC=*(GBfB!mP9TRcH@H8g~i&4_i2lvAh=+E51Kz5o3ukV6~)i224+<?
+z<Whv*-1?gR60|3L`~XYmPC-vo0n7tyVd4!m4crf$x)B>QofpV^>c>^<4u~%;x}Pl;
+zMitP(kJ7IZ7CaPHVC+max$k^#Cw%eBqUk<2hQj^I+*B-)KioWD1IG8sT4z|RzR~wq
+z+2(Znf~HWcQ>^b!OF7Xf&Hl|5{qQy94<ouxmGxFetJ{RdmvJSrvv_EbRGD^bYoEN=
+zk=O_gVxm;kM(!h~%QjD0nwF~mVg$L>7#kO@TEdT)k83*}SM5_98!7cLn-c;RCSnH3
+zYd_9lPMb+1yTfXK()Zd*oQ&vkefs>F%F*I;TWy_fU8;!<J?IP9wDh{^`HHjE{m%MT
+zmm$~ve5~x-c|^8<j@5Nt8L|A}-wghBv%UH$AQPQXJNOwVM+|AkSma|g+vWS%&GoG%
+z^h@P{>r7-x-R<zi%guLR&Fzy#U@!PQvB-vAEtl{}Q?bOnedSSuOWw-JX%vj1Dz+tZ
+zte{@5RwdneD_XcY!;P1d`6=@|knPQn+7l)H!pru>(8(oi-0e(jx8VT?3lEUH_#oCB
+ziB7k?{RJuKKLanF0(qkG4dPXu6{-ab9S#yjMz3KE`XhC^ibNxnibaPCk{Y)PX%j~k
+z*8yVjX(L0-A2_lcj@!d(w)++$4A1g7R^AvUX%_b_YY~aAO0sy1wAX3TufySY-K+`Z
+ztEv(Yq5c|Q$M^Z_H|iU5_{?J6CyP713`^Di$MX(kTTLfl4o*`!#^L!LSjF~SgO$o<
+zO%D8X{GZMlH$L>rzq{3?ze}Bv5GP2oIxUYp15`J>PqTsy;QEd$bae{0A;^*($tSAX
+zdP)7$5q_TVT|lWhfYx3akK50=)^2v+uifbK)P3rzQ?C2weUXBGnP7h*0O0v?Ocy(y
+zR};Ik<FkF!vTBFQ2BO#HcA6I$xbAnqsZ>E=egdD<)#u&3ve9AFR`*KZ{5zKoH*{uo
+zv*)<>ckdzVd)>~RS&`Ccp6~1BQUu9{WTDf$8SnkipWjEbjv?6yEG60&J?;luLW_`W
+zF1w&26_NfuBMLibbEQt_{fmda?A*7)rR-RVM8}vIGwG%b)g%4f;Y>{DO?Hobu6vI^
+z;U|sXdGwQ~X1Ra87vOaNsk`}A#k+%}SapF-1ljD%x&CM1u5NX-tM$=)j{cq>(w)2B
+zbTQH^)QrC=A|DzjofpbYLJ>+B+uOK@pzQXP!JPgK4}^Yu?DJqvt-s$<g>5f$alyz*
+zOzpv6N@4cn;OrYz<!beJC1AtrgNr}GR`U-u5Hx0U&Zb~{yWjn=&uA}ncx5Eao8@Ap
+zUVtk?NN}F+;vKE<ctSs!xFf=&fYo-V4A0G?%ic&6;apSeB`eTWWA({K3e~3V*pZn?
+zy}8Ywnh5hjraEs>hE+k_Y<9*Z>>m_}{zY9jQsObj4;sMeU#De!2PMZ&Lm^3anDA<&
+zMDPkMz|+7uWLoLqwctzIiEFOo*MdTGe0v!__uIRXVp#nwuRA-tRF>!F?V<JKh)w*P
+zFr3Y5`e7!vwbAu}Sh0)3sZ*tO-a%8|x{`ZORA+wm7=8yI*Ys&O5Y9b6!Sq$gp1=ji
+zKYfR$1}vIt%b^&o<F8xAfTIR`2W~|z9GhUTrr{1_U&#c@daU@MctB;9Wq_vuGz(GQ
+zgj}&Y5>eV{sQTI1ESh>PGI?D1k${<^eRyQfB}c-73#;bHy*Gh`%D@cnpDQjL-B4PP
+z-=)wpn5HWUhTG(poLLp5q@fhBGRb?D6l!w|*3qj4HhmF5S&hhV*2N0umhy|Q16yNT
+z6g$b)H~tzw(x&5pZuf|}iBs}2W@S1;VaU;}v?E$91ZHUulKUD?+MNk;3iC*U#04;h
+zOe8Z_fytPLi_JZK1x#oso?ZBzIhj~fP<=s8j8X!k_QOzJbJxH)b7cC32wBj74jbaO
+z8FzE5jo~ByZelZT=mmIcu`vrqf=KZm2IP9_5*G0!4h^aW!0)0ul3^PnsT!-8?}v<Z
+zY=@d=G$d%>X`F72xgoj*dO+P9woO`(PCAJx<_B-RjHAgzU>Q+wN<<3B<8<ldEa#lA
+zG?fj?1H!Qzuc_9%Xy487w1bIr1iy^+hWgQXyxv_J$o4-H|0vb+AtgYh{R$kZgHd}o
+z-R}A9G)9u31EQ<9|FeCsMwRK-NqHBb_5E`$Chyn%uHKCw%v9f|jJF7IXh+-=;~W|4
+z;7MfWDCfDgX<r@juCI=C-^3P$CU0Xs6oW^{&AT<aBE7fQRLq#V!W#ZjVDaFQMTy8G
+z{8#6%BnFLl5N(GrW@se~V3irsL5f=BYS0b-k}A9!k`e(u{4)KBpZT5{78P0j)(vL0
+z@g=Alm1*WEyTAK}$YtjJCElP>WhWspSfs}Gn4@p_f9lU+4?6|V05XZh`+?#7Pn#vo
+zYoeVK!f@B;#ct;l!DIl>-Wc;#CX#gB`E~ALu8X;E_j#$Ot{iC;TzrNRw=|3vB&Mup
+zF`82`)=I^-@y!wmZ#4JC6zBF6%v?ZBDA|n0mcni1*p$}iNy#EF;Uao0>&g=2RivUr
+zl?28n;dPF467%?sPS^}vg;WcOQNN50BN2QrkBlO0j%TG+8r@Yi0M(}oxg{GtXi+C`
+zfv=gwGGat?fd-SFbrw&C&54C7OWd)`gW?PbuRtZ5^KS_fW+oye#XaUb`31H0-cf;8
+z#&6Zfv=4?lc3|Tg)K5U<oa;LDvJ{nq@-3paEHv#Vkb)S}dS#WK8D~^Hc*tqigOnKb
+znu&~fH1Ur^zrkRW9s3piN7)H0gj6WcI8)GC@h2hauT#j$dobfUz?pFYNSgdnCMqT5
+zRGfttk)z}tahbotY=qCiSi<_$J0I-Pt<{<NWm8})D{r-2i7pS*CxTtkk6ggdmvFJc
+zkEl_JP;hC3vTx(AGvT6bP=;iPkYrJm+%$vsyXM_ObCBII`f<SWiN<A<(ybk1FX@7a
+zW&<@j^J*YwnxQyv<F2%p$x<Wfg3orFdW@C4j-*3{u0iPaa%B#-&Nb*7h#eh-NI9ef
+z-h-IK7=XjeRf0FhKKc_EfrO8KLW+w6OT0t(=otu`kTkrJXcYF$F`51}7Dpo7kPsk_
+zaS#}An4Cx_CSBA`d5s1)?6x?7(6Cf1fsihRJ4`1Lsc#ld;UqyGV3wN?7noHi518jn
+z5$SbA<uJMD#}5QKupz+k&tR=VM70-0bj66W8cWVzkqD6N&Ob#_9)1@XDKvvQsUOK4
+ztv44_*Fa0LG$}^pRBVndo&pij0$55X2qt4^FXv}sSti$}W0#&V8EN+GI*ks>%EDC;
+zD$`Py$gj7#%dZRk+yzM{k?3>}jFnHLoJ>E7T%qsh){dlRttDO=kY_6gO_w38@Ha;;
+z;*2CtLU0R22NVZ>25G_V=)ebWpis~fbc@TXvx|<?N)|H88g0-@T~a_dx!@by?SzLI
+z{TwProlYOaxQ%u}e0_^|1_Uqkts(-<2<4JeS-=cK<%6QHVFJ)BNuWK}`udzPiQjB9
+zDB_fNvI$<Uh22X`q>r6*7CcpALy9kn&hVm$O(bqAqOKwfltrb^i-{_)%G2CL=h;Rd
+zYZRJ0AUZ3R$re>q3Q*<IU}Q?}7H6a>%uSEA<q62*&-7F^U{aE1HisiR5oev=90($Y
+zsk)HQw-J-2tY*=sD%6!3*Q+_C9OLWB$k!8f`PqdOkPi{?o*J?RH0JDt8<%x*C{>gw
+zsEaryJk5ejm4>@LoTxEd;NHS5e11vRmX>qXeaaI#V6<QywO9I<OIp%e%8|Ad5wLc<
+z81=V9Qe6@=3r~kVEC@MN1C$3vOEqFHO<GaGJ(ZGsS%_ma&%y;;HI5PjTUuE=6EEtf
+z&~k|=lgSjDJ>zlP%rnWktd`t{&a)0X#G07Hid8#a##ijU)H`V<ds(afWDBXPlC=)*
+znT#@sG%iamJLs&ArFjYaP%;D)>_Q@8vvX=u!3zjuYpd{8t^$VA%7U`Jw6yC<w1^hA
+z75qae0e|1hE0To`B*cqsuYWvqbFoSUw2y#hN*AeLA&mP%y<gFsIH*Ez<0iT}yckE|
+z2VE7Mxf5F=fK1R6jgz+j!B@###)~8m#{RJnZ%~1hVFZ5I4ls0Zij0*%=8W7BSfb|?
+zFENO!O;jK%D!g*zH0IW7hJ$XIP=seOqku(Xo?OtL&+ebFvHpRbFzDFeFK{AF*)8z*
+zqegYXwqcUQRXyr>Vim#gY>ET6`<2>yFv~td;~7CJh6^c6xtV}Hsi354PyPL^XXOv~
+z7e%1<s0;7b=}pifi4NJx;t8G8D_lBhzWnjB$Pw6A!npui6-|Yb9R)nw#j{*&h8Jbu
+ztM=^~d=8gx5C%b0e~ngz;cE|Kh|~QGw4~uCuprE;5oalNUp2yJl>Iyti@aEx5tg;$
+zUE);!WCk(pKA>UtpI}Lb@=XIycuo8{2kdLI_6Rb~k|~($%5*P26*_`tk*O#Onkq}e
+z^Ab@bCR@RC1ltotCe7xLqQ^K6DhlV58q5WEB5}#AVMmr378XjWNYUEj`DB&;ZH^FN
+zPfM@V;TE71fy%m!ZRf-C8FB;Ojwh@fA_C>*OuM<AsnIQ@_Yx^-dFk1MKA{8B2o}L&
+zG{`wS(lK0>%fAU&_xH;@A`FItC8=@BNR--@d2izxD*DUQR%x^uu=^J<G8o*+x916c
+z<XO~2kKT=5@|>mGuF^5|<e(MDfU5SXDxGaV>YFauj3l1be-aF0iYn0Su!9vAiMK$(
+zV<bacBew<WEL-G6szhZo6wt+gdSEZaToT>4);HHkU@V<~CBJ%ZNY;xXNsQpxz(G3}
+z+vjG>X!u|(60SLl1k<=doly$nV5yb@C|oR{o{GyKF@K=Aki;enwlFUk+|+^bJr~m2
+z)tgg|@Sukk{21!Uk%GIc(fKJs4*W61kA%t)aSDZ$=4lv82vs|DhE1vH&0j=CWc_Lg
+z+4vUDljuJ@p{NTgI_-f8dm-)Nz%*)}Z8@9HPpyzbJsbfXEZ=y>oE!l!cYxaZlITqC
+zxKlqut`!cweRf{>XxYD&KWD?>AtJ3YU+he29EjvMjUN|_b}B=u`k)ovU*r)L6Gz}z
+zh;;CKK@3|q|AqfPiT?nvnVJVR4FE}LC(Htcq5(&zs(`JJhbhpM3Wh1l7GZL)z;`h9
+z188|v%vj{1MGSe4Zy1}y3g1kidvR#Zi`Se$BN`i!*+#z_XuZzRlEK&77BMjOXJI{3
+zAMVq?#_-e=g%bTlE{iSPbb?=L6uwc?#JXNnz+!NMKM2cthqwjbehCPIFP=q!9Hj>W
+zSo#z>VFa$Zm*1A^;->uPHbCvU1pei&p1On_m!5dJ6s$Tqu_>Wi$0QH)@sekJvoW$0
+zD~odyt32JFKm0Rc4KH63wQz?4G!8Ecww;OmnjmF&E_sg?6|NG4zh}M6oL<4|2i2Ue
+z5O|e2K~G;!3eQxSDJ*Fhsa-sM>UFhJg)NTc<smA&!O*w*P;n%S8&p3Hm~DU_@L)aX
+z0ORHni<R(UpJM}Z8^Q@tK1DlJ(MotWfAN?rlL^Z;%p^a$EK0ge2*^*tyu{my`esFu
+zK};&*_Glvr;P4d@d!j-+R1d@#P!=TInRL++LAg?e%z1)j%0`X!#K<->;>n|^mjXEc
+z2>1ah5M<~m1<A>}25;&By3lfB^_27wwnUpe;;|NI;HR@|R3XYqbn@%>OrxewhfZ-N
+zYgw3@ALDJS6*6m>G8gZWQ<or0h2bS!Fg;bWJle*{U}JBw?TTiYWTsJG%=XO`_wcq&
+zB;kbIg!@`ngY02IIQ0=#g%hbz%S<EJ#k>;Brok!^Az_1aoT#Cu;3Zz{Qg*Qu1|pt*
+zIUkF}G=N{-qQ6z=*Cl?ZQ%I!CXyF-F-OQJ^QzAW@1791xS(J;jjvl!!l@A9l&!WNy
+za0s=nh8Qw(X0o0-pX5ENQpoqOuMbpFEFdkitp@MRBTFEC#vlWmBQg9cB1opQjQfE>
+zz$%0kv{-si5Dj#BQVH_CeRy-{`i<~qIp>_xrRrO*ZE_Yiar_5mo#3(368wAhnO<of
+zV9y!~*3RBh=)hj`d(j?%&M0zIq1HND3?;?OUw|3zVO5<KcN#6Eaad1crKsNrkA9fi
+z?(No{Nnb$GFV|<N3AvTGIL<%gUc)ad?_rbT?H8mud?+XqOa_17&C#kqR`~J;<sm01
+z5o|&|i77%5g`Gvits^Y)GUa6}J>oZ48%mKmiK!=*2$zKw)H!&jL_>Kt(%m#%<^sNk
+zkbG1mbDxTyRbzci4xfIMQ2abp?K&WDX>z#(VIrg*<DUc-oE(>q9{P0UURy)ji1^_I
+zn@%T*^ceKDb?GELoJ&k^^V$}-O%jd=oi8MrF5+Js?<9`ma*s|k0N6BM@UIx?rYKij
+zC}a|reDD}z+`VZ~Az+YX(ehd6Vm_t_k14(rP^4JH*-O>TV3jP^hp?SToEePi6MVU7
+z3Kq^HDScEQ`YH5h6lo~dM&NLTaDgDHeJI#vAs<P+f!<Y&ncsgkL?Uob0W>Dy`5+V>
+z)42#nH0@bKF+oPtFytrE0&M~q(IvGtd)1->(rLty59A8tG>lDr0c1VE6ppiGo&&Zn
+zQXt?((WEwbB$C;Noq^2_Z>rbhN;Z!>AzvTd1^+I|JujXHX!(G8zBv5Fuo{GHd{jVM
+z)8H1y=`$7$D)Sb2YC+;<t)uFIg`J%w65P+jmx;G=0^M}n4uhK+PFwVuXKs(E0fw&k
+zjGEL)A{}9tBe8r<f5leXf7<a0p^E&W&gI}rba+#Kq~{9$I@AuA&)M4yv8~0gS{O1B
+zfXp+Z4qO>xlU`q?m@z_Z0<YsRXNY)DLB|f#w#QQZ2<@D(n~3wB0|tqbgAgqiNJ6RJ
+z#r1nGEj;SpmTayMcU{%n;|{y@%!ZD1sY{TYLLsOXoG>?nu;&n8Ii)1>&2xn@hXW;e
+zB2NSDH9Cr`_`Fd-xLchI=E}gbtx2&Kf`g83IUu+_d%ndomP!?x(vR6b10VUNH?Op#
+zg2-o|$c~N|&p`~CBV5H_@<WOHl0=>(P2U4i7XW7;e;<Cpk~8U|aAj?Cys7<n(R9yR
+zUI+|0qvXGUSMp4PxDpS;qsgKM$o={#rOKzt$x)8Lql}w-4@^L#cl3SwbqkWBiA_1H
+z`|^>;m~bz1V=tEN@i7n@fN-&YghYJ+`V-s&ilT&o8%DxA!#^#Gwz?QFUbsOg{*5|1
+z&Z8P$^%*{PX*QYUwU@+nIt3#C+CnI3P5`Zis@aezo}yk+vZw5u&u)p(Vg9;|f9In`
+z>x3&#0x?wvnOXqsbUf0)s!Lp67(qEN8Z}#__+gIN1E^MpPo2<?=ShXDW|vpcBh%!q
+zBK(NaRd|~3TZ&S2C)crG$=4gOPB|+aW-=}CS0yIz6U*)m-~fKUzG_}-rj=uhe%sn%
+z%%%)Fn#JfH`z3tf2oDK3jSfSFK9dmh$c3fUbhy7|iNLSz<N1hD3PdVFK`d-uNRspw
+z(*Ub+ER?fuzTzjQ2%5;E-FrAnBRju+W#u)1Nw0!IEh0`;1E7_(N;(^lrD9Do=&M2x
+z|M8j*2r!Lf@O+h$(&;^hQl}q5M6Lo%$fDt<{R|#M!P6`WJci%}xk`W->yBgSRB{Mh
+zGV0i%=aaRSZ!zW>>NvGA+|9lAz7@PH62VrJKFa&UVU|LqQfu(gpnim>uHotrejE<*
+zc>qqqrK9}QQ#CQ>fc%;o4vS_or3QaHpLh06TmF@E^<FSKH6fPq&3ES5Rq$sgzJb_`
+fwZ;242prH5&}g?bCN1edzk5oE$O_jA>IeQWq8fe)
+
+literal 0
+HcmV?d00001
+
+diff --git a/WormBrowser/LaunchScreen.storyboard b/WormBrowser/LaunchScreen.storyboard
+new file mode 100644
+index 0000000000000000000000000000000000000000..de217ff1ab2978c6b8052c0d7a91e073021f0f54
+--- /dev/null
++++ b/WormBrowser/LaunchScreen.storyboard
+@@ -0,0 +1,16 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18035" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
++    <scenes>
++        <!--View Controller-->
++        <scene sceneID="EHf-IW-A2E">
++            <objects>
++                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
++                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
++                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
++                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
++                    </view>
++                </viewController>
++            </objects>
++        </scene>
++    </scenes>
++</document>
+diff --git a/WormBrowser/OWGLViewController.m b/WormBrowser/OWGLViewController.m
+index ca17167ae14f38eab9937e2fe7f7d91c49474df0..69f76420af2071e12d3836a968cff8fb0f9fa2e4 100644
+--- a/WormBrowser/OWGLViewController.m
++++ b/WormBrowser/OWGLViewController.m
+@@ -119,73 +119,57 @@
+     self.mSelectedLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, self.view.frame.size.width - 20 - 30, kBarThickness)];
+     [self.mSelectedLabel setText:@"Object"];
+     [self.mSelectedLabel setTextColor:kSelectedLabelFontColor];
+     [self.mSelectedLabel setFont:kMenuFontIphone];
+     [self.mSelectedLabel setTextAlignment:UITextAlignmentRight];
+     [self.mSelectedLabel setBackgroundColor:[UIColor clearColor]];
+     [self.mSelectedLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+     [self.mLabelView addSubview:self.mSelectedLabel];
+     
+     self.mShowMetadata = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+     [self.mShowMetadata setCenter:CGPointMake( self.view.frame.size.width - 30, kBarThickness/2)];
+     [self.mShowMetadata setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
+     [self.mShowMetadata addTarget:self action:@selector(handleShowMetaData:) forControlEvents:UIControlEventTouchUpInside];
+     
+ #warning Uncomment this to enable the metadata viewer
+ //    [self.mLabelView addSubview:self.mShowMetadata];
+     
+     [self.view addSubview:self.mLabelView];
+     
+     // v1 contained the Navigate here
+     self.mNavigate = [[OWNavigate alloc] init];
+     
+ //    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+ //    NSLog(@"initializing camera with aspect ratio: %f", aspect);
+     
+-    UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+-    
+-    switch (toInterfaceOrientation) {
+-        case UIInterfaceOrientationLandscapeLeft:
+-        case UIInterfaceOrientationLandscapeRight:
+-            
+-            NSLog(@"Rotating to Landscape %f", fabsf(self.view.bounds.size.height / self.view.bounds.size.width));
+-            
+-            [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.height / self.view.bounds.size.width)];
+-//            [self.mNavigate recalculate];
+-            
+-            
+-            break;
+-        case UIInterfaceOrientationPortrait:
+-        case UIInterfaceOrientationPortraitUpsideDown:
+-            
+-            NSLog(@"Rotating to Portrait %f", fabsf(self.view.bounds.size.width / self.view.bounds.size.height));
+-            
+-            [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.width / self.view.bounds.size.height)];
+-//            [self.mNavigate recalculate];
+-            
+-        default:
+-            break;
++    BOOL isLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
++    if (isLandscape) {
++        NSLog(@"Rotating to Landscape %f", fabsf(self.view.bounds.size.height / self.view.bounds.size.width));
++        [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.height / self.view.bounds.size.width)];
++    } else {
++        NSLog(@"Rotating to Portrait %f", fabsf(self.view.bounds.size.width / self.view.bounds.size.height));
++        [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.width / self.view.bounds.size.height)];
+     }
+     
+ //    [mNavigate setAspectRatio:aspect];
+     
+     // v1 contained an array of layers here
+     self.mLayers = [[NSMutableArray alloc] init];
+     self.mLayerOpacityInterpolants = [[NSMutableArray alloc] init];
+     self.selectedObjects = [[NSMutableArray alloc] init];
+     
+     for (int i=0; i<NUMBER_OF_LAYERS; i++)
+     {
+         OWInterpolant* interp = [[OWInterpolant alloc] initWithValue:1.0f];
+         [self.mLayerOpacityInterpolants addObject:interp];
+     }
+     
+     [self loadLayersWithContext:self.context];
+ 
+     GLKView *view   = (GLKView *)self.view;
+     view.context    = self.context;
+     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+     view.drawableMultisample = GLKViewDrawableMultisample4X;
+     
+ 
+     
+     
+@@ -205,79 +189,69 @@
+     
+     UITapGestureRecognizer* doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+ // RMS: changed this to 3 taps since we're using a lot of 2-finger gestures to navigate
+     
+     [doubleTapRecognizer setNumberOfTapsRequired:3];
+     [self.view addGestureRecognizer:doubleTapRecognizer];
+ 
+     UITapGestureRecognizer* singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+     [singleTapRecognizer setNumberOfTapsRequired:1];
+     [self.view addGestureRecognizer:singleTapRecognizer];
+ 
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLayerOpacity:) name:kUpdateHorizontalSlider object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLayerOpacity:) name:kUpdateVerticalSlider object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSliderMode:) name:kToggleSliderMode object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectSingleObject:) name:kNotificationSelectSingleObject object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMetaDataForItem:) name:kNotificationShowMetaDataForItem object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearSelection:) name:kNotificationClearSelection object:nil];
+     
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetView:) name:kResetAllNotification object:nil];
+     
+     [self setupGL];
+     
+     [self performSelector:@selector(animateToBaseEntity:) withObject:nil afterDelay:0.1];
+ }
+ 
+--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
++-(UIInterfaceOrientationMask)supportedInterfaceOrientations
+ {
+-    return YES;
++    return UIInterfaceOrientationMaskAll;
+ }
+ 
+--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
++- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+ {
+-    switch (toInterfaceOrientation) {
+-        case UIInterfaceOrientationLandscapeLeft:
+-        case UIInterfaceOrientationLandscapeRight:
+-
+-            NSLog(@"Rotating to Landscape %f", fabsf(self.view.bounds.size.height / self.view.bounds.size.width));
+-            
+-            [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.height / self.view.bounds.size.width)];
+-            [self.mNavigate recalculate];
+-            
+-            
+-            break;
+-        case UIInterfaceOrientationPortrait:
+-        case UIInterfaceOrientationPortraitUpsideDown:
+-            
+-            NSLog(@"Rotating to Portrait %f", fabsf(self.view.bounds.size.width / self.view.bounds.size.height));
+-            
+-            [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.width / self.view.bounds.size.height)];
+-            [self.mNavigate recalculate];
+-            
+-        default:
+-            break;
+-    }
++    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
++    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
++        BOOL isLandscape = size.width > size.height;
++        if (isLandscape) {
++            NSLog(@"Rotating to Landscape %f", fabsf(size.height / size.width));
++            [self.mNavigate setAspectRatio:fabsf(size.height / size.width)];
++        } else {
++            NSLog(@"Rotating to Portrait %f", fabsf(size.width / size.height));
++            [self.mNavigate setAspectRatio:fabsf(size.width / size.height)];
++        }
++        [self.mNavigate recalculate];
++    } completion:nil];
+ }
+ 
+ 
+ - (void)didReceiveMemoryWarning
+ {
+     [super didReceiveMemoryWarning];
+ }
+ 
+ 
+ #pragma mark - notifications
+ 
+ -(void) resetView:(NSNotification*)n
+ {
+     [self animateToBaseEntity:nil];
+ }
+ 
+ -(void) animateToBaseEntity:(id)sender
+ {
+     OWAppDelegate* delegate = AppDelegate;
+     OWResource* resource = delegate.resource;
+     OWEntityInfo* info = [resource getInfoForEntityName:@"cuticle"];
+     [info printDebugString];
+     
+     [mNavigate goToForEntity:info withUrgency:0.12];
+     [mNavigate.mRotateLocalY setFuture:0 withUrgency:0.12];
+diff --git a/WormBrowser/OWViewController.m b/WormBrowser/OWViewController.m
+index 0655dd78bb98bf204767cadb4fd53d3ac30ccd96..6f1ab374aee8a14f03276c2ecc6cc4983b4490a3 100644
+--- a/WormBrowser/OWViewController.m
++++ b/WormBrowser/OWViewController.m
+@@ -156,139 +156,121 @@
+     
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allLayersLoaded:) name:kNotificationAllLayersLoaded object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchViewClosed:) name:kNotificationCloseSearchView object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(metaDataClosed:) name:kNotificationCloseMetaView object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMetaDataForItem:) name:kNotificationShowMetaDataForItem object:nil];
+     
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCameraMode:) name:kUpdateCameraSetting object:nil];
+     
+ }
+ 
+ 
+ 
+ -(void)viewDidAppear:(BOOL)animated
+ {
+     [super viewDidAppear:animated];
+     
+     [self.mOpacityView.view setFrame:[self frameForOpacityView]];
+     [self.mSearchView.view setFrame:[self frameForSearchView]];
+     [self.mMetaDataView.view setFrame:[self frameForMetaDataView]];
+ 
+     
+ }
+ 
+ 
+ 
+--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
++-(UIInterfaceOrientationMask)supportedInterfaceOrientations
+ {
+-    BOOL iPad = NO;
+-#ifdef UI_USER_INTERFACE_IDIOM
+-    iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+-#endif
+-    if (iPad) {
+-        return YES;        
+-        
+-    }
+-    else
+-    {
+-        return YES;
+-    }
++    return UIInterfaceOrientationMaskAll;
+ }
+ 
+--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
++- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+ {
+-    [self.mView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
++    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
++    [self.mView viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+ }
+ 
+ - (void)didReceiveMemoryWarning
+ {
+     [super didReceiveMemoryWarning];
+     // Dispose of any resources that can be recreated.
+ }
+ 
+ 
+ #pragma mark - method for layout
+ 
+ -(CGRect) frameForGLView
+ {
+     return self.view.frame;
+ }
+ 
+ 
+ -(CGRect) frameForSearchView
+ {
+      
+     CGRect frameToReturn = CGRectZero;
+     
+     BOOL iPad = NO;
+ #ifdef UI_USER_INTERFACE_IDIOM
+     iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+ #endif
+     if (iPad) {
+         
+-        UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+-        
+-        if (toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+-            
+-            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
+-        }
+-        else
+-        {
++        BOOL isLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
++        if (isLandscape) {
+             frameToReturn = CGRectMake(self.view.frame.size.height - 320 - 10, 10, 320, 400);
++        } else {
++            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
+         }
+         
+     }
+     else
+     {
+         frameToReturn = self.view.frame;
+     }
+     
+     NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
+     
+     return frameToReturn;
+ }
+ 
+ -(CGRect) frameForMetaDataView
+ {
+     
+     CGRect frameToReturn = CGRectZero;
+     
+     BOOL iPad = NO;
+ #ifdef UI_USER_INTERFACE_IDIOM
+     iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+ #endif
+     if (iPad) {
+         
+-        UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+-        
+-        if (toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+-            
+-            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
+-        }
+-        else
+-        {
++        BOOL isLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
++        if (isLandscape) {
+             frameToReturn = CGRectMake(self.view.frame.size.height - 320 - 10, 10, 320, 400);
++        } else {
++            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
+         }
+         
+     }
+     else
+     {
+         frameToReturn = self.view.frame;
+     }
+     
+     NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
+     
+     return frameToReturn;
+ }
+ 
+ 
+ 
+ -(CGRect) frameForOpacityView
+ {
+     
+     CGRect frameToReturn = CGRectZero;
+     
+     BOOL iPad = NO;
+ #ifdef UI_USER_INTERFACE_IDIOM
+     iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+ #endif
+     if (iPad) {
+diff --git a/WormBrowser/OpenWorm-Info.plist b/WormBrowser/OpenWorm-Info.plist
+index e973cea1bf614c41107538f7ba9a0329d4ab669e..ec36ec8202006360d313278083790e90429c1d37 100644
+--- a/WormBrowser/OpenWorm-Info.plist
++++ b/WormBrowser/OpenWorm-Info.plist
+@@ -1,61 +1,58 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ <plist version="1.0">
+ <dict>
+ 	<key>CFBundleDevelopmentRegion</key>
+ 	<string>en</string>
+ 	<key>CFBundleDisplayName</key>
+ 	<string>${PRODUCT_NAME}</string>
+ 	<key>CFBundleExecutable</key>
+ 	<string>${EXECUTABLE_NAME}</string>
+-	<key>CFBundleIcons</key>
+-	<dict>
+-		<key>CFBundlePrimaryIcon</key>
+-		<dict>
+-			<key>CFBundleIconFiles</key>
+-			<array>
+-				<string>Icon.png</string>
+-				<string>Icon@2x.png</string>
+-				<string>iPadIcon.png</string>
+-				<string>iPadIcon@2x.png</string>
+-			</array>
+-			<key>UIPrerenderedIcon</key>
+-			<true/>
+-		</dict>
+-	</dict>
++       <key>CFBundleIcons</key>
++       <dict>
++               <key>CFBundlePrimaryIcon</key>
++               <dict>
++                       <key>CFBundleIconName</key>
++                       <string>AppIcon</string>
++               </dict>
++       </dict>
++       <key>UILaunchStoryboardName</key>
++       <string>LaunchScreen</string>
+ 	<key>CFBundleIdentifier</key>
+ 	<string>us.metacell.openworm</string>
+ 	<key>CFBundleInfoDictionaryVersion</key>
+ 	<string>6.0</string>
+ 	<key>CFBundleName</key>
+ 	<string>${PRODUCT_NAME}</string>
+ 	<key>CFBundlePackageType</key>
+ 	<string>APPL</string>
+ 	<key>CFBundleShortVersionString</key>
+ 	<string>1.0.0</string>
+ 	<key>CFBundleSignature</key>
+ 	<string>????</string>
+ 	<key>CFBundleVersion</key>
+ 	<string>1.0.0</string>
+ 	<key>LSRequiresIPhoneOS</key>
+ 	<true/>
+-	<key>UIPrerenderedIcon</key>
+-	<true/>
+ 	<key>UIRequiredDeviceCapabilities</key>
+ 	<array>
+ 		<string>armv7</string>
+ 	</array>
+ 	<key>UIStatusBarHidden</key>
+ 	<true/>
+-	<key>UISupportedInterfaceOrientations</key>
+-	<array>
+-		<string>UIInterfaceOrientationLandscapeLeft</string>
+-		<string>UIInterfaceOrientationLandscapeRight</string>
+-	</array>
+-	<key>UISupportedInterfaceOrientations~ipad</key>
+-	<array>
+-		<string>UIInterfaceOrientationLandscapeLeft</string>
+-		<string>UIInterfaceOrientationLandscapeRight</string>
+-	</array>
++       <key>UISupportedInterfaceOrientations</key>
++       <array>
++               <string>UIInterfaceOrientationPortrait</string>
++               <string>UIInterfaceOrientationPortraitUpsideDown</string>
++               <string>UIInterfaceOrientationLandscapeLeft</string>
++               <string>UIInterfaceOrientationLandscapeRight</string>
++       </array>
++       <key>UISupportedInterfaceOrientations~ipad</key>
++       <array>
++               <string>UIInterfaceOrientationPortrait</string>
++               <string>UIInterfaceOrientationPortraitUpsideDown</string>
++               <string>UIInterfaceOrientationLandscapeLeft</string>
++               <string>UIInterfaceOrientationLandscapeRight</string>
++       </array>
+ </dict>
+ </plist>
+ 
+EOF
+)
