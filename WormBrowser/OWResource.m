@@ -259,8 +259,7 @@
         }
         
         NSMutableArray* s2e = [self.mSearchToEntity objectForKey:entity.displayName];
-        [s2e addObject:[NSNumber numberWithInt:entity.entityID]];
-        [self.mSearchToEntity setObject:entity.displayName forKey:s2e];
+        [s2e addObject:@(entity.entityID)];
         
     }
 }
