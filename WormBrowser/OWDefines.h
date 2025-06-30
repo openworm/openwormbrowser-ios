@@ -73,7 +73,6 @@
 // 1 -> blends each drawgropu
 #define BLEND_BY_DRAWGROUP 0
 
-#define kTestFlightTeamToken @"3d71b54ba052353b3e21fa1e85f7148d_MTY2MTcwMjAxMi0xMi0xMyAxMzozNzoyMS40MzYzMDk"
 
 //#define kMeshData @"reduced"
 
