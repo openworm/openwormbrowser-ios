@@ -14,10 +14,16 @@ openwormbrowser (v1.0.0)
 
 ___
 
-### Simple usage:
-1. Clone repository
-2. Open OpenWorm.xcworkspace
-3. Build
+### Simple usage
+0. Verify that the Xcode command-line tools are installed by running
+   `xcodebuild -version`
+1. Clone this repository
+2. Run `pod install` to fetch CocoaPods dependencies
+3. Open `OpenWorm.xcworkspace` in Xcode on macOS
+4. Build and run
+
+Building requires a Mac with Xcode and the CocoaPods tool (>=1.16). On Linux or
+other environments without Xcode the project cannot be compiled.
 
 
 **Appledoc required to generate documentation** [http://gentlebytes.com/appledoc/](http://gentlebytes.com/appledoc/) 
