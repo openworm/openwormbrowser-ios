@@ -39,7 +39,7 @@
 }
 
 @property(nonatomic, strong) UIButton* mShowMetaDataButton;
-@property(nonatomic, strong) UIWebView* metaDataView;
+@property(nonatomic, strong) WKWebView* metaDataView;
 
 @end
 
@@ -63,14 +63,9 @@
     
     [self.view setBackgroundColor:[UIColor blackColor]];
     
-    self.metaDataView  = [[UIWebView alloc] initWithFrame:[self frameForWebView]];
+    self.metaDataView  = [[WKWebView alloc] initWithFrame:[self frameForWebView]];
     [self.metaDataView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
-    [self.metaDataView setDelegate:self];
-    [self.metaDataView setScalesPageToFit:YES];
-    
-    for(UIView *wview in [[[self.metaDataView subviews] objectAtIndex:0] subviews]) {
-        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; }
-    }
+    self.metaDataView.navigationDelegate = self;
     
     [self.view addSubview:self.metaDataView];
     
@@ -154,18 +149,22 @@
 }
 
 
--(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (void)webView:(WKWebView *)webView
+decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    NSRange contains = [request.URL.absoluteString rangeOfString:@".app"];
-    
+    NSURL *url = navigationAction.request.URL;
+    NSRange contains = [url.absoluteString rangeOfString:@".app"];
+
     if (contains.location == NSNotFound) {
-        
-        [[UIApplication sharedApplication] openURL:request.URL];
-        
-        return NO;
-    }
-    else{
-        return YES;
+        if (@available(iOS 10.0, *)) {
+            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+        } else {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+        decisionHandler(WKNavigationActionPolicyCancel);
+    } else {
+        decisionHandler(WKNavigationActionPolicyAllow);
     }
 }
 

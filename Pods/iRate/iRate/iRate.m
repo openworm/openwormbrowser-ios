@@ -849,7 +849,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         if (!manual && [SKStoreReviewController class])
         {
             [self remindLater];
-            [SKStoreReviewController requestReview];
+            if (@available(iOS 14.0, *)) {
+                UIWindowScene *scene = UIApplication.sharedApplication.windows.firstObject.windowScene;
+                [SKStoreReviewController requestReviewInScene:scene];
+            } else {
+                [SKStoreReviewController requestReview];
+            }
         }
         else
 #endif
