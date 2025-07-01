@@ -46,7 +46,7 @@ typedef enum {
     OWCameraState currentCameraState;
 }
 
--(GLfloat) projectedMinMaxForEntity:(OWEntityInfo*) entity forVector:(GLKVector3) projectionVector;
+-(float) projectedMinMaxForEntity:(OWEntityInfo*) entity forVector:(GLKVector3) projectionVector;
 -(float) absoluteLimit:(float)value forLimit:(float) absLimit withNewValue:(float)newValue;
 -(void) doNavigateWithAngle:(float)angle forY:(float)y forZoom:(float)zoom;
 -(void) doNavigateWithAngle:(float)angle forY:(float)y forZoom:(float)zoom withUrgency:(float)urgency;
@@ -135,11 +135,11 @@ typedef enum {
 
 #pragma mark - private methods -
 
--(GLfloat) projectedMinMaxForEntity:(OWEntityInfo*) entity forVector:(GLKVector3) projectionVector
+-(float) projectedMinMaxForEntity:(OWEntityInfo*) entity forVector:(GLKVector3) projectionVector
 {
-    
+
     GLKVector3 verts[8];
-    GLfloat proj[8];
+    float proj[8];
     
     verts[0] = GLKVector3Make(entity.bbl.x, entity.bbl.y, entity.bbl.z);
     verts[1] = GLKVector3Make(entity.bbl.x, entity.bbh.y, entity.bbl.z);

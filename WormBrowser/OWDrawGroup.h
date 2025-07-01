@@ -32,19 +32,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <stdint.h>
 
 @interface OWDrawGroup : NSObject
 {
 }
 
 @property vertexDataTextured* vertexBufferData;
-@property GLushort* indexBufferData;
-@property GLushort* colorBufferData;
+@property uint16_t* indexBufferData;
+@property uint16_t* colorBufferData;
 @property float* boundingBoxData;
 
-@property GLuint numIndices;
-@property GLuint indexBuffer;
-@property GLuint vertexBuffer;
+@property uint32_t numIndices;
+@property uint32_t indexBuffer;
+@property uint32_t vertexBuffer;
 
 @property GLKVector4 diffuseColor;
 @property(nonatomic, strong) NSMutableArray* draws;

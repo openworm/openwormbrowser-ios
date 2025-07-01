@@ -32,6 +32,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <stdint.h>
 #import <GLKit/GLKit.h>
 
 /** OWEntityInfo description
@@ -42,8 +43,8 @@
     int layer;
     int entityID;
 
-    GLuint indexOffset;
-    GLuint indexCount;
+    uint32_t indexOffset;
+    uint32_t indexCount;
 
     GLKVector3 bbl;
     GLKVector3 bbh;
@@ -54,8 +55,8 @@
 
 @property int layer;
 @property int entityID;
-@property GLuint indexOffset;
-@property GLuint indexCount;
+@property uint32_t indexOffset;
+@property uint32_t indexCount;
 
 @property GLKVector3 bbl;
 @property GLKVector3 bbh;

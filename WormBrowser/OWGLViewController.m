@@ -1237,7 +1237,7 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
         NSDate *start = [NSDate date];
 
 
-        [layer loadDrawGroupsInContext:self.context];
+        [layer loadDrawGroups];
 
         NSDate *methodFinish = [NSDate date];
         NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:start];
