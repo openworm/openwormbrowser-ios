@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */; };
+		4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */; };
 		A805275B168913FB0037CA87 /* bootstrap in Resources */ = {isa = PBXBuildFile; fileRef = A805275A168913FB0037CA87 /* bootstrap */; };
 		A807F437169A5A2900FA84D7 /* reduced.json in Resources */ = {isa = PBXBuildFile; fileRef = A807F436169A5A2900FA84D7 /* reduced.json */; };
 		A83D379816ACF64E00A72AA3 /* OpenWormLogoNew.png in Resources */ = {isa = PBXBuildFile; fileRef = A83D379716ACF64E00A72AA3 /* OpenWormLogoNew.png */; };
@@ -50,8 +52,6 @@
 		A8C710F8166C329D0067DCAC /* OWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C710F7166C329D0067DCAC /* OWViewController.m */; };
 		A8C710FB166C329D0067DCAC /* OWViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = A8C710F9166C329D0067DCAC /* OWViewController_iPhone.xib */; };
 		A8C710FE166C329D0067DCAC /* OWViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = A8C710FC166C329D0067DCAC /* OWViewController_iPad.xib */; };
-               B0B0B0B21600000000000001 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B0B0B01600000000000001 /* Metal.framework */; };
-               B0B0B0B31600000000000001 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B0B0B11600000000000001 /* MetalKit.framework */; };
 		A8C7110D166C37690067DCAC /* OWNavigate.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C7110C166C37690067DCAC /* OWNavigate.m */; };
 		A8C71114166C38650067DCAC /* OWInterpolant.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C71113166C38650067DCAC /* OWInterpolant.m */; };
 		A8C71117166C3A920067DCAC /* OWLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C71116166C3A910067DCAC /* OWLayer.m */; };
@@ -151,19 +151,20 @@
 		A8E941DB16A9E96D0076F27C /* iPadIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A8E941DA16A9E96D0076F27C /* iPadIcon@2x.png */; };
 		A8F42AEC166E9A73005503A4 /* entity_metadata.json in Resources */ = {isa = PBXBuildFile; fileRef = A8F42AEB166E9A73005503A4 /* entity_metadata.json */; };
 		A8F42AF0166E9D5A005503A4 /* OWSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42AEF166E9D5A005503A4 /* OWSearchViewController.m */; };
-               B0B0B0B71600000000000001 /* OWMetalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B0B0B51600000000000001 /* OWMetalViewController.m */; };
-               B0B0B0B81600000000000001 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B0B0B0B61600000000000001 /* Shaders.metal */; };
 		A8F42B0A166EB097005503A4 /* OWResource.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B09166EB097005503A4 /* OWResource.m */; };
 		A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */ = {isa = PBXBuildFile; fileRef = A8F42B0B166EB14B005503A4 /* mesh_data_clean.json */; };
-               A8F42B5A166ED6D1005503A4 /* OWCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B59166ED6D0005503A4 /* OWCamera.m */; };
-               A8F838E01682FE430052531F /* OWMetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F838DF1682FE430052531F /* OWMetaDataViewController.m */; };
-               A8FC9F7B1676ADED000883F3 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = A8FC9F7A1676ADED000883F3 /* data.json */; };
-               FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */; };
-               31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */; };
-               4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */; };
+		A8F42B5A166ED6D1005503A4 /* OWCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B59166ED6D0005503A4 /* OWCamera.m */; };
+		A8F838E01682FE430052531F /* OWMetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F838DF1682FE430052531F /* OWMetaDataViewController.m */; };
+		A8FC9F7B1676ADED000883F3 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = A8FC9F7A1676ADED000883F3 /* data.json */; };
+		B0B0B0B21600000000000001 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B0B0B01600000000000001 /* Metal.framework */; };
+		B0B0B0B31600000000000001 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B0B0B11600000000000001 /* MetalKit.framework */; };
+		B0B0B0B71600000000000001 /* OWMetalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B0B0B51600000000000001 /* OWMetalViewController.m */; };
+		B0B0B0B81600000000000001 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B0B0B0B61600000000000001 /* Shaders.metal */; };
+		FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		674C096515004CCE671FEA3D /* Pods-OpenWorm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenWorm.release.xcconfig"; path = "Target Support Files/Pods-OpenWorm/Pods-OpenWorm.release.xcconfig"; sourceTree = "<group>"; };
 		6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OpenWorm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C21A8EDBC495042D3400A13 /* Pods-OpenWorm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenWorm.debug.xcconfig"; path = "Target Support Files/Pods-OpenWorm/Pods-OpenWorm.debug.xcconfig"; sourceTree = "<group>"; };
@@ -189,10 +190,8 @@
 		A89379CC1672C591000097BF /* WSOpacityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSOpacityViewController.m; sourceTree = "<group>"; };
 		A89379CE1672C592000097BF /* toggle_single_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggle_single_slider.png; path = ImageAssets/toggle_single_slider.png; sourceTree = SOURCE_ROOT; };
 		A89379CF1672C592000097BF /* toggle_multiple_sliders.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toggle_multiple_sliders.png; path = ImageAssets/toggle_multiple_sliders.png; sourceTree = SOURCE_ROOT; };
-               A89379D01672C592000097BF /* sample_layer_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sample_layer_icons.png; path = ImageAssets/sample_layer_icons.png; sourceTree = SOURCE_ROOT; };
-               c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = WormBrowser/Assets.xcassets; sourceTree = SOURCE_ROOT; };
-               3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-               A89D9E7F16AE2C2F0021852F /* owInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owInfo.png; path = ImageAssets/owInfo.png; sourceTree = SOURCE_ROOT; };
+		A89379D01672C592000097BF /* sample_layer_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sample_layer_icons.png; path = ImageAssets/sample_layer_icons.png; sourceTree = SOURCE_ROOT; };
+		A89D9E7F16AE2C2F0021852F /* owInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owInfo.png; path = ImageAssets/owInfo.png; sourceTree = SOURCE_ROOT; };
 		A89D9E8016AE2C2F0021852F /* owInfo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "owInfo@2x.png"; path = "ImageAssets/owInfo@2x.png"; sourceTree = SOURCE_ROOT; };
 		A89D9E8116AE2C2F0021852F /* owPan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = owPan.png; path = ImageAssets/owPan.png; sourceTree = SOURCE_ROOT; };
 		A89D9E8216AE2C2F0021852F /* owPan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "owPan@2x.png"; path = "ImageAssets/owPan@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -219,8 +218,6 @@
 		A8C710F7166C329D0067DCAC /* OWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OWViewController.m; sourceTree = "<group>"; };
 		A8C710FA166C329D0067DCAC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/OWViewController_iPhone.xib; sourceTree = "<group>"; };
 		A8C710FD166C329D0067DCAC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/OWViewController_iPad.xib; sourceTree = "<group>"; };
-               B0B0B0B01600000000000001 /* Metal.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
-               B0B0B0B11600000000000001 /* MetalKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		A8C7110B166C37690067DCAC /* OWNavigate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWNavigate.h; sourceTree = "<group>"; };
 		A8C7110C166C37690067DCAC /* OWNavigate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWNavigate.m; sourceTree = "<group>"; };
 		A8C71112166C38650067DCAC /* OWInterpolant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWInterpolant.h; sourceTree = "<group>"; };
@@ -240,7 +237,6 @@
 		A8C8120616A7C41B00F3D3C0 /* 38-airplane@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "38-airplane@2x.png"; path = "ImageAssets/38-airplane@2x.png"; sourceTree = SOURCE_ROOT; };
 		A8C8120916A7C49B00F3D3C0 /* 94-pill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "94-pill.png"; path = "ImageAssets/94-pill.png"; sourceTree = SOURCE_ROOT; };
 		A8C8120A16A7C49C00F3D3C0 /* 94-pill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "94-pill@2x.png"; path = "ImageAssets/94-pill@2x.png"; sourceTree = SOURCE_ROOT; };
-		A8CC4A5716E1BE5F00A94962 /* OpenWorm copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OpenWorm copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8CC4A5A16E1C73600A94962 /* 00c50ff0.Virtual_Worm_February_2012.utf8 */ = {isa = PBXFileReference; lastKnownFileType = file; name = 00c50ff0.Virtual_Worm_February_2012.utf8; path = Mesh/original/00c50ff0.Virtual_Worm_February_2012.utf8; sourceTree = SOURCE_ROOT; };
 		A8CC4A5B16E1C73600A94962 /* 03c8448a.Virtual_Worm_February_2012.utf8 */ = {isa = PBXFileReference; lastKnownFileType = file; name = 03c8448a.Virtual_Worm_February_2012.utf8; path = Mesh/original/03c8448a.Virtual_Worm_February_2012.utf8; sourceTree = SOURCE_ROOT; };
 		A8CC4A5C16E1C73600A94962 /* 3fc12c12.Virtual_Worm_February_2012.utf8 */ = {isa = PBXFileReference; lastKnownFileType = file; name = 3fc12c12.Virtual_Worm_February_2012.utf8; path = Mesh/original/3fc12c12.Virtual_Worm_February_2012.utf8; sourceTree = SOURCE_ROOT; };
@@ -329,9 +325,6 @@
 		A8F42AEE166E9D5A005503A4 /* OWSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSearchViewController.h; sourceTree = "<group>"; };
 		A8F42AEF166E9D5A005503A4 /* OWSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSearchViewController.m; sourceTree = "<group>"; };
 		A8F42AF1166E9E5A005503A4 /* OWDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OWDefines.h; sourceTree = "<group>"; };
-               B0B0B0B41600000000000001 /* OWMetalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWMetalViewController.h; sourceTree = "<group>"; };
-               B0B0B0B51600000000000001 /* OWMetalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWMetalViewController.m; sourceTree = "<group>"; };
-               B0B0B0B61600000000000001 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		A8F42B08166EB097005503A4 /* OWResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWResource.h; sourceTree = "<group>"; };
 		A8F42B09166EB097005503A4 /* OWResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWResource.m; sourceTree = "<group>"; };
 		A8F42B0B166EB14B005503A4 /* mesh_data_clean.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = mesh_data_clean.json; path = ../Metadata/mesh_data_clean.json; sourceTree = "<group>"; };
@@ -340,6 +333,12 @@
 		A8F838DE1682FE430052531F /* OWMetaDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWMetaDataViewController.h; sourceTree = "<group>"; };
 		A8F838DF1682FE430052531F /* OWMetaDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWMetaDataViewController.m; sourceTree = "<group>"; };
 		A8FC9F7A1676ADED000883F3 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = data.json; path = ../Metadata/data.json; sourceTree = "<group>"; };
+		B0B0B0B01600000000000001 /* Metal.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		B0B0B0B11600000000000001 /* MetalKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		B0B0B0B41600000000000001 /* OWMetalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWMetalViewController.h; sourceTree = "<group>"; };
+		B0B0B0B51600000000000001 /* OWMetalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWMetalViewController.m; sourceTree = "<group>"; };
+		B0B0B0B61600000000000001 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = WormBrowser/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,8 +347,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8C8120016A7B67100F3D3C0 /* QuartzCore.framework in Frameworks */,
-                               B0B0B0B31600000000000001 /* MetalKit.framework in Frameworks */,
-                               B0B0B0B21600000000000001 /* Metal.framework in Frameworks */,
+				B0B0B0B31600000000000001 /* MetalKit.framework in Frameworks */,
+				B0B0B0B21600000000000001 /* Metal.framework in Frameworks */,
 				A8C710DF166C329D0067DCAC /* UIKit.framework in Frameworks */,
 				A8C710E1166C329D0067DCAC /* Foundation.framework in Frameworks */,
 				A8C710E3166C329D0067DCAC /* CoreGraphics.framework in Frameworks */,
@@ -366,7 +365,6 @@
 				8C21A8EDBC495042D3400A13 /* Pods-OpenWorm.debug.xcconfig */,
 				674C096515004CCE671FEA3D /* Pods-OpenWorm.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -469,12 +467,12 @@
 				A89379C01672C2D8000097BF /* 06-magnify.png */,
 				A89379C11672C2D8000097BF /* 06-magnify@2x.png */,
 				A89379B01672B445000097BF /* subtlenet2_@2X.png */,
-                               A89379B11672B445000097BF /* subtlenet2.png */,
-                               c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */,
-                       );
-                       name = Images;
-                       sourceTree = "<group>";
-               };
+				A89379B11672B445000097BF /* subtlenet2.png */,
+				c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		A8AF67C216878AA500771CAB /* SearchView */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,9 +502,9 @@
 			children = (
 				A89379CB1672C591000097BF /* WSOpacityViewController.h */,
 				A89379CC1672C591000097BF /* WSOpacityViewController.m */,
-                               B0B0B0B41600000000000001 /* OWMetalViewController.h */,
-                               B0B0B0B51600000000000001 /* OWMetalViewController.m */,
-                               B0B0B0B61600000000000001 /* Shaders.metal */,
+				B0B0B0B41600000000000001 /* OWMetalViewController.h */,
+				B0B0B0B51600000000000001 /* OWMetalViewController.m */,
+				B0B0B0B61600000000000001 /* Shaders.metal */,
 			);
 			name = RenderView;
 			sourceTree = "<group>";
@@ -534,7 +532,6 @@
 			isa = PBXGroup;
 			children = (
 				A8C710DA166C329D0067DCAC /* OpenWorm.app */,
-				A8CC4A5716E1BE5F00A94962 /* OpenWorm copy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -543,8 +540,8 @@
 			isa = PBXGroup;
 			children = (
 				A8C811FF16A7B67000F3D3C0 /* QuartzCore.framework */,
-                               B0B0B0B11600000000000001 /* MetalKit.framework */,
-                               B0B0B0B01600000000000001 /* Metal.framework */,
+				B0B0B0B11600000000000001 /* MetalKit.framework */,
+				B0B0B0B01600000000000001 /* Metal.framework */,
 				A8C710DE166C329D0067DCAC /* UIKit.framework */,
 				A8C710E0166C329D0067DCAC /* Foundation.framework */,
 				A8C710E2166C329D0067DCAC /* CoreGraphics.framework */,
@@ -587,12 +584,12 @@
 				A886AA5E16E1CCBB00E2714F /* OpenWorm-Docs.plist */,
 				A8C710E7166C329D0067DCAC /* InfoPlist.strings */,
 				A8C710EA166C329D0067DCAC /* main.m */,
-                               A8C710EC166C329D0067DCAC /* OpenWorm-Prefix.pch */,
-                               3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */,
-                       );
-                       name = "Supporting Files";
-                       sourceTree = "<group>";
-               };
+				A8C710EC166C329D0067DCAC /* OpenWorm-Prefix.pch */,
+				3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		A8C7111E166C3DCD0067DCAC /* RenderClasses */ = {
 			isa = PBXGroup;
 			children = (
@@ -685,37 +682,24 @@
 			productReference = A8C710DA166C329D0067DCAC /* OpenWorm.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A8CC49B516E1BE5F00A94962 /* Docs */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A8CC4A5416E1BE5F00A94962 /* Build configuration list for PBXNativeTarget "Docs" */;
-			buildPhases = (
-				A8CC4A5916E1BE6B00A94962 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Docs;
-			productName = WormBrowser;
-			productReference = A8CC4A5716E1BE5F00A94962 /* OpenWorm copy.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		A8C710D1166C329D0067DCAC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = OW;
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 1630;
 				ORGANIZATIONNAME = "Rich Stoner";
 			};
 			buildConfigurationList = A8C710D4166C329D0067DCAC /* Build configuration list for PBXProject "OpenWorm" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = A8C710CF166C329D0067DCAC;
 			productRefGroup = A8C710DB166C329D0067DCAC /* Products */;
@@ -723,7 +707,6 @@
 			projectRoot = "";
 			targets = (
 				A8C710D9166C329D0067DCAC /* OpenWorm */,
-				A8CC49B516E1BE5F00A94962 /* Docs */,
 			);
 		};
 /* End PBXProject section */
@@ -752,10 +735,10 @@
 				A805275B168913FB0037CA87 /* bootstrap in Resources */,
 				A807F437169A5A2900FA84D7 /* reduced.json in Resources */,
 				A8F42AEC166E9A73005503A4 /* entity_metadata.json in Resources */,
-                               A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */,
-                               31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */,
-                               4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */,
-                               A8DE67F916A0999D00640298 /* Icon.png in Resources */,
+				A8F42B0C166EB14B005503A4 /* mesh_data_clean.json in Resources */,
+				31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */,
+				4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */,
+				A8DE67F916A0999D00640298 /* Icon.png in Resources */,
 				A8DE67FC16A099BE00640298 /* Icon@2x.png in Resources */,
 				A8DE67FE16A099C900640298 /* Default-Landscape~ipad.png in Resources */,
 				A8DE680016A099CF00640298 /* Default-Landscape@2x~ipad.png in Resources */,
@@ -891,19 +874,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenWorm/Pods-OpenWorm-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A8CC4A5916E1BE6B00A94962 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/appledoc --create-html --no-create-docset --project-name openwormbrowser --project-company \"WholeSlide, Inc.\" --company-id us.metacell --output /Users/stonerri/Documents/OpenWorm/openwormbrowser-ios/doc --no-repeat-first-par /Users/stonerri/Documents/OpenWorm/openwormbrowser-ios/WormBrowser";
-		};
 		CEC0E2168D3516332AA0D283 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -943,8 +913,8 @@
 				A8C7111D166C3D8E0067DCAC /* OWDraw.m in Sources */,
 				A8C71128166C426F0067DCAC /* OWEntityInfo.m in Sources */,
 				A8F42AF0166E9D5A005503A4 /* OWSearchViewController.m in Sources */,
-                               B0B0B0B71600000000000001 /* OWMetalViewController.m in Sources */,
-                               B0B0B0B81600000000000001 /* Shaders.metal in Sources */,
+				B0B0B0B71600000000000001 /* OWMetalViewController.m in Sources */,
+				B0B0B0B81600000000000001 /* Shaders.metal in Sources */,
 				A8F42B0A166EB097005503A4 /* OWResource.m in Sources */,
 				A8F42B5A166ED6D1005503A4 /* OWCamera.m in Sources */,
 				A893799416729EB0000097BF /* SearchTermCell.m in Sources */,
@@ -988,23 +958,48 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = MJV7FZG6HF;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1018,16 +1013,40 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = MJV7FZG6HF;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -1042,12 +1061,13 @@
 			baseConfigurationReference = 8C21A8EDBC495042D3400A13 /* Pods-OpenWorm.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WormBrowser/OpenWorm-Prefix.pch";
 				INFOPLIST_FILE = "WormBrowser/OpenWorm-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openworm.openwormbrowser-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1060,47 +1080,14 @@
 			baseConfigurationReference = 674C096515004CCE671FEA3D /* Pods-OpenWorm.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WormBrowser/OpenWorm-Prefix.pch";
 				INFOPLIST_FILE = "WormBrowser/OpenWorm-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.openworm.openwormbrowser-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		A8CC4A5516E1BE5F00A94962 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WormBrowser/OpenWorm-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/WormBrowser/OpenWorm-Docs.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_NAME = "OpenWorm copy";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		A8CC4A5616E1BE5F00A94962 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WormBrowser/OpenWorm-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/WormBrowser/OpenWorm-Docs.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_NAME = "OpenWorm copy";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
@@ -1124,15 +1111,6 @@
 			buildConfigurations = (
 				A8C71102166C329D0067DCAC /* Debug */,
 				A8C71103166C329D0067DCAC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A8CC4A5416E1BE5F00A94962 /* Build configuration list for PBXNativeTarget "Docs" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A8CC4A5516E1BE5F00A94962 /* Debug */,
-				A8CC4A5616E1BE5F00A94962 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
