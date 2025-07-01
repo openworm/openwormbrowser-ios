@@ -15,8 +15,6 @@ openwormbrowser (v1.0.0)
 ___
 
 ### Simple usage
-0. Verify that the Xcode command-line tools are installed by running
-   `xcodebuild -version`
 1. Clone this repository
 2. Run `pod install` to fetch CocoaPods dependencies
 3. Open `OpenWorm.xcworkspace` in Xcode on macOS

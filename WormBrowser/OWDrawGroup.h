@@ -33,6 +33,7 @@
 
 #import <Foundation/Foundation.h>
 #import <stdint.h>
+#import <Metal/Metal.h>
 
 @interface OWDrawGroup : NSObject
 {
@@ -46,6 +47,9 @@
 @property uint32_t numIndices;
 @property uint32_t indexBuffer;
 @property uint32_t vertexBuffer;
+@property NSUInteger vertexCount;
+@property(nonatomic,strong) id<MTLBuffer> mtlVertexBuffer;
+@property(nonatomic,strong) id<MTLBuffer> mtlIndexBuffer;
 
 @property GLKVector4 diffuseColor;
 @property(nonatomic, strong) NSMutableArray* draws;
