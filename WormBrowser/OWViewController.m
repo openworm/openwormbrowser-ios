@@ -144,7 +144,7 @@
     
 #else
 
-    loadingActivity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    loadingActivity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     [loadingActivity setFrame:CGRectMake(0,0,40,40)];
     [loadingActivity startAnimating];
     [loadingActivity setCenter:CGPointMake(self.view.frame.size.width - 30, 30)];

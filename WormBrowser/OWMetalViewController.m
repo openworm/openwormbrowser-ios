@@ -425,9 +425,9 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         BOOL isLandscape = size.width > size.height;
         if (isLandscape) {
-            [self.mNavigate setAspectRatio:fabsf(size.height / size.width)];
+            [self.mNavigate setAspectRatio:fabs(size.height / size.width)];
         } else {
-            [self.mNavigate setAspectRatio:fabsf(size.width / size.height)];
+            [self.mNavigate setAspectRatio:fabs(size.width / size.height)];
         }
         [self.mNavigate recalculate];
     } completion:nil];
@@ -438,7 +438,7 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     [OWInterpolant tweenAll:self.mLayerOpacityInterpolants];
 
     OWCamera *cam = [self.mNavigate getCamera];
-    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+    float aspect = fabs(self.view.bounds.size.width / self.view.bounds.size.height);
     matrix_float4x4 proj = matrix_perspective(OWDegreesToRadians(40.0f), aspect, 0.1f, 250.0f);
     vector_float3 eye = {cam.eye.x, cam.eye.y, cam.eye.z};
     vector_float3 target = {cam.target.x, cam.target.y, cam.target.z};

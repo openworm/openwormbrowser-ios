@@ -32,11 +32,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
 /** OWMetaDataViewController description
  
 */
-@interface OWMetaDataViewController : UIViewController <UIWebViewDelegate>
+@interface OWMetaDataViewController : UIViewController <WKNavigationDelegate>
 
 
 
