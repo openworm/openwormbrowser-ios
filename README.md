@@ -16,7 +16,7 @@ ___
 
 ### Simple usage
 1. Clone this repository
-2. Run `pod install` to fetch CocoaPods dependencies
+2. Run `./setup.sh` to install CocoaPods (if needed) and fetch pod dependencies
 3. Open `OpenWorm.xcworkspace` in Xcode on macOS
 4. Build and run
 
