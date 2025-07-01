@@ -159,8 +159,6 @@ decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
     if (contains.location == NSNotFound) {
         if (@available(iOS 10.0, *)) {
             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-        } else {
-            [[UIApplication sharedApplication] openURL:url];
         }
         decisionHandler(WKNavigationActionPolicyCancel);
     } else {

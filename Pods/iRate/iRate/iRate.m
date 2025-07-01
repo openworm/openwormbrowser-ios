@@ -849,11 +849,32 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         if (!manual && [SKStoreReviewController class])
         {
             [self remindLater];
-            if (@available(iOS 14.0, *)) {
-                UIWindowScene *scene = UIApplication.sharedApplication.windows.firstObject.windowScene;
-                [SKStoreReviewController requestReviewInScene:scene];
-            } else {
+            if (@available(iOS 14.0, *))
+            {
+                UIWindowScene *targetScene = nil;
+                for (UIScene *scene in UIApplication.sharedApplication.connectedScenes)
+                {
+                    if ([scene isKindOfClass:[UIWindowScene class]] && scene.activationState == UISceneActivationStateForegroundActive)
+                    {
+                        targetScene = (UIWindowScene *)scene;
+                        break;
+                    }
+                }
+                if (targetScene)
+                {
+                    [SKStoreReviewController requestReviewInScene:targetScene];
+                }
+                else
+                {
+                    [SKStoreReviewController requestReview];
+                }
+            }
+            else
+            {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 [SKStoreReviewController requestReview];
+#pragma clang diagnostic pop
             }
         }
         else
