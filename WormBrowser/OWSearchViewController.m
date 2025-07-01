@@ -320,7 +320,7 @@
     return [layerArray objectAtIndex:indexPath.row];
 }
 
--(NSString*)titleForSection:(int)section
+-(NSString*)titleForSection:(NSInteger)section
 {
     return [[[self.filteredArray objectAtIndex:section] allKeys] objectAtIndex:0];
 }
@@ -477,8 +477,7 @@
 
 -(void) handleToolBarTap:(id) sender
 {
-    CGRect sectionRect;
-    barButtons selectedButton = [sender tag];
+    barButtons selectedButton = (barButtons)[sender tag];
     
     NSIndexPath* path;
     

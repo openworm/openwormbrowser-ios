@@ -258,12 +258,12 @@
 #pragma mark bounding box parsing
             
             int bboffset = [[meshDictionary objectForKey:@"bboxes"] intValue];
-            
+
             if (bboffset > 0) {
-                
-                int numBBoxen = [(NSArray*)[meshDictionary objectForKey:@"names"] count];
-                
-                int numFloats = numBBoxen * 6;
+
+                NSUInteger numBBoxen = [(NSArray*)[meshDictionary objectForKey:@"names"] count];
+
+                int numFloats = (int)numBBoxen * 6;
                 int inputStart = bboffset;
                 int inputEnd = bboffset + numFloats;
                 int outputStart = 0;

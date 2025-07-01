@@ -314,18 +314,18 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kResetAllNotification object:nil];
  
     [UIView animateWithDuration:0.5 animations:^{
-       
-        
-        [verticalSlider setFrame:CGRectMake(-3 + 10, 10 + kVerticalSliderOrigin, kOpacityViewWidth+6, kVerticalSliderHeight)];
-        
-        verticalSliderValue = 0.0;
-        
-        for (UIView* horizontalSlider in arrayOfHorizontalSliders) {
-            
+
+
+        [self->verticalSlider setFrame:CGRectMake(-3 + 10, 10 + kVerticalSliderOrigin, kOpacityViewWidth+6, kVerticalSliderHeight)];
+
+        self->verticalSliderValue = 0.0f;
+
+        for (UIView* horizontalSlider in self->arrayOfHorizontalSliders) {
+
             CGPoint originalCenter = horizontalSlider.center;
             originalCenter.x = kHorizontalSliderTerminal + 10;
             horizontalSlider.center = originalCenter;
-            
+
         }
         
     } completion:^(BOOL finished) {
@@ -333,21 +333,21 @@
         
         
         for (int i=0; i<4; i++) {
-            
-            [arrayOfHorizontalValues replaceObjectAtIndex:i withObject:[NSNumber numberWithFloat:1.0f]];
+
+            [self->arrayOfHorizontalValues replaceObjectAtIndex:i withObject:[NSNumber numberWithFloat:1.0f]];
         }
         
         
         
-        if (bSliderIsVertical) {
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateVerticalSlider object:[NSNumber numberWithFloat:verticalSliderValue]];
-            
+        if (self->bSliderIsVertical) {
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateVerticalSlider object:[NSNumber numberWithFloat:self->verticalSliderValue]];
+
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateHorizontalSlider object:arrayOfHorizontalValues];
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kUpdateHorizontalSlider object:self->arrayOfHorizontalValues];
+
         }
         
         
