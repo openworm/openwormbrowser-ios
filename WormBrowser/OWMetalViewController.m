@@ -4,6 +4,7 @@
 #import "OWAppDelegate.h"
 #import "OWResource.h"
 #import "OWEntityInfo.h"
+#import "OWVector.h"
 
 typedef struct {
     vector_float3 position;
@@ -18,6 +19,31 @@ typedef struct {
     float ambient;
 } Uniforms;
 
+static inline matrix_float4x4 matrix_perspective(float fovyRadians, float aspect, float nearZ, float farZ) {
+    float yScale = 1.0f / tanf(fovyRadians * 0.5f);
+    float xScale = yScale / aspect;
+    float zRange = nearZ - farZ;
+    return (matrix_float4x4){
+        { xScale, 0, 0, 0 },
+        { 0, yScale, 0, 0 },
+        { 0, 0, (farZ + nearZ) / zRange, -1 },
+        { 0, 0, (2 * farZ * nearZ) / zRange, 0 }
+    };
+}
+
+static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 center, vector_float3 up) {
+    vector_float3 f = simd_normalize(center - eye);
+    vector_float3 s = simd_normalize(simd_cross(f, up));
+    vector_float3 u = simd_cross(s, f);
+
+    return (matrix_float4x4){
+        { s.x, u.x, -f.x, 0 },
+        { s.y, u.y, -f.y, 0 },
+        { s.z, u.z, -f.z, 0 },
+        { -simd_dot(s, eye), -simd_dot(u, eye), simd_dot(f, eye), 1 }
+    };
+}
+
 @interface OWMetalViewController ()
 @property(nonatomic,strong) MTKView *mtkView;
 @property(nonatomic,strong) id<MTLDevice> device;
@@ -26,6 +52,7 @@ typedef struct {
 @property(nonatomic,strong) id<MTLRenderPipelineState> pickingPipelineState;
 @property(nonatomic,strong) id<MTLBuffer> uniformBuffer;
 @property(nonatomic,strong) id<MTLBuffer> vertexBuffer;
+@property(nonatomic,strong) id<MTLDepthStencilState> depthState;
 @property(nonatomic,assign) float bodyOpacity;
 @property(nonatomic,assign) BOOL cameraPill;
 
@@ -43,6 +70,7 @@ typedef struct {
 @property(nonatomic,strong) NSMutableArray *selectedObjects;
 @property(nonatomic,assign) float globalOpacity;
 @property(nonatomic,assign) BOOL paused;
+@property(nonatomic,assign) matrix_float4x4 mvpMatrix;
 @end
 
 @implementation OWMetalViewController
@@ -59,6 +87,7 @@ typedef struct {
     self.sliderIsVertical = YES;
     self.currentRenderSetting = renderSettingLow;
     self.globalOpacity = 1.0f;
+    self.mvpMatrix = matrix_identity_float4x4;
 
     self.mNavigate = [[OWNavigate alloc] init];
     self.mLayers = [[NSMutableArray alloc] init];
@@ -118,6 +147,7 @@ typedef struct {
 
 - (void)setupMetal {
     self.commandQueue = [self.device newCommandQueue];
+    self.mtkView.depthStencilPixelFormat = MTLPixelFormatDepth32Float;
     static const MetalVertex verts[] = {
         { { 0.0,  0.5, 0.0}, {0,0,1}, {0.5,1} },
         { {-0.5, -0.5,0.0}, {0,0,1}, {0,0} },
@@ -133,6 +163,7 @@ typedef struct {
     desc.vertexFunction = vert;
     desc.fragmentFunction = frag;
     desc.colorAttachments[0].pixelFormat = self.mtkView.colorPixelFormat;
+    desc.depthAttachmentPixelFormat = self.mtkView.depthStencilPixelFormat;
 
     MTLVertexDescriptor *vd = [[MTLVertexDescriptor alloc] init];
     vd.attributes[0].format = MTLVertexFormatFloat3;
@@ -158,11 +189,17 @@ typedef struct {
     pdesc.vertexFunction = pickVert;
     pdesc.fragmentFunction = pickFrag;
     pdesc.colorAttachments[0].pixelFormat = MTLPixelFormatRGBA8Unorm;
+    pdesc.depthAttachmentPixelFormat = self.mtkView.depthStencilPixelFormat;
     pdesc.vertexDescriptor = vd;
     self.pickingPipelineState = [self.device newRenderPipelineStateWithDescriptor:pdesc error:&error];
     if(!self.pickingPipelineState) {
         NSLog(@"Failed to create picking pipeline state: %@", error);
     }
+
+    MTLDepthStencilDescriptor *ds = [[MTLDepthStencilDescriptor alloc] init];
+    ds.depthCompareFunction = MTLCompareFunctionLess;
+    ds.depthWriteEnabled = YES;
+    self.depthState = [self.device newDepthStencilStateWithDescriptor:ds];
 
     self.uniformBuffer = [self.device newBufferWithLength:sizeof(Uniforms) options:MTLResourceStorageModeShared];
 }
@@ -240,7 +277,7 @@ typedef struct {
 - (void)drawOWLayer:(OWLayer *)layer withOpacity:(float)opacity encoder:(id<MTLRenderCommandEncoder>)enc {
     if (!layer.isLoaded) return;
     Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
-    uni->mvp = matrix_identity_float4x4;
+    uni->mvp = self.mvpMatrix;
     uni->lightDir = (vector_float3){0,0,1};
     uni->ambient = 0.2f;
     for (OWDrawGroup *dg in layer.drawGroups) {
@@ -276,9 +313,10 @@ typedef struct {
     id<MTLCommandBuffer> cmd = [self.commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> enc = [cmd renderCommandEncoderWithDescriptor:rpd];
     [enc setRenderPipelineState:self.pickingPipelineState];
+    [enc setDepthStencilState:self.depthState];
 
     Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
-    uni->mvp = matrix_identity_float4x4;
+    uni->mvp = self.mvpMatrix;
     uni->lightDir = (vector_float3){0,0,1};
     uni->ambient = 0.0f;
 
@@ -345,6 +383,10 @@ typedef struct {
     id<MTLCommandBuffer> cmd = [self.commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> enc = [cmd renderCommandEncoderWithDescriptor:rpd];
     [enc setRenderPipelineState:self.shadingPipelineState];
+    [enc setDepthStencilState:self.depthState];
+
+    Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
+    uni->mvp = self.mvpMatrix;
 
     for (NSUInteger idx = 0; idx < self.mLayers.count; idx++) {
         OWLayer *layer = self.mLayers[idx];
@@ -389,6 +431,15 @@ typedef struct {
 - (void)update {
     [self.mNavigate recalculate];
     [OWInterpolant tweenAll:self.mLayerOpacityInterpolants];
+
+    OWCamera *cam = [self.mNavigate getCamera];
+    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+    matrix_float4x4 proj = matrix_perspective(OWDegreesToRadians(40.0f), aspect, 0.1f, 250.0f);
+    vector_float3 eye = {cam.eye.x, cam.eye.y, cam.eye.z};
+    vector_float3 target = {cam.target.x, cam.target.y, cam.target.z};
+    vector_float3 up = {cam.up.x, cam.up.y, cam.up.z};
+    matrix_float4x4 view = matrix_look_at(eye, target, up);
+    self.mvpMatrix = matrix_multiply(proj, view);
 }
 
 #pragma mark - Public API
