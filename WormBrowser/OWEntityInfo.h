@@ -33,7 +33,7 @@
 
 #import <Foundation/Foundation.h>
 #import <stdint.h>
-#import <GLKit/GLKit.h>
+#import "OWVector.h"
 
 /** OWEntityInfo description
  
@@ -46,8 +46,8 @@
     uint32_t indexOffset;
     uint32_t indexCount;
 
-    GLKVector3 bbl;
-    GLKVector3 bbh;
+    OWVector3 bbl;
+    OWVector3 bbh;
     
     NSString* displayName;
     
@@ -58,8 +58,8 @@
 @property uint32_t indexOffset;
 @property uint32_t indexCount;
 
-@property GLKVector3 bbl;
-@property GLKVector3 bbh;
+@property OWVector3 bbl;
+@property OWVector3 bbh;
 @property(nonatomic, strong) NSString* displayName;
 
 -(void) printDebugString;

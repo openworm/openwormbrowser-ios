@@ -286,7 +286,7 @@
                     [draw setGeometry:name];
                     [draw setCount:[length intValue]];
                     [draw setOffset:lengthOffset];
-                    [draw setSelectColor:GLKVector4Make((float)self.type/256, (float)draw_group_index/256, (float)draw_index/256, 1.0)];
+                    [draw setSelectColor:OWVector4Make((float)self.type/256, (float)draw_group_index/256, (float)draw_index/256, 1.0)];
                     
                     [drawGroup.draws addObject:draw];
                     
@@ -313,9 +313,9 @@
                     drawGroup.boundingBoxData[outputStart++] = decodeScaleVals[2] * diaZ;
                     
                     if (_entity != nil) {
-                        [_entity setBbl:GLKVector3Make( drawGroup.boundingBoxData[outputStart - 6], drawGroup.boundingBoxData[outputStart - 5], drawGroup.boundingBoxData[outputStart - 4])];
+                        [_entity setBbl:OWVector3Make( drawGroup.boundingBoxData[outputStart - 6], drawGroup.boundingBoxData[outputStart - 5], drawGroup.boundingBoxData[outputStart - 4])];
                         
-                        [_entity setBbh:GLKVector3Make( drawGroup.boundingBoxData[outputStart - 3], drawGroup.boundingBoxData[outputStart - 2], drawGroup.boundingBoxData[outputStart -1])];
+                        [_entity setBbh:OWVector3Make( drawGroup.boundingBoxData[outputStart - 3], drawGroup.boundingBoxData[outputStart - 2], drawGroup.boundingBoxData[outputStart -1])];
                         
                         [resource putInfo:_entity forName:[NSString stringWithFormat:@"%d", _entity.entityID]];
                     }

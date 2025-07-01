@@ -20,6 +20,10 @@ ___
 3. Open `OpenWorm.xcworkspace` in Xcode on macOS
 4. Build and run
 
+The rendering engine now uses **Metal**. All model geometry and shader code live
+in `WormBrowser/`, with `OWMetalViewController` driving the rendering pipeline.
+Older OpenGL code remains for reference but is no longer used by default.
+
 Building requires a Mac with Xcode and the CocoaPods tool (>=1.16). On Linux or
 other environments without Xcode the project cannot be compiled.
 

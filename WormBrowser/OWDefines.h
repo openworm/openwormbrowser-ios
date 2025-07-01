@@ -37,6 +37,7 @@
 #define kBarThickness 36.0f
 #define kWormGreen [UIColor colorWithRed:0.6f green:0.8f blue:0.2f alpha:1.0]
 #define kWormDarker [UIColor colorWithRed:0.5f green:0.7f blue:0.1f alpha:1.0]
+#import "OWVector.h"
 
 #define kOpacityViewWidth 60
 #define kOpacityViewHeight 188 + 50 + 29 + 20
@@ -112,9 +113,9 @@ typedef enum {
 
 struct vertexDataTextured
 {
-	GLKVector3		vertex;
-	GLKVector3		normal;
-	GLKVector2      texCoord;
+	OWVector3		vertex;
+	OWVector3		normal;
+	OWVector2      texCoord;
 };
 typedef struct vertexDataTextured vertexDataTextured;
 typedef vertexDataTextured* vertexDataTexturedPtr;

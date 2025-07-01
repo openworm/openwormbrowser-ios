@@ -34,6 +34,7 @@
 #import <Foundation/Foundation.h>
 #import <stdint.h>
 #import <Metal/Metal.h>
+#import "OWVector.h"
 
 @interface OWDrawGroup : NSObject
 {
@@ -51,7 +52,7 @@
 @property(nonatomic,strong) id<MTLBuffer> mtlVertexBuffer;
 @property(nonatomic,strong) id<MTLBuffer> mtlIndexBuffer;
 
-@property GLKVector4 diffuseColor;
+@property OWVector4 diffuseColor;
 @property(nonatomic, strong) NSMutableArray* draws;
 
 

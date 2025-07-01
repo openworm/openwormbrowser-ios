@@ -11,11 +11,20 @@ typedef struct {
     vector_float2 texCoord;
 } MetalVertex;
 
+typedef struct {
+    matrix_float4x4 mvp;
+    vector_float4 color;
+    vector_float3 lightDir;
+    float ambient;
+} Uniforms;
+
 @interface OWMetalViewController ()
 @property(nonatomic,strong) MTKView *mtkView;
 @property(nonatomic,strong) id<MTLDevice> device;
 @property(nonatomic,strong) id<MTLCommandQueue> commandQueue;
-@property(nonatomic,strong) id<MTLRenderPipelineState> pipelineState;
+@property(nonatomic,strong) id<MTLRenderPipelineState> shadingPipelineState;
+@property(nonatomic,strong) id<MTLRenderPipelineState> pickingPipelineState;
+@property(nonatomic,strong) id<MTLBuffer> uniformBuffer;
 @property(nonatomic,strong) id<MTLBuffer> vertexBuffer;
 @property(nonatomic,assign) float bodyOpacity;
 @property(nonatomic,assign) BOOL cameraPill;
@@ -118,8 +127,8 @@ typedef struct {
 
     NSError *error = nil;
     id<MTLLibrary> lib = [self.device newDefaultLibrary];
-    id<MTLFunction> vert = [lib newFunctionWithName:@"basic_vertex"];
-    id<MTLFunction> frag = [lib newFunctionWithName:@"basic_fragment"];
+    id<MTLFunction> vert = [lib newFunctionWithName:@"lighting_vertex"];
+    id<MTLFunction> frag = [lib newFunctionWithName:@"lighting_fragment"];
     MTLRenderPipelineDescriptor *desc = [[MTLRenderPipelineDescriptor alloc] init];
     desc.vertexFunction = vert;
     desc.fragmentFunction = frag;
@@ -138,10 +147,24 @@ typedef struct {
     vd.layouts[0].stride = sizeof(MetalVertex);
     desc.vertexDescriptor = vd;
 
-    self.pipelineState = [self.device newRenderPipelineStateWithDescriptor:desc error:&error];
-    if(!self.pipelineState) {
+    self.shadingPipelineState = [self.device newRenderPipelineStateWithDescriptor:desc error:&error];
+    if(!self.shadingPipelineState) {
         NSLog(@"Failed to create pipeline state: %@", error);
     }
+
+    id<MTLFunction> pickVert = [lib newFunctionWithName:@"picking_vertex"];
+    id<MTLFunction> pickFrag = [lib newFunctionWithName:@"picking_fragment"];
+    MTLRenderPipelineDescriptor *pdesc = [[MTLRenderPipelineDescriptor alloc] init];
+    pdesc.vertexFunction = pickVert;
+    pdesc.fragmentFunction = pickFrag;
+    pdesc.colorAttachments[0].pixelFormat = MTLPixelFormatRGBA8Unorm;
+    pdesc.vertexDescriptor = vd;
+    self.pickingPipelineState = [self.device newRenderPipelineStateWithDescriptor:pdesc error:&error];
+    if(!self.pickingPipelineState) {
+        NSLog(@"Failed to create picking pipeline state: %@", error);
+    }
+
+    self.uniformBuffer = [self.device newBufferWithLength:sizeof(Uniforms) options:MTLResourceStorageModeShared];
 }
 
 - (OWLayer *)createLayerWithInfo:(int)info {
@@ -200,6 +223,7 @@ typedef struct {
 - (void)drawElementsForGroup:(OWDrawGroup *)group encoder:(id<MTLRenderCommandEncoder>)enc offset:(uint32_t)offset count:(uint32_t)count {
     if (!group.mtlVertexBuffer || !group.mtlIndexBuffer) return;
     [enc setVertexBuffer:group.mtlVertexBuffer offset:0 atIndex:0];
+    [enc setVertexBuffer:self.uniformBuffer offset:0 atIndex:1];
     [enc drawIndexedPrimitives:MTLPrimitiveTypeTriangle indexCount:count indexType:MTLIndexTypeUInt16 indexBuffer:group.mtlIndexBuffer indexBufferOffset:offset * 2];
 }
 
@@ -215,7 +239,12 @@ typedef struct {
 
 - (void)drawOWLayer:(OWLayer *)layer withOpacity:(float)opacity encoder:(id<MTLRenderCommandEncoder>)enc {
     if (!layer.isLoaded) return;
+    Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
+    uni->mvp = matrix_identity_float4x4;
+    uni->lightDir = (vector_float3){0,0,1};
+    uni->ambient = 0.2f;
     for (OWDrawGroup *dg in layer.drawGroups) {
+        uni->color = (vector_float4){dg.diffuseColor.x, dg.diffuseColor.y, dg.diffuseColor.z, opacity};
         for (OWDraw *draw in dg.draws) {
             [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count];
         }
@@ -235,8 +264,58 @@ typedef struct {
 }
 
 - (NSUInteger)findObjectByPoint:(CGPoint)point {
-    NSLog(@"Selection at %@ not implemented", NSStringFromCGPoint(point));
-    return NSNotFound;
+    NSUInteger result = NSNotFound;
+    MTLTextureDescriptor *td = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm width:1 height:1 mipmapped:NO];
+    td.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
+    id<MTLTexture> tex = [self.device newTextureWithDescriptor:td];
+    MTLRenderPassDescriptor *rpd = [MTLRenderPassDescriptor renderPassDescriptor];
+    rpd.colorAttachments[0].texture = tex;
+    rpd.colorAttachments[0].loadAction = MTLLoadActionClear;
+    rpd.colorAttachments[0].storeAction = MTLStoreActionStore;
+    rpd.colorAttachments[0].clearColor = MTLClearColorMake(1,1,1,1);
+    id<MTLCommandBuffer> cmd = [self.commandQueue commandBuffer];
+    id<MTLRenderCommandEncoder> enc = [cmd renderCommandEncoderWithDescriptor:rpd];
+    [enc setRenderPipelineState:self.pickingPipelineState];
+
+    Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
+    uni->mvp = matrix_identity_float4x4;
+    uni->lightDir = (vector_float3){0,0,1};
+    uni->ambient = 0.0f;
+
+    for (NSUInteger li = 0; li < self.mLayers.count; li++) {
+        OWLayer *layer = self.mLayers[li];
+        if(!layer.isLoaded) continue;
+        for (NSUInteger gi = 0; gi < layer.drawGroups.count; gi++) {
+            OWDrawGroup *dg = layer.drawGroups[gi];
+            for (NSUInteger di = 0; di < dg.draws.count; di++) {
+                OWDraw *draw = dg.draws[di];
+                uni->color = (vector_float4){draw.selectColor.x, draw.selectColor.y, draw.selectColor.z, 1.0};
+                [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count];
+            }
+        }
+    }
+    [enc endEncoding];
+    [cmd commit];
+    [cmd waitUntilCompleted];
+
+    uint8_t pixel[4] = {0};
+    MTLRegion reg = MTLRegionMake2D(0,0,1,1);
+    [tex getBytes:pixel bytesPerRow:4 fromRegion:reg mipmapLevel:0];
+    if(pixel[0] != 255) {
+        NSUInteger layerIdx = pixel[0];
+        NSUInteger dgIdx = pixel[1];
+        NSUInteger dIdx = pixel[2];
+        if(layerIdx < self.mLayers.count) {
+            OWLayer *layer = self.mLayers[layerIdx];
+            OWDrawGroup *dg = layer.drawGroups[dgIdx];
+            OWDraw *draw = dg.draws[dIdx];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationSelectSingleObject object:draw.geometry];
+            result = layerIdx;
+        }
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationClearSelection object:nil];
+    }
+    return result;
 }
 
 - (void)renderNormal:(id<MTLRenderCommandEncoder>)enc {
@@ -246,6 +325,7 @@ typedef struct {
         if (idx < self.mLayerOpacityInterpolants.count) {
             opacity = ((OWInterpolant *)self.mLayerOpacityInterpolants[idx]).present;
         }
+        opacity *= self.globalOpacity;
         [self drawOWLayer:layer withOpacity:opacity encoder:enc];
     }
 }
@@ -264,7 +344,7 @@ typedef struct {
 
     id<MTLCommandBuffer> cmd = [self.commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> enc = [cmd renderCommandEncoderWithDescriptor:rpd];
-    [enc setRenderPipelineState:self.pipelineState];
+    [enc setRenderPipelineState:self.shadingPipelineState];
 
     for (NSUInteger idx = 0; idx < self.mLayers.count; idx++) {
         OWLayer *layer = self.mLayers[idx];

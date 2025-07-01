@@ -30,6 +30,7 @@
 //  OWNavigate.m
 //  WormBrowser
 //
+#import "OWVector.h"
 
 #import "OWNavigate.h"
 
@@ -46,7 +47,7 @@ typedef enum {
     OWCameraState currentCameraState;
 }
 
--(float) projectedMinMaxForEntity:(OWEntityInfo*) entity forVector:(GLKVector3) projectionVector;
+-(float) projectedMinMaxForEntity:(OWEntityInfo*) entity forVector:(OWVector3) projectionVector;
 -(float) absoluteLimit:(float)value forLimit:(float) absLimit withNewValue:(float)newValue;
 -(void) doNavigateWithAngle:(float)angle forY:(float)y forZoom:(float)zoom;
 -(void) doNavigateWithAngle:(float)angle forY:(float)y forZoom:(float)zoom withUrgency:(float)urgency;
@@ -93,9 +94,9 @@ typedef enum {
         
         camera = [[OWCamera alloc] init];
         
-        camera.eye = GLKVector3Make(-35,0,0);
-        camera.target = GLKVector3Make(0,0,0);
-        camera.up = GLKVector3Make(0,1,0);
+        camera.eye = OWVector3Make(-35,0,0);
+        camera.target = OWVector3Make(0,0,0);
+        camera.up = OWVector3Make(0,1,0);
         camera.fov = 50;
         
         initialDollyZ  = -35.0f;
@@ -135,25 +136,25 @@ typedef enum {
 
 #pragma mark - private methods -
 
--(float) projectedMinMaxForEntity:(OWEntityInfo*) entity forVector:(GLKVector3) projectionVector
+-(float) projectedMinMaxForEntity:(OWEntityInfo*) entity forVector:(OWVector3) projectionVector
 {
 
-    GLKVector3 verts[8];
+    OWVector3 verts[8];
     float proj[8];
     
-    verts[0] = GLKVector3Make(entity.bbl.x, entity.bbl.y, entity.bbl.z);
-    verts[1] = GLKVector3Make(entity.bbl.x, entity.bbh.y, entity.bbl.z);
-    verts[2] = GLKVector3Make(entity.bbl.x, entity.bbl.y, entity.bbh.z);
-    verts[3] = GLKVector3Make(entity.bbl.x, entity.bbh.y, entity.bbh.z);
-    verts[4] = GLKVector3Make(entity.bbh.x, entity.bbl.y, entity.bbl.z);
-    verts[5] = GLKVector3Make(entity.bbh.x, entity.bbh.y, entity.bbl.z);
-    verts[6] = GLKVector3Make(entity.bbh.x, entity.bbl.y, entity.bbh.z);
-    verts[7] = GLKVector3Make(entity.bbh.x, entity.bbh.y, entity.bbh.z);
+    verts[0] = OWVector3Make(entity.bbl.x, entity.bbl.y, entity.bbl.z);
+    verts[1] = OWVector3Make(entity.bbl.x, entity.bbh.y, entity.bbl.z);
+    verts[2] = OWVector3Make(entity.bbl.x, entity.bbl.y, entity.bbh.z);
+    verts[3] = OWVector3Make(entity.bbl.x, entity.bbh.y, entity.bbh.z);
+    verts[4] = OWVector3Make(entity.bbh.x, entity.bbl.y, entity.bbl.z);
+    verts[5] = OWVector3Make(entity.bbh.x, entity.bbh.y, entity.bbl.z);
+    verts[6] = OWVector3Make(entity.bbh.x, entity.bbl.y, entity.bbh.z);
+    verts[7] = OWVector3Make(entity.bbh.x, entity.bbh.y, entity.bbh.z);
     
     for (int v =0; v < 8; v++) {
         
-        GLKVector3 vertVector = GLKVector3Subtract(verts[v], camera.eye);
-        proj[v] = GLKVector3DotProduct(projectionVector, vertVector);
+        OWVector3 vertVector = OWVector3Subtract(verts[v], camera.eye);
+        proj[v] = OWVector3Dot(projectionVector, vertVector);
         
     }
     
@@ -177,7 +178,7 @@ typedef enum {
 
 -(void) delayedEntityNavigation:(OWEntityInfo*)entity
 {
-    GLKVector3 centerPoint = GLKVector3DivideScalar(GLKVector3Add(entity.bbl, entity.bbh), 2);
+    OWVector3 centerPoint = OWVector3DivideScalar(OWVector3Add(entity.bbl, entity.bbh), 2);
     
     float dYAxis = sqrtf(powf(centerPoint.z, 2) + powf(centerPoint.x, 2));
     float x = (atanf(centerPoint.z / centerPoint.x) ) + M_PI_2;
@@ -185,17 +186,17 @@ typedef enum {
     
     //    NSLog(@"x: %f , projected height: %f", x, projectedHeight);
     
-    float y_angle = 0.5f * GLKMathDegreesToRadians(camera.fov);
+    float y_angle = 0.5f * OWDegreesToRadians(camera.fov);
     float zy_dist = projectedHeight / tanf(y_angle);
     
-    GLKVector3 sideVector = GLKVector3CrossProduct(camera.up, GLKVector3Subtract(camera.eye, camera.target));
-    sideVector = GLKVector3Normalize(sideVector);
+    OWVector3 sideVector = OWVector3Cross(camera.up, OWVector3Subtract(camera.eye, camera.target));
+    sideVector = OWVector3Normalize(sideVector);
     
     float projectedWidth = [self projectedMinMaxForEntity:entity forVector:sideVector];
     
     //    NSLog(@"This alg thinks the object is %f x %f", projectedWidth, projectedHeight); // 12 x 2... this sounds correct
     
-    float x_angle = 0.5f * GLKMathDegreesToRadians(camera.fov * self.aspectRatio);
+    float x_angle = 0.5f * OWDegreesToRadians(camera.fov * self.aspectRatio);
     float zx_dist = projectedWidth / tanf(x_angle);
     float z_dist = MAX(zy_dist, zx_dist);
     
@@ -276,36 +277,36 @@ typedef enum {
             
             float up_phi = M_PI_2 - phi;
             
-            camera.up = GLKVector3Make(- cosf(angle) * cosf(up_phi) , sinf(up_phi), -sinf(angle)*cosf(up_phi));
+            camera.up = OWVector3Make(- cosf(angle) * cosf(up_phi) , sinf(up_phi), -sinf(angle)*cosf(up_phi));
             
         }
         else{
-            camera.up = GLKVector3Make(0, 1, 0);
+            camera.up = OWVector3Make(0, 1, 0);
         }
         
-        camera.eye = GLKVector3Make(cx, cy, cz);
+        camera.eye = OWVector3Make(cx, cy, cz);
         
         #define RADIANS_PER_PIXEL (M_PI / 320.f)
         
 // Added 3/26/13 - Adding a local camera transform on top of pill camera
 // Built on quaternians. Not the most efficient but will suffice
         
-        GLKVector3 up = camera.up;
-        GLKVector3 baseTargetVector = GLKVector3Make(0, ty, 0);
+        OWVector3 up = camera.up;
+        OWVector3 baseTargetVector = OWVector3Make(0, ty, 0);
         
-        GLKVector3 right = GLKVector3Normalize(GLKVector3CrossProduct(GLKVector3Subtract(baseTargetVector, camera.eye), camera.up));
+        OWVector3 right = OWVector3Normalize(OWVector3Cross(OWVector3Subtract(baseTargetVector, camera.eye), camera.up));
         
-        GLKQuaternion quarternion = GLKQuaternionMake(0.f, 0.f, 0.f, 1.f);
-        quarternion = GLKQuaternionMultiply(quarternion, GLKQuaternionMakeWithAngleAndVector3Axis(mRotateLocalX.present * RADIANS_PER_PIXEL, up));
+        OWQuaternion quarternion = OWQuaternionMake(0.f, 0.f, 0.f, 1.f);
+        quarternion = OWQuaternionMultiply(quarternion, OWQuaternionMakeWithAngleAndVector3Axis(mRotateLocalX.present * RADIANS_PER_PIXEL, up));
         
-        quarternion = GLKQuaternionMultiply(quarternion, GLKQuaternionMakeWithAngleAndVector3Axis(mRotateLocalY.present * RADIANS_PER_PIXEL, right));
+        quarternion = OWQuaternionMultiply(quarternion, OWQuaternionMakeWithAngleAndVector3Axis(mRotateLocalY.present * RADIANS_PER_PIXEL, right));
   
-        GLKVector3 rotatedTarget = GLKQuaternionRotateVector3(quarternion, GLKVector3Subtract(baseTargetVector, camera.eye));
+        OWVector3 rotatedTarget = OWQuaternionRotateVector3(quarternion, OWVector3Subtract(baseTargetVector, camera.eye));
         
-        GLKVector3 translationVector = GLKVector3Make(mTranslateLocalX.present, mTranslateLocalY.present, mTranslateLocalZ.present);
+        OWVector3 translationVector = OWVector3Make(mTranslateLocalX.present, mTranslateLocalY.present, mTranslateLocalZ.present);
         
-        camera.target = GLKVector3Add(rotatedTarget, translationVector);
-        camera.eye = GLKVector3Add(camera.eye, translationVector);
+        camera.target = OWVector3Add(rotatedTarget, translationVector);
+        camera.eye = OWVector3Add(camera.eye, translationVector);
         
         
         
@@ -316,7 +317,7 @@ typedef enum {
     else if(currentCameraState == cameraStateReturning)
     {
         
-        GLKVector3 targetUp, targetEye, targetTarget;
+        OWVector3 targetUp, targetEye, targetTarget;
         
         float angle = mTheta.present;
         float z_val = mDollyZ.present;
@@ -354,29 +355,29 @@ typedef enum {
             
             float up_phi = M_PI_2 - phi;
             
-             targetUp = GLKVector3Make(- cosf(angle) * cosf(up_phi) , sinf(up_phi), -sinf(angle)*cosf(up_phi));
+             targetUp = OWVector3Make(- cosf(angle) * cosf(up_phi) , sinf(up_phi), -sinf(angle)*cosf(up_phi));
             
         }
         else{
-            targetUp = GLKVector3Make(0, 1, 0);
+            targetUp = OWVector3Make(0, 1, 0);
         }
         
-        targetEye = GLKVector3Make(cx, cy, cz);
-        targetTarget = GLKVector3Make(0, ty, 0);
+        targetEye = OWVector3Make(cx, cy, cz);
+        targetTarget = OWVector3Make(0, ty, 0);
         
-        GLKVector3 dVeye = GLKVector3Subtract(targetEye, camera.eye);
-        GLKVector3 dVup = GLKVector3Subtract(targetUp, camera.up);
-        GLKVector3 dVtarget = GLKVector3Subtract(targetTarget, camera.target);
+        OWVector3 dVeye = OWVector3Subtract(targetEye, camera.eye);
+        OWVector3 dVup = OWVector3Subtract(targetUp, camera.up);
+        OWVector3 dVtarget = OWVector3Subtract(targetTarget, camera.target);
         
-        if( GLKVector3Length(dVeye) < 0.01 && GLKVector3Length(dVup) < 0.01 && GLKVector3Length(dVtarget) < 0.01)
+        if( OWVector3Length(dVeye) < 0.01 && OWVector3Length(dVup) < 0.01 && OWVector3Length(dVtarget) < 0.01)
         {
             currentCameraState = cameraStatePill;
         }
         else
         {
-            camera.eye = GLKVector3Add(camera.eye, GLKVector3MultiplyScalar(dVeye, 0.1));
-            camera.target = GLKVector3Add(camera.target, GLKVector3MultiplyScalar(dVtarget, 0.1));
-            camera.up = GLKVector3Add(camera.up, GLKVector3MultiplyScalar(dVup, 0.1));
+            camera.eye = OWVector3Add(camera.eye, OWVector3MultiplyScalar(dVeye, 0.1));
+            camera.target = OWVector3Add(camera.target, OWVector3MultiplyScalar(dVtarget, 0.1));
+            camera.up = OWVector3Add(camera.up, OWVector3MultiplyScalar(dVup, 0.1));
         }
     }
 }
@@ -478,8 +479,8 @@ typedef enum {
 -(void) translateLocalDX:(float)dx DY:(float)dy
 {
     // get local coordinate frame, translate
-    GLKVector3 sideVector = GLKVector3CrossProduct(camera.up, GLKVector3Subtract(camera.target, camera.eye));
-    sideVector = GLKVector3Normalize(sideVector);
+    OWVector3 sideVector = OWVector3Cross(camera.up, OWVector3Subtract(camera.target, camera.eye));
+    sideVector = OWVector3Normalize(sideVector);
     
 // RMS 4/1/13
 // decreased sensitivity on translate (0.05 to 0.04)
@@ -491,8 +492,8 @@ typedef enum {
 // Added zoom-sensitive scaling
     float camera_scale = mDollyZ.present / 80;
     
-    GLKVector3 camDX = GLKVector3MultiplyScalar(sideVector, dx*0.1*camera_scale);
-    GLKVector3 camDY = GLKVector3MultiplyScalar(camera.up, dy*0.1*camera_scale);
+    OWVector3 camDX = OWVector3MultiplyScalar(sideVector, dx*0.1*camera_scale);
+    OWVector3 camDY = OWVector3MultiplyScalar(camera.up, dy*0.1*camera_scale);
     
 // RMS 4/11/13 - > modified to keep translation along Z axis (Anterior - Posterior translation)
 
@@ -523,11 +524,11 @@ typedef enum {
 
 -(void) zoomLocalScale:(float)scale
 {
-    GLKVector3 lookVector = GLKVector3Subtract(camera.eye, camera.target);
+    OWVector3 lookVector = OWVector3Subtract(camera.eye, camera.target);
 //    float mag = sqrtf(powf(lookVector.x, 2) + powf(lookVector.y, 2));
     float mag = 0.01f; // using this instead, zoom occurs at fixed speed invariant of position relative to model
     
-    GLKVector3 movementVector = GLKVector3MultiplyScalar(lookVector, mag*scale);
+    OWVector3 movementVector = OWVector3MultiplyScalar(lookVector, mag*scale);
     [mTranslateLocalX setFuture:(mTranslateLocalX.future + movementVector.x) withUrgency:1.0];
     [mTranslateLocalY setFuture:(mTranslateLocalY.future + movementVector.y) withUrgency:1.0];
     [mTranslateLocalZ setFuture:(mTranslateLocalZ.future + movementVector.z) withUrgency:1.0];
@@ -639,7 +640,7 @@ typedef enum {
     }
     else
     {
-        GLKVector3 lookVector = GLKVector3Subtract(camera.eye, camera.target);
+        OWVector3 lookVector = OWVector3Subtract(camera.eye, camera.target);
         initialDollyZ = sqrtf(powf(lookVector.x, 2) + powf(lookVector.y, 2));
     }
     
@@ -667,7 +668,7 @@ typedef enum {
     
 }
 
--(void) printVector3:(GLKVector3)inputVec
+-(void) printVector3:(OWVector3)inputVec
 {
     NSLog(@"vec3: %f %f %f", inputVec.x, inputVec.y, inputVec.z);
 }
