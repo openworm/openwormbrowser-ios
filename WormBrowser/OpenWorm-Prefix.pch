@@ -13,6 +13,7 @@
     #import <Foundation/Foundation.h>
     #import <MetalKit/MetalKit.h>
     #import <QuartzCore/QuartzCore.h>
+    #import <GLKit/GLKit.h>
     #import "OWDefines.h"
     #import "OWAppDelegate.h"
 #endif

@@ -33,6 +33,7 @@
 
 
 #import <Foundation/Foundation.h>
+#import <stdint.h>
 
 @interface OWDraw : NSObject
 {
@@ -40,7 +41,7 @@
 
 @property(nonatomic, strong) NSString* geometry;
 @property GLKVector4 selectColor;
-@property GLuint offset;
-@property GLuint count;
+@property uint32_t offset;
+@property uint32_t count;
 
 @end

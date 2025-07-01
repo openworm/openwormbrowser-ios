@@ -32,6 +32,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <stdint.h>
 #import "OWInterpolant.h"
 
 @interface OWLayer : NSObject
@@ -44,12 +45,12 @@
 @property int       type;
 @property(strong, nonatomic) OWInterpolant*  opacity;
 @property(strong, nonatomic) NSMutableArray* drawGroups;
-@property GLfloat   renderOpacity;
+@property float   renderOpacity;
 @property int       totalDrawCount;
 
 -(id) initWithInfo:(int)_info;
 
--(void) loadDrawGroupsInContext:(EAGLContext*) context;
+-(void) loadDrawGroups;
 
 -(void) printDebugString;
 
