@@ -28,7 +28,7 @@ Building requires a Mac with Xcode and the CocoaPods tool (>=1.16). On Linux or
 other environments without Xcode the project cannot be compiled.
 
 
-**Appledoc required to generate documentation** [http://gentlebytes.com/appledoc/](http://gentlebytes.com/appledoc/) 
+Documentation is generated with Doxygen. Run `doxygen Doxyfile` to update the docset.
 
 ___
 

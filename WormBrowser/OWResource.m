@@ -289,8 +289,12 @@
 
 -(OWEntityInfo*) getInfoForEntityName:(NSString*) name
 {
-    #warning THIS IS HORRENDOUSLY inefficient but necessary to support legacy configuration
-    return [self.mEntities objectForKey:[self getEntityNameForSearch:name]];
+    OWEntityInfo *info = [self.mEntities objectForKey:name];
+    if (!info) {
+        NSString *lookup = [self getEntityNameForSearch:name];
+        info = [self.mEntities objectForKey:lookup];
+    }
+    return info;
 }
 
 -(void) putInfo:(OWEntityInfo*) _info forName:(NSString*) name

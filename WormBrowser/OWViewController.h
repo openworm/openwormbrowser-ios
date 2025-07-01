@@ -38,6 +38,12 @@
 #import "WSOpacityViewController.h"
 #import "OWMetaDataViewController.h"
 
+typedef NS_ENUM(NSInteger, OWViewButtonTag) {
+    OWViewButtonTagShowSearch = 0,
+    OWViewButtonTagCamera     = 1,
+    OWViewButtonTagAbout      = 2
+};
+
 /** OWViewController description
  
  */

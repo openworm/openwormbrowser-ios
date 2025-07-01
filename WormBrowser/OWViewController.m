@@ -119,7 +119,7 @@
     [mCameraButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [mCameraButton setBackgroundColor:kButtonViewBackground];
     [mCameraButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
-    [mCameraButton setTag:1];
+    [mCameraButton setTag:OWViewButtonTagCamera];
 
 //  RMS 4/2/13 moving to single view mode
 //  [self.view addSubview:mCameraButton];
@@ -131,11 +131,10 @@
     [mAboutButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [mAboutButton setBackgroundColor:kButtonViewBackground];
     [mAboutButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
-    [mAboutButton setTag:2];
+    [mAboutButton setTag:OWViewButtonTagAbout];
     [self.view addSubview:mAboutButton];
     
-#warning TODO(RMS) add enum for this tag
-    [mShowSearchButton setTag:0];
+    [mShowSearchButton setTag:OWViewButtonTagShowSearch];
     [mShowSearchButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
 
 #if TARGET_IPHONE_SIMULATOR
@@ -510,16 +509,16 @@
 
 -(void) handleButtonTap:(id)sender
 {
-    int tag = [sender tag];
+    OWViewButtonTag tag = [sender tag];
     
     switch (tag) {
-        case 0:
+        case OWViewButtonTagShowSearch:
             
             [self showSearchView];
 
             break;
             
-        case 1:
+        case OWViewButtonTagCamera:
             
             // handle camera tap
             [self.mView toggleCameraMode];
@@ -531,7 +530,7 @@
             
             break;
             
-        case 2:
+        case OWViewButtonTagAbout:
             
             // handle info tap
             
