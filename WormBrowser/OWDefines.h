@@ -126,7 +126,13 @@ enum
     UNIFORM_NORMAL_MATRIX,
     NUM_UNIFORMS
 };
-GLint uniforms[NUM_UNIFORMS];
+/*
+ * The former OpenGL implementation exposed a global `uniforms` array for
+ * storing uniform locations. This array was defined in the header, causing
+ * multiple definitions in every translation unit that included the header and
+ * ultimately a linker error. The current Metal-based renderer does not rely on
+ * these uniforms, so the global array has been removed.
+ */
 
 enum
 {
