@@ -32,6 +32,7 @@
 //
 
 #import "OWViewController.h"
+#import <objc/runtime.h>
 
 @interface OWViewController ()
 {
@@ -227,7 +228,7 @@
         frameToReturn = self.view.frame;
     }
     
-    NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
+    NSLog(@"%s: %@", sel_getName(_cmd), [NSValue valueWithCGRect:frameToReturn]);
     
     return frameToReturn;
 }
@@ -256,7 +257,7 @@
         frameToReturn = self.view.frame;
     }
     
-    NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
+    NSLog(@"%s: %@", sel_getName(_cmd), [NSValue valueWithCGRect:frameToReturn]);
     
     return frameToReturn;
 }
@@ -289,7 +290,7 @@
         
     }
     
-    NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
+    NSLog(@"%s: %@", sel_getName(_cmd), [NSValue valueWithCGRect:frameToReturn]);
     return frameToReturn;
 }
 
@@ -304,21 +305,21 @@
     mShowSearchButton.center = loadingActivity.center;
     
     [UIView animateWithDuration:0.5 animations:^{
-       
-        [loadingActivity setAlpha:0.0f];
-        
-    } completion:^(BOOL finished) {
-        
-        [loadingActivity removeFromSuperview];
 
-        [self.view addSubview:mShowSearchButton];
-        
+        [self->loadingActivity setAlpha:0.0f];
+
+    } completion:^(BOOL finished) {
+
+        [self->loadingActivity removeFromSuperview];
+
+        [self.view addSubview:self->mShowSearchButton];
+
         [UIView animateWithDuration:0.5 animations:^{
-            
-            mShowSearchButton.alpha = 1.0f;
-            
+
+            self->mShowSearchButton.alpha = 1.0f;
+
         } completion:^(BOOL finished) {
-            
+
         }];
     }];
     

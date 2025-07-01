@@ -5,6 +5,11 @@
 #import "OWResource.h"
 #import "OWEntityInfo.h"
 #import "OWVector.h"
+#import "OWNavigate.h"
+#import "OWLayer.h"
+#import "OWDrawGroup.h"
+#import "OWDraw.h"
+#import "OWInterpolant.h"
 
 typedef struct {
     vector_float3 position;
@@ -23,12 +28,12 @@ static inline matrix_float4x4 matrix_perspective(float fovyRadians, float aspect
     float yScale = 1.0f / tanf(fovyRadians * 0.5f);
     float xScale = yScale / aspect;
     float zRange = nearZ - farZ;
-    return (matrix_float4x4){
-        { xScale, 0, 0, 0 },
-        { 0, yScale, 0, 0 },
-        { 0, 0, (farZ + nearZ) / zRange, -1 },
-        { 0, 0, (2 * farZ * nearZ) / zRange, 0 }
-    };
+    matrix_float4x4 m;
+    m.columns[0] = (vector_float4){ xScale, 0, 0, 0 };
+    m.columns[1] = (vector_float4){ 0, yScale, 0, 0 };
+    m.columns[2] = (vector_float4){ 0, 0, (farZ + nearZ) / zRange, -1 };
+    m.columns[3] = (vector_float4){ 0, 0, (2 * farZ * nearZ) / zRange, 0 };
+    return m;
 }
 
 static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 center, vector_float3 up) {
@@ -36,12 +41,12 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     vector_float3 s = simd_normalize(simd_cross(f, up));
     vector_float3 u = simd_cross(s, f);
 
-    return (matrix_float4x4){
-        { s.x, u.x, -f.x, 0 },
-        { s.y, u.y, -f.y, 0 },
-        { s.z, u.z, -f.z, 0 },
-        { -simd_dot(s, eye), -simd_dot(u, eye), simd_dot(f, eye), 1 }
-    };
+    matrix_float4x4 m;
+    m.columns[0] = (vector_float4){ s.x, u.x, -f.x, 0 };
+    m.columns[1] = (vector_float4){ s.y, u.y, -f.y, 0 };
+    m.columns[2] = (vector_float4){ s.z, u.z, -f.z, 0 };
+    m.columns[3] = (vector_float4){ -simd_dot(s, eye), -simd_dot(u, eye), simd_dot(f, eye), 1 };
+    return m;
 }
 
 @interface OWMetalViewController ()
