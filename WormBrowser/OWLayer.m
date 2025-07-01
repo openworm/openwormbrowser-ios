@@ -193,13 +193,13 @@
                                 
                             case 3:
                                 
-                                 drawGroup.vertexBufferData[outputStart / strideLength].texCoord.s = decodeScaleVals[j] * (prev + decodeOffsetVals[j]);
+                                drawGroup.vertexBufferData[outputStart / strideLength].texCoord.x = decodeScaleVals[j] * (prev + decodeOffsetVals[j]);
                                 
                                 break;
                                 
                             case 4:
                         
-                                 drawGroup.vertexBufferData[outputStart / strideLength].texCoord.t = decodeScaleVals[j] * (prev + decodeOffsetVals[j]);
+                                drawGroup.vertexBufferData[outputStart / strideLength].texCoord.y = decodeScaleVals[j] * (prev + decodeOffsetVals[j]);
                                 
                                 break;
                                 
@@ -261,7 +261,7 @@
             
             if (bboffset > 0) {
                 
-                int numBBoxen = [[meshDictionary objectForKey:@"names"] count];
+                int numBBoxen = [(NSArray*)[meshDictionary objectForKey:@"names"] count];
                 
                 int numFloats = numBBoxen * 6;
                 int inputStart = bboffset;
