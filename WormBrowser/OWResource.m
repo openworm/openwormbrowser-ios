@@ -32,6 +32,7 @@
 //
 
 #import "OWResource.h"
+#import "OWVector.h"
 
 @implementation OWResource
 
@@ -143,12 +144,12 @@
     return [self.metaDataDictionary objectForKey:@"materials"];
 }
 
--(GLKVector4) getDiffuseColorForMaterial:(NSString *)materialName
+-(OWVector4) getDiffuseColorForMaterial:(NSString *)materialName
 {
     NSDictionary* materialDict = [self.getMaterialsDictionary objectForKey:materialName];
     
     NSArray* diffuseArray = [materialDict objectForKey:@"Kd"];
-    GLKVector4 diffuseColor = GLKVector4Make([[diffuseArray objectAtIndex:0] floatValue]/255,
+    OWVector4 diffuseColor = OWVector4Make([[diffuseArray objectAtIndex:0] floatValue]/255,
                                              [[diffuseArray objectAtIndex:1] floatValue]/255,
                                              [[diffuseArray objectAtIndex:2] floatValue]/255,
                                              1.0);

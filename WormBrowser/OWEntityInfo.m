@@ -49,8 +49,8 @@
         self.indexCount = 0;
         self.indexOffset = 0;
         
-        self.bbh = GLKVector3Make(0, 0, 0);
-        self.bbl = GLKVector3Make(0, 0, 0);
+        self.bbh = OWVector3Make(0, 0, 0);
+        self.bbl = OWVector3Make(0, 0, 0);
         
 //        bb0 = bb1 = bb2 = bb3 = bb4 = bb5 = 0.0f;
         
