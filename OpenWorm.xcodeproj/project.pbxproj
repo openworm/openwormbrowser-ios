@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		31b5538e8ee74afb885da6f7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */; };
 		4cc80fb774144132a91491ec /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3dd0115b42e44cbf8a04a32f /* LaunchScreen.storyboard */; };
+		6f9b34f5344443908ee75991 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = fe8d38e545184642875054eb /* WebKit.framework */; };
 		A805275B168913FB0037CA87 /* bootstrap in Resources */ = {isa = PBXBuildFile; fileRef = A805275A168913FB0037CA87 /* bootstrap */; };
 		A807F437169A5A2900FA84D7 /* reduced.json in Resources */ = {isa = PBXBuildFile; fileRef = A807F436169A5A2900FA84D7 /* reduced.json */; };
 		A83D379816ACF64E00A72AA3 /* OpenWormLogoNew.png in Resources */ = {isa = PBXBuildFile; fileRef = A83D379716ACF64E00A72AA3 /* OpenWormLogoNew.png */; };
@@ -156,10 +157,9 @@
 		A8F42B5A166ED6D1005503A4 /* OWCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F42B59166ED6D0005503A4 /* OWCamera.m */; };
 		A8F838E01682FE430052531F /* OWMetaDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8F838DF1682FE430052531F /* OWMetaDataViewController.m */; };
 		A8FC9F7B1676ADED000883F3 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = A8FC9F7A1676ADED000883F3 /* data.json */; };
-                B0B0B0B21600000000000001 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B0B0B01600000000000001 /* Metal.framework */; };
-                B0B0B0B31600000000000001 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B0B0B11600000000000001 /* MetalKit.framework */; };
-                6f9b34f5344443908ee75991 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = fe8d38e545184642875054eb /* WebKit.framework */; };
-                B0B0B0B71600000000000001 /* OWMetalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B0B0B51600000000000001 /* OWMetalViewController.m */; };
+		B0B0B0B21600000000000001 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B0B0B01600000000000001 /* Metal.framework */; };
+		B0B0B0B31600000000000001 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0B0B0B11600000000000001 /* MetalKit.framework */; };
+		B0B0B0B71600000000000001 /* OWMetalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B0B0B51600000000000001 /* OWMetalViewController.m */; };
 		B0B0B0B81600000000000001 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B0B0B0B61600000000000001 /* Shaders.metal */; };
 		FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */; };
 /* End PBXBuildFile section */
@@ -338,9 +338,9 @@
 		B0B0B0B11600000000000001 /* MetalKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		B0B0B0B41600000000000001 /* OWMetalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWMetalViewController.h; sourceTree = "<group>"; };
 		B0B0B0B51600000000000001 /* OWMetalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWMetalViewController.m; sourceTree = "<group>"; };
-                B0B0B0B61600000000000001 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
-                c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = WormBrowser/Assets.xcassets; sourceTree = SOURCE_ROOT; };
-                fe8d38e545184642875054eb /* WebKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		B0B0B0B61600000000000001 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		c6e63e19dc8743029a9a5ae3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = WormBrowser/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		fe8d38e545184642875054eb /* WebKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -350,13 +350,13 @@
 			files = (
 				A8C8120016A7B67100F3D3C0 /* QuartzCore.framework in Frameworks */,
 				B0B0B0B31600000000000001 /* MetalKit.framework in Frameworks */,
-                               B0B0B0B21600000000000001 /* Metal.framework in Frameworks */,
-                               A8C710DF166C329D0067DCAC /* UIKit.framework in Frameworks */,
-                               A8C710E1166C329D0067DCAC /* Foundation.framework in Frameworks */,
-                               A8C710E3166C329D0067DCAC /* CoreGraphics.framework in Frameworks */,
-                               6f9b34f5344443908ee75991 /* WebKit.framework in Frameworks */,
-                               FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */,
-                       );
+				B0B0B0B21600000000000001 /* Metal.framework in Frameworks */,
+				A8C710DF166C329D0067DCAC /* UIKit.framework in Frameworks */,
+				A8C710E1166C329D0067DCAC /* Foundation.framework in Frameworks */,
+				A8C710E3166C329D0067DCAC /* CoreGraphics.framework in Frameworks */,
+				6f9b34f5344443908ee75991 /* WebKit.framework in Frameworks */,
+				FFA41A257D9AAA264C3867C2 /* libPods-OpenWorm.a in Frameworks */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -544,13 +544,13 @@
 			children = (
 				A8C811FF16A7B67000F3D3C0 /* QuartzCore.framework */,
 				B0B0B0B11600000000000001 /* MetalKit.framework */,
-                               B0B0B0B01600000000000001 /* Metal.framework */,
-                               A8C710DE166C329D0067DCAC /* UIKit.framework */,
-                               A8C710E0166C329D0067DCAC /* Foundation.framework */,
-                               A8C710E2166C329D0067DCAC /* CoreGraphics.framework */,
-                               fe8d38e545184642875054eb /* WebKit.framework */,
-                               6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */,
-                       );
+				B0B0B0B01600000000000001 /* Metal.framework */,
+				A8C710DE166C329D0067DCAC /* UIKit.framework */,
+				A8C710E0166C329D0067DCAC /* Foundation.framework */,
+				A8C710E2166C329D0067DCAC /* CoreGraphics.framework */,
+				fe8d38e545184642875054eb /* WebKit.framework */,
+				6849F52DCA6B27D968C0ECCD /* libPods-OpenWorm.a */,
+			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};

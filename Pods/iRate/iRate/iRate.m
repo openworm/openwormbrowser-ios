@@ -864,10 +864,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 {
                     [SKStoreReviewController requestReviewInScene:targetScene];
                 }
-                else
-                {
-                    [SKStoreReviewController requestReview];
-                }
             }
             else
             {

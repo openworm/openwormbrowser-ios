@@ -4,6 +4,7 @@ set -euo pipefail
 
 if ! command -v pod >/dev/null 2>&1; then
   echo "Installing CocoaPods..."
+  gem install securerandom -v 0.3.2
   gem install cocoapods -v 1.16.2 --no-document
 fi
 
