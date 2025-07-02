@@ -1070,7 +1070,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WormBrowser/OpenWorm-Prefix.pch";
 				INFOPLIST_FILE = "WormBrowser/OpenWorm-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+                               IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openworm.openwormbrowser-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1089,7 +1089,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WormBrowser/OpenWorm-Prefix.pch";
 				INFOPLIST_FILE = "WormBrowser/OpenWorm-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+                               IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.openworm.openwormbrowser-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
