@@ -466,16 +466,28 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
         }
     } else {
         // Horizontal slider mode: individual layer opacities via interpolants
-        for (NSUInteger idx = 0; idx < self.mLayers.count; idx++) {
-            OWLayer *layer = self.mLayers[idx];
-            [self prepareDrawForLayer:layer];
-            float opacity = 1.0f;
-            if (idx < self.mLayerOpacityInterpolants.count) {
-                OWInterpolant *interp = self.mLayerOpacityInterpolants[idx];
-                opacity = interp.present;
-            }
-            [self drawOWLayer:layer withOpacity:opacity encoder:enc];
-        }
+        // MUST draw back-to-front for proper transparency:
+        // neurons (innermost) → muscles → organs → cuticle (outermost)
+        OWLayer *cuticleLayer = self.mLayers[layerCuticle];
+        OWLayer *neuronLayer = self.mLayers[layerNeurons];
+        OWLayer *muscleLayer = self.mLayers[layerMuscle];
+        OWLayer *organLayer = self.mLayers[layerOrgans];
+
+        [self prepareDrawForLayer:neuronLayer];
+        [self prepareDrawForLayer:muscleLayer];
+        [self prepareDrawForLayer:organLayer];
+        [self prepareDrawForLayer:cuticleLayer];
+
+        OWInterpolant *neuronInterp = self.mLayerOpacityInterpolants[layerNeurons];
+        OWInterpolant *muscleInterp = self.mLayerOpacityInterpolants[layerMuscle];
+        OWInterpolant *organInterp = self.mLayerOpacityInterpolants[layerOrgans];
+        OWInterpolant *cuticleInterp = self.mLayerOpacityInterpolants[layerCuticle];
+
+        // Draw back to front: neurons → muscles → organs → cuticle
+        [self drawOWLayer:neuronLayer withOpacity:neuronInterp.present encoder:enc];
+        [self drawOWLayer:muscleLayer withOpacity:muscleInterp.present encoder:enc];
+        [self drawOWLayer:organLayer withOpacity:organInterp.present encoder:enc];
+        [self drawOWLayer:cuticleLayer withOpacity:cuticleInterp.present encoder:enc];
     }
 
     [enc endEncoding];
