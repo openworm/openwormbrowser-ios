@@ -37,6 +37,7 @@
 #define kBarThickness 36.0f
 #define kWormGreen [UIColor colorWithRed:0.6f green:0.8f blue:0.2f alpha:1.0]
 #define kWormDarker [UIColor colorWithRed:0.5f green:0.7f blue:0.1f alpha:1.0]
+#import "OWVector.h"
 
 #define kOpacityViewWidth 60
 #define kOpacityViewHeight 188 + 50 + 29 + 20
@@ -73,7 +74,6 @@
 // 1 -> blends each drawgropu
 #define BLEND_BY_DRAWGROUP 0
 
-#define kTestFlightTeamToken @"3d71b54ba052353b3e21fa1e85f7148d_MTY2MTcwMjAxMi0xMi0xMyAxMzozNzoyMS40MzYzMDk"
 
 //#define kMeshData @"reduced"
 
@@ -113,9 +113,9 @@ typedef enum {
 
 struct vertexDataTextured
 {
-	GLKVector3		vertex;
-	GLKVector3		normal;
-	GLKVector2      texCoord;
+	OWVector3		vertex;
+	OWVector3		normal;
+	OWVector2      texCoord;
 };
 typedef struct vertexDataTextured vertexDataTextured;
 typedef vertexDataTextured* vertexDataTexturedPtr;
@@ -126,7 +126,13 @@ enum
     UNIFORM_NORMAL_MATRIX,
     NUM_UNIFORMS
 };
-GLint uniforms[NUM_UNIFORMS];
+/*
+ * The former OpenGL implementation exposed a global `uniforms` array for
+ * storing uniform locations. This array was defined in the header, causing
+ * multiple definitions in every translation unit that included the header and
+ * ultimately a linker error. The current Metal-based renderer does not rely on
+ * these uniforms, so the global array has been removed.
+ */
 
 enum
 {

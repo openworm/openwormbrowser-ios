@@ -11,9 +11,9 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
-    #import <GLKit/GLKit.h>
+    #import <MetalKit/MetalKit.h>
     #import <QuartzCore/QuartzCore.h>
-    #import <TestFlight.h>
+    #import <GLKit/GLKit.h>
     #import "OWDefines.h"
     #import "OWAppDelegate.h"
 #endif

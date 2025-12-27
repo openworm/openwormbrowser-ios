@@ -33,13 +33,15 @@
 
 
 #import <Foundation/Foundation.h>
+#import <stdint.h>
+#import "OWVector.h"
 
 @interface OWCamera : NSObject
 
-@property GLKVector3 eye;
-@property GLKVector3 target;
-@property GLKVector3 up;
-@property GLfloat   fov;
+@property OWVector3 eye;
+@property OWVector3 target;
+@property OWVector3 up;
+@property float   fov;
 
 
 @end

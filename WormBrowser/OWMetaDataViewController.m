@@ -32,7 +32,6 @@
 //
 
 #import "OWMetaDataViewController.h"
-#import "RegexKitLite.h"
 
 @interface OWMetaDataViewController ()
 {
@@ -40,7 +39,7 @@
 }
 
 @property(nonatomic, strong) UIButton* mShowMetaDataButton;
-@property(nonatomic, strong) UIWebView* metaDataView;
+@property(nonatomic, strong) WKWebView* metaDataView;
 
 @end
 
@@ -64,14 +63,9 @@
     
     [self.view setBackgroundColor:[UIColor blackColor]];
     
-    self.metaDataView  = [[UIWebView alloc] initWithFrame:[self frameForWebView]];
+    self.metaDataView  = [[WKWebView alloc] initWithFrame:[self frameForWebView]];
     [self.metaDataView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
-    [self.metaDataView setDelegate:self];
-    [self.metaDataView setScalesPageToFit:YES];
-    
-    for(UIView *wview in [[[self.metaDataView subviews] objectAtIndex:0] subviews]) {
-        if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; }
-    }
+    self.metaDataView.navigationDelegate = self;
     
     [self.view addSubview:self.metaDataView];
     
@@ -155,18 +149,20 @@
 }
 
 
--(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (void)webView:(WKWebView *)webView
+decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    NSRange contains = [request.URL.absoluteString rangeOfString:@".app"];
-    
+    NSURL *url = navigationAction.request.URL;
+    NSRange contains = [url.absoluteString rangeOfString:@".app"];
+
     if (contains.location == NSNotFound) {
-        
-        [[UIApplication sharedApplication] openURL:request.URL];
-        
-        return NO;
-    }
-    else{
-        return YES;
+        if (@available(iOS 10.0, *)) {
+            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+        }
+        decisionHandler(WKNavigationActionPolicyCancel);
+    } else {
+        decisionHandler(WKNavigationActionPolicyAllow);
     }
 }
 
@@ -176,36 +172,22 @@
 //    [ADA](http://www.wormatlas.org/ver1/MoW_built0.92/cells/ada.html)
 //    NSString *regEx = @"\\[(.*)\\]\\((.*)\\)";
     
-    NSString* regEx = @"\\[(.*?)]\\((.*?)\\)";
-    
-    NSMutableArray* arrayOfRanges = [[NSMutableArray alloc] init];
-//    NSMutableArray* arrayOfTagStrings = [[NSMutableArray alloc] init];
-    NSMutableString* outputString = [[NSMutableString alloc] init];
-    
-    BOOL foundMatch = NO;
-    
-    for(NSString *match in [inputString componentsMatchedByRegex:regEx]) {
-        
-        foundMatch = YES;
-        
-        // match contains the [..](..) string
-        NSRange matchRange = [inputString rangeOfString:match];
-        
-        [arrayOfRanges addObject:[NSValue valueWithRange:matchRange]];
-        
-        NSArray* splitArray = [match arrayOfCaptureComponentsMatchedByRegex:regEx];
-        NSString* tagString = [NSString stringWithFormat:@"<a href=\"%@\" target='_blank'>%@</a>", splitArray[0][2], splitArray[0][1]];
-        
-        [outputString appendFormat:@"<p>%@</p>", tagString];
-    }
-    
-    if (foundMatch) {
-        return outputString;
-    }
-    else
-    {
+    NSString *pattern = @"\\[(.*?)\\]\\((.*?)\\)";
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
+    NSArray *matches = [regex matchesInString:inputString options:0 range:NSMakeRange(0, inputString.length)];
+    if (matches.count == 0 || error) {
         return inputString;
     }
+
+    NSMutableString *outputString = [[NSMutableString alloc] init];
+    for (NSTextCheckingResult *match in matches) {
+        NSString *text = [inputString substringWithRange:[match rangeAtIndex:1]];
+        NSString *url = [inputString substringWithRange:[match rangeAtIndex:2]];
+        NSString *tagString = [NSString stringWithFormat:@"<a href=\"%@\" target='_blank'>%@</a>", url, text];
+        [outputString appendFormat:@"<p>%@</p>", tagString];
+    }
+    return outputString;
 }
 
 
@@ -230,7 +212,7 @@
 
 -(void) handleButtonTap:(id)sender
 {
-    int tag = [sender tag];
+    NSInteger tag = [sender tag];
     
     switch (tag) {
         case 0:

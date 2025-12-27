@@ -82,7 +82,6 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    [TestFlight passCheckpoint:@"Search view displayed"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,7 +106,8 @@
 -(void) setupToolbar
 {
     topToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kBarThickness)];
-    [topToolBar setBarStyle:UIBarStyleBlackTranslucent];
+    [topToolBar setBarStyle:UIBarStyleBlack];
+    [topToolBar setTranslucent:YES];
     [topToolBar setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [topToolBar setBackgroundImage:[UIImage imageNamed:@"subtlenet2"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
@@ -165,51 +165,31 @@
     skinLayerItem = [[UIBarButtonItem alloc] initWithTitle:@"Cut." style:UIBarButtonItemStylePlain target:self action:@selector(handleToolBarTap:)];
 //    [skinLayerItem setTintColor:kWormGreen];
 
-    [skinLayerItem setTitleTextAttributes:
-     @{
-                 UITextAttributeTextColor: kWormGreen,
-                      UITextAttributeFont: fontToUse,
-          UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-           UITextAttributeTextShadowColor: [UIColor colorWithWhite:0.0 alpha:0.5],     
-     }
-                                 forState:UIControlStateNormal];
+    NSShadow *itemShadow = [[NSShadow alloc] init];
+    itemShadow.shadowOffset = CGSizeMake(0, 1);
+    itemShadow.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    NSDictionary *titleAttributes = @{
+        NSForegroundColorAttributeName: kWormGreen,
+        NSFontAttributeName: fontToUse,
+        NSShadowAttributeName: itemShadow
+    };
+    [skinLayerItem setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
     
     [skinLayerItem setTag:barButton_scrollToSkin];
     [skinLayerItem setWidth:40.0f];
     
     organsLayerItem = [[UIBarButtonItem alloc] initWithTitle:@"Org." style:UIBarButtonItemStylePlain target:self action:@selector(handleToolBarTap:)];
-    [organsLayerItem setTitleTextAttributes:
-     @{
-                 UITextAttributeTextColor: kWormGreen,
-                      UITextAttributeFont: fontToUse,
-          UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-           UITextAttributeTextShadowColor: [UIColor colorWithWhite:0.0 alpha:0.5],
-     }
-                                 forState:UIControlStateNormal];
+    [organsLayerItem setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
     [organsLayerItem setTag:barButton_scrollToOrgans];
     [organsLayerItem setWidth:40.0f];
     
     muscleLayerItem = [[UIBarButtonItem alloc] initWithTitle:@"Mus." style:UIBarButtonItemStylePlain target:self action:@selector(handleToolBarTap:)];
-    [muscleLayerItem setTitleTextAttributes:
-     @{
-                 UITextAttributeTextColor: kWormGreen,
-                      UITextAttributeFont: fontToUse,
-          UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-           UITextAttributeTextShadowColor: [UIColor colorWithWhite:0.0 alpha:0.5],
-     }
-                                 forState:UIControlStateNormal];
+    [muscleLayerItem setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
     [muscleLayerItem setTag:barButton_scrollToMuscles];
     [muscleLayerItem setWidth:40.0f];    
     
     neuronLayerItem = [[UIBarButtonItem alloc] initWithTitle:@"Neu." style:UIBarButtonItemStylePlain target:self action:@selector(handleToolBarTap:)];
-    [neuronLayerItem setTitleTextAttributes:
-     @{
-                 UITextAttributeTextColor: kWormGreen,
-                      UITextAttributeFont: fontToUse,
-          UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-           UITextAttributeTextShadowColor: [UIColor colorWithWhite:0.0 alpha:0.5],
-     }
-                                 forState:UIControlStateNormal];
+    [neuronLayerItem setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
     [neuronLayerItem setTag:barButton_scrollToNeurons];
     [neuronLayerItem setWidth:40.0f];
 
@@ -321,7 +301,7 @@
     return [layerArray objectAtIndex:indexPath.row];
 }
 
--(NSString*)titleForSection:(int)section
+-(NSString*)titleForSection:(NSInteger)section
 {
     return [[[self.filteredArray objectAtIndex:section] allKeys] objectAtIndex:0];
 }
@@ -478,8 +458,7 @@
 
 -(void) handleToolBarTap:(id) sender
 {
-    CGRect sectionRect;
-    barButtons selectedButton = [sender tag];
+    barButtons selectedButton = (barButtons)[sender tag];
     
     NSIndexPath* path;
     

@@ -1,7 +1,8 @@
-platform :ios, 5.1
-pod 'Reachability'
-pod 'TestFlightSDK', '1.1'
-pod 'CocoaLumberjack'
-pod 'RegexKitLite'
-pod 'iRate'
-pod 'DCRoundSwitch', '~> 0.0.1'
+platform :ios, '14.0'
+
+target 'OpenWorm' do
+  pod 'Reachability'
+  pod 'CocoaLumberjack'
+  pod 'iRate'
+  pod 'DCRoundSwitch'
+end

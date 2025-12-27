@@ -12,19 +12,12 @@
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
-			<key>CFBundleIconFiles</key>
-			<array>
-				<string>Icon.png</string>
-				<string>Icon@2x.png</string>
-				<string>iPadIcon.png</string>
-				<string>iPadIcon@2x.png</string>
-			</array>
-			<key>UIPrerenderedIcon</key>
-			<true/>
+			<key>CFBundleIconName</key>
+			<string>AppIcon</string>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>us.metacell.openworm</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -39,8 +32,8 @@
 	<string>1.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIPrerenderedIcon</key>
-	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -49,11 +42,15 @@
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>

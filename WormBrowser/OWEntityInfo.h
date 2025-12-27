@@ -32,7 +32,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <GLKit/GLKit.h>
+#import <stdint.h>
+#import "OWVector.h"
 
 /** OWEntityInfo description
  
@@ -42,11 +43,11 @@
     int layer;
     int entityID;
 
-    GLuint indexOffset;
-    GLuint indexCount;
+    uint32_t indexOffset;
+    uint32_t indexCount;
 
-    GLKVector3 bbl;
-    GLKVector3 bbh;
+    OWVector3 bbl;
+    OWVector3 bbh;
     
     NSString* displayName;
     
@@ -54,11 +55,11 @@
 
 @property int layer;
 @property int entityID;
-@property GLuint indexOffset;
-@property GLuint indexCount;
+@property uint32_t indexOffset;
+@property uint32_t indexCount;
 
-@property GLKVector3 bbl;
-@property GLKVector3 bbh;
+@property OWVector3 bbl;
+@property OWVector3 bbh;
 @property(nonatomic, strong) NSString* displayName;
 
 -(void) printDebugString;

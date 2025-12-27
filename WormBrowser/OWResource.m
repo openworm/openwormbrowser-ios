@@ -32,6 +32,7 @@
 //
 
 #import "OWResource.h"
+#import "OWVector.h"
 
 @implementation OWResource
 
@@ -143,12 +144,20 @@
     return [self.metaDataDictionary objectForKey:@"materials"];
 }
 
--(GLKVector4) getDiffuseColorForMaterial:(NSString *)materialName
+-(OWVector4) getDiffuseColorForMaterial:(NSString *)materialName
 {
     NSDictionary* materialDict = [self.getMaterialsDictionary objectForKey:materialName];
-    
+
+    if (!materialDict) {
+        return OWVector4Make(0.5, 0.5, 0.5, 1.0); // Gray fallback for missing materials
+    }
+
     NSArray* diffuseArray = [materialDict objectForKey:@"Kd"];
-    GLKVector4 diffuseColor = GLKVector4Make([[diffuseArray objectAtIndex:0] floatValue]/255,
+    if (!diffuseArray || diffuseArray.count < 3) {
+        return OWVector4Make(0.5, 0.5, 0.5, 1.0); // Gray fallback for missing Kd
+    }
+
+    OWVector4 diffuseColor = OWVector4Make([[diffuseArray objectAtIndex:0] floatValue]/255,
                                              [[diffuseArray objectAtIndex:1] floatValue]/255,
                                              [[diffuseArray objectAtIndex:2] floatValue]/255,
                                              1.0);
@@ -259,8 +268,7 @@
         }
         
         NSMutableArray* s2e = [self.mSearchToEntity objectForKey:entity.displayName];
-        [s2e addObject:[NSNumber numberWithInt:entity.entityID]];
-        [self.mSearchToEntity setObject:entity.displayName forKey:s2e];
+        [s2e addObject:@(entity.entityID)];
         
     }
 }
@@ -289,8 +297,12 @@
 
 -(OWEntityInfo*) getInfoForEntityName:(NSString*) name
 {
-    #warning THIS IS HORRENDOUSLY inefficient but necessary to support legacy configuration
-    return [self.mEntities objectForKey:[self getEntityNameForSearch:name]];
+    OWEntityInfo *info = [self.mEntities objectForKey:name];
+    if (!info) {
+        NSString *lookup = [self getEntityNameForSearch:name];
+        info = [self.mEntities objectForKey:lookup];
+    }
+    return info;
 }
 
 -(void) putInfo:(OWEntityInfo*) _info forName:(NSString*) name

@@ -141,29 +141,13 @@
 //    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
 //    NSLog(@"initializing camera with aspect ratio: %f", aspect);
     
-    UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
-    switch (toInterfaceOrientation) {
-        case UIInterfaceOrientationLandscapeLeft:
-        case UIInterfaceOrientationLandscapeRight:
-            
-            NSLog(@"Rotating to Landscape %f", fabsf(self.view.bounds.size.height / self.view.bounds.size.width));
-            
-            [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.height / self.view.bounds.size.width)];
-//            [self.mNavigate recalculate];
-            
-            
-            break;
-        case UIInterfaceOrientationPortrait:
-        case UIInterfaceOrientationPortraitUpsideDown:
-            
-            NSLog(@"Rotating to Portrait %f", fabsf(self.view.bounds.size.width / self.view.bounds.size.height));
-            
-            [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.width / self.view.bounds.size.height)];
-//            [self.mNavigate recalculate];
-            
-        default:
-            break;
+    BOOL isLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
+    if (isLandscape) {
+        NSLog(@"Rotating to Landscape %f", fabsf(self.view.bounds.size.height / self.view.bounds.size.width));
+        [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.height / self.view.bounds.size.width)];
+    } else {
+        NSLog(@"Rotating to Portrait %f", fabsf(self.view.bounds.size.width / self.view.bounds.size.height));
+        [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.width / self.view.bounds.size.height)];
     }
     
 //    [mNavigate setAspectRatio:aspect];
@@ -227,35 +211,25 @@
     [self performSelector:@selector(animateToBaseEntity:) withObject:nil afterDelay:0.1];
 }
 
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    return YES;
+    return UIInterfaceOrientationMaskAll;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    switch (toInterfaceOrientation) {
-        case UIInterfaceOrientationLandscapeLeft:
-        case UIInterfaceOrientationLandscapeRight:
-
-            NSLog(@"Rotating to Landscape %f", fabsf(self.view.bounds.size.height / self.view.bounds.size.width));
-            
-            [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.height / self.view.bounds.size.width)];
-            [self.mNavigate recalculate];
-            
-            
-            break;
-        case UIInterfaceOrientationPortrait:
-        case UIInterfaceOrientationPortraitUpsideDown:
-            
-            NSLog(@"Rotating to Portrait %f", fabsf(self.view.bounds.size.width / self.view.bounds.size.height));
-            
-            [self.mNavigate setAspectRatio:fabsf(self.view.bounds.size.width / self.view.bounds.size.height)];
-            [self.mNavigate recalculate];
-            
-        default:
-            break;
-    }
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        BOOL isLandscape = size.width > size.height;
+        if (isLandscape) {
+            NSLog(@"Rotating to Landscape %f", fabsf(size.height / size.width));
+            [self.mNavigate setAspectRatio:fabsf(size.height / size.width)];
+        } else {
+            NSLog(@"Rotating to Portrait %f", fabsf(size.width / size.height));
+            [self.mNavigate setAspectRatio:fabsf(size.width / size.height)];
+        }
+        [self.mNavigate recalculate];
+    } completion:nil];
 }
 
 
@@ -1263,7 +1237,7 @@ CGPointSub(const CGPoint v1, const CGPoint v2)
         NSDate *start = [NSDate date];
 
 
-        [layer loadDrawGroupsInContext:self.context];
+        [layer loadDrawGroups];
 
         NSDate *methodFinish = [NSDate date];
         NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:start];

@@ -34,9 +34,15 @@
 
 #import <UIKit/UIKit.h>
 #import "OWSearchViewController.h"
-#import "OWGLViewController.h"
+#import "OWMetalViewController.h"
 #import "WSOpacityViewController.h"
 #import "OWMetaDataViewController.h"
+
+typedef NS_ENUM(NSInteger, OWViewButtonTag) {
+    OWViewButtonTagShowSearch = 0,
+    OWViewButtonTagCamera     = 1,
+    OWViewButtonTagAbout      = 2
+};
 
 /** OWViewController description
  
@@ -52,9 +58,9 @@
 
 
 /**
- GLKit Viewcontroller -> mView
+ Metal Viewcontroller -> mView
  */
-@property(nonatomic, strong)    OWGLViewController*     mView;
+@property(nonatomic, strong)    OWMetalViewController*  mView;
 
 /**
  Search UIViewController  -> mSearchView

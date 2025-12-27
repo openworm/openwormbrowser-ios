@@ -36,13 +36,16 @@
 
 @implementation OWDrawGroup
 
-@synthesize vertexBuffer, indexBuffer, numIndices, vertexBufferData, indexBufferData, colorBufferData, diffuseColor, draws, boundingBoxData;
+@synthesize vertexBuffer, indexBuffer, numIndices, vertexBufferData, indexBufferData, colorBufferData, diffuseColor, draws, boundingBoxData, vertexCount, mtlVertexBuffer, mtlIndexBuffer;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         self.draws = [[NSMutableArray alloc] init];
+        self.vertexCount = 0;
+        self.mtlVertexBuffer = nil;
+        self.mtlIndexBuffer = nil;
     }
     return self;
 }

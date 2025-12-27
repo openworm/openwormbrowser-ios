@@ -33,14 +33,16 @@
 
 
 #import <Foundation/Foundation.h>
+#import <stdint.h>
+#import "OWVector.h"
 
 @interface OWDraw : NSObject
 {
 }
 
 @property(nonatomic, strong) NSString* geometry;
-@property GLKVector4 selectColor;
-@property GLuint offset;
-@property GLuint count;
+@property OWVector4 selectColor;
+@property uint32_t offset;
+@property uint32_t count;
 
 @end

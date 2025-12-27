@@ -56,7 +56,7 @@
 }
 
 
--(void) loadDrawGroupsInContext:(EAGLContext *)context
+-(void) loadDrawGroups
 {
     
     // we're using an index for each draw subgroup
@@ -79,8 +79,8 @@
     NSArray* decodeScales = [[resource getDecodeParameters] objectForKey:@"decodeScales"];
     NSArray* decodeOffsets = [[resource getDecodeParameters] objectForKey:@"decodeOffsets"];
     
-    GLfloat decodeScaleVals[] ={1/8191, 1/8191, 1/8191, 1/1023, 1/1023, 1/1023, 1/1023, 1/1023};
-    GLfloat decodeOffsetVals[] = {-4095, -4095, -4095, 0, 0, -511, -511, -511};
+    float decodeScaleVals[] = {1.0f/8191.0f, 1.0f/8191.0f, 1.0f/8191.0f, 1.0f/1023.0f, 1.0f/1023.0f, 1.0f/1023.0f, 1.0f/1023.0f, 1.0f/1023.0f};
+    float decodeOffsetVals[] = {-4095, -4095, -4095, 0, 0, -511, -511, -511};
     
     for (int i = 0; i < strideLength; i++)
     {
@@ -105,7 +105,6 @@
     
     
     // set active context
-    [EAGLContext setCurrentContext:context];
 
     
     // from the list of objects, get list of files to open
@@ -163,7 +162,7 @@
             for(int j = 0; j < strideLength; j++)
             {
                 int end = inputOffset + numVerts;
-                GLfloat scaleval = decodeScaleVals[j];
+                float scaleval = decodeScaleVals[j];
                 
                 int outputStart = j;
                 if (scaleval > 0) {
@@ -194,13 +193,13 @@
                                 
                             case 3:
                                 
-                                 drawGroup.vertexBufferData[outputStart / strideLength].texCoord.s = decodeScaleVals[j] * (prev + decodeOffsetVals[j]);
+                                drawGroup.vertexBufferData[outputStart / strideLength].texCoord.x = decodeScaleVals[j] * (prev + decodeOffsetVals[j]);
                                 
                                 break;
                                 
                             case 4:
                         
-                                 drawGroup.vertexBufferData[outputStart / strideLength].texCoord.t = decodeScaleVals[j] * (prev + decodeOffsetVals[j]);
+                                drawGroup.vertexBufferData[outputStart / strideLength].texCoord.y = decodeScaleVals[j] * (prev + decodeOffsetVals[j]);
                                 
                                 break;
                                 
@@ -240,7 +239,7 @@
             
             drawGroup.numIndices = 3*[[[meshDictionary objectForKey:@"indexRange"] objectAtIndex:1] intValue];
             
-            drawGroup.indexBufferData = malloc(drawGroup.numIndices * sizeof(GLushort));
+            drawGroup.indexBufferData = malloc(drawGroup.numIndices * sizeof(uint16_t));
             
             //    int holdThis = indexStart;
             
@@ -259,19 +258,19 @@
 #pragma mark bounding box parsing
             
             int bboffset = [[meshDictionary objectForKey:@"bboxes"] intValue];
-            
+
             if (bboffset > 0) {
-                
-                int numBBoxen = [[meshDictionary objectForKey:@"names"] count];
-                
-                int numFloats = numBBoxen * 6;
+
+                NSUInteger numBBoxen = [(NSArray*)[meshDictionary objectForKey:@"names"] count];
+
+                int numFloats = (int)numBBoxen * 6;
                 int inputStart = bboffset;
                 int inputEnd = bboffset + numFloats;
                 int outputStart = 0;
                 
 //                NSLog(@"There are %d bounding boxes", numBBoxen);
                 
-                drawGroup.boundingBoxData = malloc(sizeof(GLfloat) * numFloats);
+                drawGroup.boundingBoxData = malloc(sizeof(float) * numFloats);
                 
                 int k = 0;
                 int lengthOffset = 0;
@@ -287,7 +286,7 @@
                     [draw setGeometry:name];
                     [draw setCount:[length intValue]];
                     [draw setOffset:lengthOffset];
-                    [draw setSelectColor:GLKVector4Make((float)self.type/256, (float)draw_group_index/256, (float)draw_index/256, 1.0)];
+                    [draw setSelectColor:OWVector4Make((float)self.type/256, (float)draw_group_index/256, (float)draw_index/256, 1.0)];
                     
                     [drawGroup.draws addObject:draw];
                     
@@ -298,12 +297,12 @@
                     OWEntityInfo* _entity = [resource getInfoForEntityName:name];
                     [_entity setLayer:self.type];
                     
-                    GLfloat minX = [meshString characterAtIndex:i+0] + decodeOffsetVals[0];
-                    GLfloat minY = [meshString characterAtIndex:i+1] + decodeOffsetVals[1];
-                    GLfloat minZ = [meshString characterAtIndex:i+2] + decodeOffsetVals[2];
-                    GLfloat diaX = [meshString characterAtIndex:i+3] + 1;
-                    GLfloat diaY = [meshString characterAtIndex:i+4] + 1;
-                    GLfloat diaZ = [meshString characterAtIndex:i+5] + 1;
+                    float minX = [meshString characterAtIndex:i+0] + decodeOffsetVals[0];
+                    float minY = [meshString characterAtIndex:i+1] + decodeOffsetVals[1];
+                    float minZ = [meshString characterAtIndex:i+2] + decodeOffsetVals[2];
+                    float diaX = [meshString characterAtIndex:i+3] + 1;
+                    float diaY = [meshString characterAtIndex:i+4] + 1;
+                    float diaZ = [meshString characterAtIndex:i+5] + 1;
                     
                     drawGroup.boundingBoxData[outputStart++] = decodeScaleVals[0] * minX;
                     drawGroup.boundingBoxData[outputStart++] = decodeScaleVals[1] * minY;
@@ -314,9 +313,9 @@
                     drawGroup.boundingBoxData[outputStart++] = decodeScaleVals[2] * diaZ;
                     
                     if (_entity != nil) {
-                        [_entity setBbl:GLKVector3Make( drawGroup.boundingBoxData[outputStart - 6], drawGroup.boundingBoxData[outputStart - 5], drawGroup.boundingBoxData[outputStart - 4])];
+                        [_entity setBbl:OWVector3Make( drawGroup.boundingBoxData[outputStart - 6], drawGroup.boundingBoxData[outputStart - 5], drawGroup.boundingBoxData[outputStart - 4])];
                         
-                        [_entity setBbh:GLKVector3Make( drawGroup.boundingBoxData[outputStart - 3], drawGroup.boundingBoxData[outputStart - 2], drawGroup.boundingBoxData[outputStart -1])];
+                        [_entity setBbh:OWVector3Make( drawGroup.boundingBoxData[outputStart - 3], drawGroup.boundingBoxData[outputStart - 2], drawGroup.boundingBoxData[outputStart -1])];
                         
                         [resource putInfo:_entity forName:[NSString stringWithFormat:@"%d", _entity.entityID]];
                     }
@@ -329,39 +328,26 @@
                 }
             }
 
-            
+            // FALLBACK: If no bounding box data, create a single draw for all indices
+            if (drawGroup.draws.count == 0 && drawGroup.numIndices > 0) {
+                OWDraw* draw = [[OWDraw alloc] init];
+                [draw setGeometry:@"mesh"];
+                [draw setCount:drawGroup.numIndices];
+                [draw setOffset:0];
+                [draw setSelectColor:OWVector4Make((float)self.type/256.0f, (float)draw_group_index/256.0f, 0.0f, 1.0f)];
+                [drawGroup.draws addObject:draw];
+                draw_index = 1;
+            }
+
+
 //            glGenVertexArraysOES(1, &_vao1);
 //            glBindVertexArrayOES(_vao1);
             
-            GLuint _vertexBuffer;
-            glGenBuffers(1, &_vertexBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(vertexDataTextured)*numVerts, drawGroup.vertexBufferData, GL_STATIC_DRAW);
-            
+            uint32_t _vertexBuffer = 0;
+            uint32_t _indexBuffer = 0;
+            // Buffer setup handled by Metal renderer
             [drawGroup setVertexBuffer:_vertexBuffer];
-            
-            // Vertices
-            glEnableVertexAttribArray(GLKVertexAttribPosition);
-            glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(vertexDataTextured), (void*)offsetof(vertexDataTextured, vertex)); // for model, normals, and texture
-            
-            // Normals
-            glEnableVertexAttribArray(GLKVertexAttribNormal);
-            glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, sizeof(vertexDataTextured), (void*)offsetof(vertexDataTextured, normal)); // for model,
-            
-            // Texture
-            glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-            glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(vertexDataTextured), (void*)offsetof(vertexDataTextured, texCoord)); // for model,
-            
-            
-            GLuint _indexBuffer;
-            glGenBuffers(1, &_indexBuffer);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, drawGroup.numIndices*sizeof(GLushort), drawGroup.indexBufferData, GL_STATIC_DRAW);
-
             [drawGroup setIndexBuffer:_indexBuffer];
-        
-            glBindBuffer(GL_ARRAY_BUFFER,0);
-            glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
             
 //            glBindVertexArrayOES(0);
             

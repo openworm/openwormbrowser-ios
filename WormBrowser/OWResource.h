@@ -32,6 +32,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "OWVector.h"
 #import "OWEntityInfo.h"
 
 /** OWResource description
@@ -87,7 +88,7 @@
 /**
  @param materialName converts material to color4
  */
--(GLKVector4) getDiffuseColorForMaterial:(NSString*) materialName;
+-(OWVector4) getDiffuseColorForMaterial:(NSString*) materialName;
 
 /**
  @param resourceInfo list of all mesh raw files

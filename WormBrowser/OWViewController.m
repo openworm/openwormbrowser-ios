@@ -32,6 +32,7 @@
 //
 
 #import "OWViewController.h"
+#import <objc/runtime.h>
 
 @interface OWViewController ()
 {
@@ -67,7 +68,7 @@
     
     self.mCurrentLayer = layerCuticle;
     
-    self.mView = [[OWGLViewController alloc] init];
+    self.mView = [[OWMetalViewController alloc] init];
     [self.mView.view setFrame:[self frameForGLView]];
     [self.view addSubview:self.mView.view];
     
@@ -101,41 +102,43 @@
 //    [self.view addSubview:self.mMetaDataView.view];
 
     
+    // Safe area offset for notch/Dynamic Island
+    CGFloat safeTop = 60;
+
     mShowSearchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [mShowSearchButton setFrame:CGRectMake(0,0,40,40)];
     [mShowSearchButton setImage:[UIImage imageNamed:@"owSearch"] forState:UIControlStateNormal];
-    [mShowSearchButton setCenter:CGPointMake(self.view.frame.size.width - 30, 30)];
+    [mShowSearchButton setCenter:CGPointMake(self.view.frame.size.width - 30, safeTop + 20)];
     [mShowSearchButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [mShowSearchButton setBackgroundColor:kButtonViewBackground];
-    
-    
+
+
     airplaneImage = [UIImage imageNamed:@"owPan"];
     pillImage = [UIImage imageNamed:@"owPill"];
-    
+
     mCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [mCameraButton setFrame:CGRectMake(0,0,40,40)];
     [mCameraButton setImage:pillImage forState:UIControlStateNormal];
-    [mCameraButton setCenter:CGPointMake(self.view.frame.size.width - 30, 130)];
+    [mCameraButton setCenter:CGPointMake(self.view.frame.size.width - 30, safeTop + 120)];
     [mCameraButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [mCameraButton setBackgroundColor:kButtonViewBackground];
     [mCameraButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
-    [mCameraButton setTag:1];
+    [mCameraButton setTag:OWViewButtonTagCamera];
 
 //  RMS 4/2/13 moving to single view mode
 //  [self.view addSubview:mCameraButton];
-    
+
     mAboutButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [mAboutButton setFrame:CGRectMake(0,0,40,40)];
     [mAboutButton setImage:[UIImage imageNamed:@"owInfo"] forState:UIControlStateNormal];
-    [mAboutButton setCenter:CGPointMake(self.view.frame.size.width - 30, 80)];
+    [mAboutButton setCenter:CGPointMake(self.view.frame.size.width - 30, safeTop + 70)];
     [mAboutButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [mAboutButton setBackgroundColor:kButtonViewBackground];
     [mAboutButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
-    [mAboutButton setTag:2];
+    [mAboutButton setTag:OWViewButtonTagAbout];
     [self.view addSubview:mAboutButton];
     
-#warning TODO(RMS) add enum for this tag
-    [mShowSearchButton setTag:0];
+    [mShowSearchButton setTag:OWViewButtonTagShowSearch];
     [mShowSearchButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
 
 #if TARGET_IPHONE_SIMULATOR
@@ -144,7 +147,7 @@
     
 #else
 
-    loadingActivity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    loadingActivity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     [loadingActivity setFrame:CGRectMake(0,0,40,40)];
     [loadingActivity startAnimating];
     [loadingActivity setCenter:CGPointMake(self.view.frame.size.width - 30, 30)];
@@ -168,35 +171,71 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     [self.mOpacityView.view setFrame:[self frameForOpacityView]];
     [self.mSearchView.view setFrame:[self frameForSearchView]];
     [self.mMetaDataView.view setFrame:[self frameForMetaDataView]];
 
-    
+    // Update button positions based on safe areas
+    [self updateButtonPositions];
 }
 
 
 
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    BOOL iPad = NO;
-#ifdef UI_USER_INTERFACE_IDIOM
-    iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-#endif
-    if (iPad) {
-        return YES;        
-        
-    }
-    else
-    {
-        return YES;
-    }
+    return UIInterfaceOrientationMaskAll;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [self.mView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [self.mView viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    // Update button positions after rotation completes
+    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self updateButtonPositions];
+    }];
+}
+
+- (void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    [self updateButtonPositions];
+}
+
+- (void)updateButtonPositions
+{
+    CGFloat safeTop = 0;
+    CGFloat safeRight = 0;
+
+    if (@available(iOS 11.0, *)) {
+        safeTop = self.view.safeAreaInsets.top;
+        safeRight = self.view.safeAreaInsets.right;
+    }
+
+    // In landscape with notch on right, tuck buttons into upper right corner
+    // just above the notch area - don't push too far left
+    CGFloat rightOffset = 25;
+    CGFloat topOffset = 10;
+
+    if (safeRight > 0) {
+        // Landscape with notch on right side - nudge slightly left but stay in corner
+        rightOffset = 35;
+    }
+
+    if (safeTop < 20) {
+        // Landscape mode - use small top offset
+        topOffset = 20;
+    } else {
+        // Portrait mode - account for Dynamic Island
+        topOffset = safeTop + 5;
+    }
+
+    [mShowSearchButton setCenter:CGPointMake(self.view.frame.size.width - rightOffset, topOffset + 20)];
+    [mAboutButton setCenter:CGPointMake(self.view.frame.size.width - rightOffset, topOffset + 70)];
+    [mCameraButton setCenter:CGPointMake(self.view.frame.size.width - rightOffset, topOffset + 120)];
+    [loadingActivity setCenter:CGPointMake(self.view.frame.size.width - rightOffset, topOffset + 20)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -225,15 +264,11 @@
 #endif
     if (iPad) {
         
-        UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-        
-        if (toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-            
-            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
-        }
-        else
-        {
+        BOOL isLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
+        if (isLandscape) {
             frameToReturn = CGRectMake(self.view.frame.size.height - 320 - 10, 10, 320, 400);
+        } else {
+            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
         }
         
     }
@@ -242,7 +277,7 @@
         frameToReturn = self.view.frame;
     }
     
-    NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
+    NSLog(@"%s: %@", sel_getName(_cmd), [NSValue valueWithCGRect:frameToReturn]);
     
     return frameToReturn;
 }
@@ -258,15 +293,11 @@
 #endif
     if (iPad) {
         
-        UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-        
-        if (toInterfaceOrientation == UIInterfaceOrientationPortrait || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-            
-            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
-        }
-        else
-        {
+        BOOL isLandscape = self.view.bounds.size.width > self.view.bounds.size.height;
+        if (isLandscape) {
             frameToReturn = CGRectMake(self.view.frame.size.height - 320 - 10, 10, 320, 400);
+        } else {
+            frameToReturn = CGRectMake(self.view.frame.size.width - 320 - 10, 10, 320, 400);
         }
         
     }
@@ -275,7 +306,7 @@
         frameToReturn = self.view.frame;
     }
     
-    NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
+    NSLog(@"%s: %@", sel_getName(_cmd), [NSValue valueWithCGRect:frameToReturn]);
     
     return frameToReturn;
 }
@@ -284,31 +315,31 @@
 
 -(CGRect) frameForOpacityView
 {
-    
     CGRect frameToReturn = CGRectZero;
-    
+
+    // Get safe area top inset to avoid notch/Dynamic Island
+    CGFloat topInset = 0;
+    if (@available(iOS 11.0, *)) {
+        topInset = self.view.safeAreaInsets.top;
+    }
+    // Fallback for when safe area isn't ready yet
+    if (topInset == 0) {
+        topInset = 60;  // Safe default for Dynamic Island devices
+    }
+
     BOOL iPad = NO;
 #ifdef UI_USER_INTERFACE_IDIOM
     iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 #endif
     if (iPad) {
-        
-        
-        frameToReturn = CGRectMake(25, 0, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
-        
-        
+        frameToReturn = CGRectMake(25, topInset, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
     }
     else
     {
-        // need to flip coordinates for iphone landscape
-//        float width = [UIScreen mainScreen].bounds.size.height;
-//        float height = [UIScreen mainScreen].bounds.size.width;
-        
-        frameToReturn = CGRectMake(20, 0, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
-        
+        frameToReturn = CGRectMake(20, topInset, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
     }
-    
-    NSLog(@"%s: %@", (char*)_cmd, [NSValue valueWithCGRect:frameToReturn]);
+
+    NSLog(@"%s: %@", sel_getName(_cmd), [NSValue valueWithCGRect:frameToReturn]);
     return frameToReturn;
 }
 
@@ -323,21 +354,21 @@
     mShowSearchButton.center = loadingActivity.center;
     
     [UIView animateWithDuration:0.5 animations:^{
-       
-        [loadingActivity setAlpha:0.0f];
-        
-    } completion:^(BOOL finished) {
-        
-        [loadingActivity removeFromSuperview];
 
-        [self.view addSubview:mShowSearchButton];
-        
+        [self->loadingActivity setAlpha:0.0f];
+
+    } completion:^(BOOL finished) {
+
+        [self->loadingActivity removeFromSuperview];
+
+        [self.view addSubview:self->mShowSearchButton];
+
         [UIView animateWithDuration:0.5 animations:^{
-            
-            mShowSearchButton.alpha = 1.0f;
-            
+
+            self->mShowSearchButton.alpha = 1.0f;
+
         } completion:^(BOOL finished) {
-            
+
         }];
     }];
     
@@ -528,16 +559,16 @@
 
 -(void) handleButtonTap:(id)sender
 {
-    int tag = [sender tag];
+    OWViewButtonTag tag = [sender tag];
     
     switch (tag) {
-        case 0:
+        case OWViewButtonTagShowSearch:
             
             [self showSearchView];
 
             break;
             
-        case 1:
+        case OWViewButtonTagCamera:
             
             // handle camera tap
             [self.mView toggleCameraMode];
@@ -549,7 +580,7 @@
             
             break;
             
-        case 2:
+        case OWViewButtonTagAbout:
             
             // handle info tap
             
