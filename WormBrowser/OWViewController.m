@@ -171,12 +171,13 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     [self.mOpacityView.view setFrame:[self frameForOpacityView]];
     [self.mSearchView.view setFrame:[self frameForSearchView]];
     [self.mMetaDataView.view setFrame:[self frameForMetaDataView]];
 
-    
+    // Update button positions based on safe areas
+    [self updateButtonPositions];
 }
 
 
@@ -190,6 +191,51 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self.mView viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    // Update button positions after rotation completes
+    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self updateButtonPositions];
+    }];
+}
+
+- (void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    [self updateButtonPositions];
+}
+
+- (void)updateButtonPositions
+{
+    CGFloat safeTop = 0;
+    CGFloat safeRight = 0;
+
+    if (@available(iOS 11.0, *)) {
+        safeTop = self.view.safeAreaInsets.top;
+        safeRight = self.view.safeAreaInsets.right;
+    }
+
+    // In landscape with notch on right, tuck buttons into upper right corner
+    // just above the notch area - don't push too far left
+    CGFloat rightOffset = 25;
+    CGFloat topOffset = 10;
+
+    if (safeRight > 0) {
+        // Landscape with notch on right side - nudge slightly left but stay in corner
+        rightOffset = 35;
+    }
+
+    if (safeTop < 20) {
+        // Landscape mode - use small top offset
+        topOffset = 20;
+    } else {
+        // Portrait mode - account for Dynamic Island
+        topOffset = safeTop + 5;
+    }
+
+    [mShowSearchButton setCenter:CGPointMake(self.view.frame.size.width - rightOffset, topOffset + 20)];
+    [mAboutButton setCenter:CGPointMake(self.view.frame.size.width - rightOffset, topOffset + 70)];
+    [mCameraButton setCenter:CGPointMake(self.view.frame.size.width - rightOffset, topOffset + 120)];
+    [loadingActivity setCenter:CGPointMake(self.view.frame.size.width - rightOffset, topOffset + 20)];
 }
 
 - (void)didReceiveMemoryWarning
