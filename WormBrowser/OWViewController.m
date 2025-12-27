@@ -102,21 +102,24 @@
 //    [self.view addSubview:self.mMetaDataView.view];
 
     
+    // Safe area offset for notch/Dynamic Island
+    CGFloat safeTop = 60;
+
     mShowSearchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [mShowSearchButton setFrame:CGRectMake(0,0,40,40)];
     [mShowSearchButton setImage:[UIImage imageNamed:@"owSearch"] forState:UIControlStateNormal];
-    [mShowSearchButton setCenter:CGPointMake(self.view.frame.size.width - 30, 30)];
+    [mShowSearchButton setCenter:CGPointMake(self.view.frame.size.width - 30, safeTop + 20)];
     [mShowSearchButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [mShowSearchButton setBackgroundColor:kButtonViewBackground];
-    
-    
+
+
     airplaneImage = [UIImage imageNamed:@"owPan"];
     pillImage = [UIImage imageNamed:@"owPill"];
-    
+
     mCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [mCameraButton setFrame:CGRectMake(0,0,40,40)];
     [mCameraButton setImage:pillImage forState:UIControlStateNormal];
-    [mCameraButton setCenter:CGPointMake(self.view.frame.size.width - 30, 130)];
+    [mCameraButton setCenter:CGPointMake(self.view.frame.size.width - 30, safeTop + 120)];
     [mCameraButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [mCameraButton setBackgroundColor:kButtonViewBackground];
     [mCameraButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
@@ -124,11 +127,11 @@
 
 //  RMS 4/2/13 moving to single view mode
 //  [self.view addSubview:mCameraButton];
-    
+
     mAboutButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [mAboutButton setFrame:CGRectMake(0,0,40,40)];
     [mAboutButton setImage:[UIImage imageNamed:@"owInfo"] forState:UIControlStateNormal];
-    [mAboutButton setCenter:CGPointMake(self.view.frame.size.width - 30, 80)];
+    [mAboutButton setCenter:CGPointMake(self.view.frame.size.width - 30, safeTop + 70)];
     [mAboutButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [mAboutButton setBackgroundColor:kButtonViewBackground];
     [mAboutButton addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
@@ -266,30 +269,30 @@
 
 -(CGRect) frameForOpacityView
 {
-    
     CGRect frameToReturn = CGRectZero;
-    
+
+    // Get safe area top inset to avoid notch/Dynamic Island
+    CGFloat topInset = 0;
+    if (@available(iOS 11.0, *)) {
+        topInset = self.view.safeAreaInsets.top;
+    }
+    // Fallback for when safe area isn't ready yet
+    if (topInset == 0) {
+        topInset = 60;  // Safe default for Dynamic Island devices
+    }
+
     BOOL iPad = NO;
 #ifdef UI_USER_INTERFACE_IDIOM
     iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 #endif
     if (iPad) {
-        
-        
-        frameToReturn = CGRectMake(25, 0, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
-        
-        
+        frameToReturn = CGRectMake(25, topInset, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
     }
     else
     {
-        // need to flip coordinates for iphone landscape
-//        float width = [UIScreen mainScreen].bounds.size.height;
-//        float height = [UIScreen mainScreen].bounds.size.width;
-        
-        frameToReturn = CGRectMake(20, 0, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
-        
+        frameToReturn = CGRectMake(20, topInset, kOpacityViewWidth+ 20, kOpacityViewHeight + 20);
     }
-    
+
     NSLog(@"%s: %@", sel_getName(_cmd), [NSValue valueWithCGRect:frameToReturn]);
     return frameToReturn;
 }

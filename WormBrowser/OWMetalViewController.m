@@ -276,19 +276,27 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     }
 }
 
-- (void)drawElementsForGroup:(OWDrawGroup *)group encoder:(id<MTLRenderCommandEncoder>)enc offset:(uint32_t)offset count:(uint32_t)count {
+- (void)drawElementsForGroup:(OWDrawGroup *)group encoder:(id<MTLRenderCommandEncoder>)enc offset:(uint32_t)offset count:(uint32_t)count uniforms:(Uniforms)uniforms {
     if (!group.mtlVertexBuffer || !group.mtlIndexBuffer) return;
     [enc setVertexBuffer:group.mtlVertexBuffer offset:0 atIndex:0];
-    [enc setVertexBuffer:self.uniformBuffer offset:0 atIndex:1];
-    [enc setFragmentBuffer:self.uniformBuffer offset:0 atIndex:1];  // Fragment shader also needs uniforms!
+    // Use setBytes for uniforms - copies data inline, ensuring per-draw-call isolation
+    // This fixes the issue where modifying a shared buffer in a loop causes all draws to see the last value
+    [enc setVertexBytes:&uniforms length:sizeof(Uniforms) atIndex:1];
+    [enc setFragmentBytes:&uniforms length:sizeof(Uniforms) atIndex:1];
     [enc drawIndexedPrimitives:MTLPrimitiveTypeTriangle indexCount:count indexType:MTLIndexTypeUInt16 indexBuffer:group.mtlIndexBuffer indexBufferOffset:offset * 2];
 }
 
 - (void)drawOneGeometryOnly:(OWLayer *)layer withGeometry:(NSString *)geometry encoder:(id<MTLRenderCommandEncoder>)enc {
     for (OWDrawGroup *dg in layer.drawGroups) {
+        Uniforms uniforms;
+        uniforms.mvp = self.mvpMatrix;
+        uniforms.lightDir = (vector_float3){-1, 0.3, 0.5};
+        uniforms.ambient = 0.4f;
+        uniforms.color = (vector_float4){dg.diffuseColor.x, dg.diffuseColor.y, dg.diffuseColor.z, 1.0f};
+
         for (OWDraw *draw in dg.draws) {
             if ([draw.geometry isEqualToString:geometry]) {
-                [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count];
+                [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count uniforms:uniforms];
             }
         }
     }
@@ -297,16 +305,17 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
 - (void)drawOWLayer:(OWLayer *)layer withOpacity:(float)opacity encoder:(id<MTLRenderCommandEncoder>)enc {
     if (!layer.isLoaded) return;
 
-    Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
-    uni->mvp = self.mvpMatrix;
-    uni->lightDir = (vector_float3){-1, 0.3, 0.5};  // Light from camera direction
-    uni->ambient = 0.4f;  // Moderate ambient for visible shading
     for (OWDrawGroup *dg in layer.drawGroups) {
+        // Create uniforms struct for each draw group with its specific color
+        Uniforms uniforms;
+        uniforms.mvp = self.mvpMatrix;
+        uniforms.lightDir = (vector_float3){-1, 0.3, 0.5};  // Light from camera direction
+        uniforms.ambient = 0.4f;  // Moderate ambient for visible shading
         // Use diffuse color from materials (resource loader provides fallback for missing materials)
-        vector_float4 color = (vector_float4){dg.diffuseColor.x, dg.diffuseColor.y, dg.diffuseColor.z, opacity};
-        uni->color = color;
+        uniforms.color = (vector_float4){dg.diffuseColor.x, dg.diffuseColor.y, dg.diffuseColor.z, opacity};
+
         for (OWDraw *draw in dg.draws) {
-            [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count];
+            [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count uniforms:uniforms];
         }
     }
 }
@@ -338,11 +347,6 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     [enc setRenderPipelineState:self.pickingPipelineState];
     [enc setDepthStencilState:self.depthState];
 
-    Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
-    uni->mvp = self.mvpMatrix;
-    uni->lightDir = (vector_float3){0,0,1};
-    uni->ambient = 0.0f;
-
     for (NSUInteger li = 0; li < self.mLayers.count; li++) {
         OWLayer *layer = self.mLayers[li];
         if(!layer.isLoaded) continue;
@@ -350,8 +354,12 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
             OWDrawGroup *dg = layer.drawGroups[gi];
             for (NSUInteger di = 0; di < dg.draws.count; di++) {
                 OWDraw *draw = dg.draws[di];
-                uni->color = (vector_float4){draw.selectColor.x, draw.selectColor.y, draw.selectColor.z, 1.0};
-                [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count];
+                Uniforms uniforms;
+                uniforms.mvp = self.mvpMatrix;
+                uniforms.lightDir = (vector_float3){0,0,1};
+                uniforms.ambient = 0.0f;
+                uniforms.color = (vector_float4){draw.selectColor.x, draw.selectColor.y, draw.selectColor.z, 1.0};
+                [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count uniforms:uniforms];
             }
         }
     }
@@ -432,8 +440,13 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
 
         float go = self.globalOpacity;
 
-        if (go >= 0.75f) {
-            // All layers visible, cuticle fading (1.0→0.75 = cuticle 1→0)
+        // Match original GL behavior with smooth layer transitions
+        if (go >= 0.95f) {
+            // Very top of slider: just organs peek through under cuticle
+            [self drawOWLayer:organLayer withOpacity:1.0f encoder:enc];
+            [self drawOWLayer:cuticleLayer withOpacity:(go - 0.75f) * 4.0f encoder:enc];
+        } else if (go >= 0.75f) {
+            // All layers visible, cuticle fading (0.95→0.75 = cuticle fades to 0)
             [self drawOWLayer:neuronLayer withOpacity:1.0f encoder:enc];
             [self drawOWLayer:muscleLayer withOpacity:1.0f encoder:enc];
             [self drawOWLayer:organLayer withOpacity:1.0f encoder:enc];
@@ -448,8 +461,8 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
             [self drawOWLayer:neuronLayer withOpacity:1.0f encoder:enc];
             [self drawOWLayer:muscleLayer withOpacity:(go - 0.25f) * 4.0f encoder:enc];
         } else {
-            // Only neurons, fading
-            [self drawOWLayer:neuronLayer withOpacity:go * 4.0f encoder:enc];
+            // Bottom of slider: neurons at full opacity (innermost layer stays visible)
+            [self drawOWLayer:neuronLayer withOpacity:1.0f encoder:enc];
         }
     } else {
         // Horizontal slider mode: individual layer opacities via interpolants
@@ -507,13 +520,6 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     vector_float3 up = {cam.up.x, cam.up.y, cam.up.z};
     matrix_float4x4 view = matrix_look_at(eye, target, up);
     self.mvpMatrix = matrix_multiply(proj, view);
-
-    static int logCount = 0;
-    if (logCount < 3) {
-        NSLog(@"DEBUG Camera: eye=(%.2f,%.2f,%.2f) target=(%.2f,%.2f,%.2f) up=(%.2f,%.2f,%.2f)",
-              eye.x, eye.y, eye.z, target.x, target.y, target.z, up.x, up.y, up.z);
-        logCount++;
-    }
 }
 
 #pragma mark - Public API

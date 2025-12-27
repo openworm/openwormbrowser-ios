@@ -202,8 +202,6 @@ typedef enum {
     
     // Scale down zoom distance to fill more of the screen (0.4 = closer view)
     float zoomDistance = (dYAxis + z_dist) * 0.4f;
-    NSLog(@"ZOOM: dYAxis=%.2f z_dist=%.2f raw=%.2f scaled=%.2f aspectRatio=%.2f",
-          dYAxis, z_dist, dYAxis + z_dist, zoomDistance, self.aspectRatio);
     [self doNavigateWithAngle:x forY:centerPoint.y forZoom:zoomDistance withUrgency:0.25];
    
 }
