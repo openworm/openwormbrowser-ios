@@ -425,7 +425,20 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     const NSUInteger layerMuscle = 2;   // Muscle/reproductive
     const NSUInteger layerOrgans = 3;   // Digestive system
 
-    if (self.sliderIsVertical && self.mLayers.count >= 4) {
+    // Check if there's a selection - if so, draw only selected geometry + faded layer
+    if (self.selectedObjects.count > 0 && self.mLayers.count >= 4) {
+        OWEntityInfo *info = (OWEntityInfo *)self.selectedObjects[0];
+        if (info.layer < self.mLayers.count) {
+            OWLayer *selectedLayer = self.mLayers[info.layer];
+            [self prepareDrawForLayer:selectedLayer];
+
+            // Draw selected geometry at full opacity
+            [self drawOneGeometryOnly:selectedLayer withGeometry:info.displayName encoder:enc];
+
+            // Draw rest of that layer as a faded ghost
+            [self drawFadedLayer:selectedLayer encoder:enc];
+        }
+    } else if (self.sliderIsVertical && self.mLayers.count >= 4) {
         // Staged opacity: slider progressively reveals inner layers
         // Render order: neurons (innermost) → muscles → organs → cuticle (outermost)
         OWLayer *cuticleLayer = self.mLayers[layerCuticle];
@@ -464,7 +477,7 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
             // Bottom of slider: neurons at full opacity (innermost layer stays visible)
             [self drawOWLayer:neuronLayer withOpacity:1.0f encoder:enc];
         }
-    } else {
+    } else if (self.mLayers.count >= 4) {
         // Horizontal slider mode: individual layer opacities via interpolants
         // MUST draw back-to-front for proper transparency:
         // neurons (innermost) → muscles → organs → cuticle (outermost)
