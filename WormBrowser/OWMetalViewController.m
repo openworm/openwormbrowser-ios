@@ -87,7 +87,7 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     self.mtkView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.mtkView.delegate = self;
     self.mtkView.preferredFramesPerSecond = 60;
-    self.mtkView.clearColor = MTLClearColorMake(0.05, 0.05, 0.1, 1.0);  // Dark blue-gray background
+    self.mtkView.clearColor = MTLClearColorMake(0.6, 0.8, 0.2, 1.0);  // kWormGreen background
     [self.view addSubview:self.mtkView];
     [self.view sendSubviewToBack:self.mtkView];  // Ensure MTKView is behind UI elements
     
@@ -411,11 +411,11 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
     uni->mvp = self.mvpMatrix;
 
-    // Layer indices
+    // Layer indices - must match enum in OWDefines.h
     const NSUInteger layerCuticle = 0;  // Outermost skin layer
-    const NSUInteger layerOrgans = 1;   // Digestive system
-    const NSUInteger layerNeurons = 2;  // Nervous system
-    const NSUInteger layerMuscle = 3;   // Muscle/reproductive
+    const NSUInteger layerNeurons = 1;  // Nervous system (innermost)
+    const NSUInteger layerMuscle = 2;   // Muscle/reproductive
+    const NSUInteger layerOrgans = 3;   // Digestive system
 
     if (self.sliderIsVertical && self.mLayers.count >= 4) {
         // Staged opacity: slider progressively reveals inner layers
@@ -577,10 +577,21 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
         NSNumber *val = notification.object;
         self.globalOpacity = 1 - val.floatValue;
     } else {
+        // Horizontal slider: values come in order [cuticle, organs, muscle, neurons]
+        // but need to map to interpolant indices that match layer enum order
         NSArray *vals = notification.object;
         for (int i = 0; i < vals.count && i < self.mLayerOpacityInterpolants.count; i++) {
-            OWInterpolant *interp = self.mLayerOpacityInterpolants[i];
-            [interp setFuture:[vals[i] floatValue] withUrgency:0.25];
+            NSNumber *val = vals[i];
+            int interpolantIndex;
+            switch (i) {
+                case 0: interpolantIndex = 0; break;  // cuticle → 0
+                case 1: interpolantIndex = 3; break;  // organs → 3
+                case 2: interpolantIndex = 2; break;  // muscle → 2
+                case 3: interpolantIndex = 1; break;  // neurons → 1
+                default: interpolantIndex = i; break;
+            }
+            OWInterpolant *interp = self.mLayerOpacityInterpolants[interpolantIndex];
+            [interp setFuture:[val floatValue] withUrgency:0.25];
         }
     }
 }
