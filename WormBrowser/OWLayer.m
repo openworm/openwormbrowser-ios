@@ -328,7 +328,18 @@
                 }
             }
 
-            
+            // FALLBACK: If no bounding box data, create a single draw for all indices
+            if (drawGroup.draws.count == 0 && drawGroup.numIndices > 0) {
+                OWDraw* draw = [[OWDraw alloc] init];
+                [draw setGeometry:@"mesh"];
+                [draw setCount:drawGroup.numIndices];
+                [draw setOffset:0];
+                [draw setSelectColor:OWVector4Make((float)self.type/256.0f, (float)draw_group_index/256.0f, 0.0f, 1.0f)];
+                [drawGroup.draws addObject:draw];
+                draw_index = 1;
+            }
+
+
 //            glGenVertexArraysOES(1, &_vao1);
 //            glBindVertexArrayOES(_vao1);
             

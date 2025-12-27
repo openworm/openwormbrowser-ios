@@ -72,7 +72,7 @@ typedef enum {
 
         mTheta = [[OWInterpolant alloc] initWithValue:(float)M_PI];
         mDollyY = [[OWInterpolant alloc] initWithValue:0];
-        mDollyZ = [[OWInterpolant alloc] initWithValue:35.0f];
+        mDollyZ = [[OWInterpolant alloc] initWithValue:5.0f];  // Initial zoom, animateToBaseEntity adjusts this
         
         mRotateLocalX = [[OWInterpolant alloc] initWithValue:0];
         mRotateLocalY = [[OWInterpolant alloc] initWithValue:0];
@@ -94,12 +94,12 @@ typedef enum {
         
         camera = [[OWCamera alloc] init];
         
-        camera.eye = OWVector3Make(-35,0,0);
+        camera.eye = OWVector3Make(-5,0,0);  // Initial position, animateToBaseEntity adjusts
         camera.target = OWVector3Make(0,0,0);
         camera.up = OWVector3Make(0,1,0);
         camera.fov = 50;
         
-        initialDollyZ  = -35.0f;
+        initialDollyZ  = -5.0f;
         
         
     }
@@ -200,9 +200,11 @@ typedef enum {
     float zx_dist = projectedWidth / tanf(x_angle);
     float z_dist = MAX(zy_dist, zx_dist);
     
-    //    NSLog(@"xyz: %f %f %f %f %f : %f", 180 * x / M_PI, centerPoint.y, dYAxis + z_dist, camera.fov, self.aspectRatio, dYAxis);
-    
-    [self doNavigateWithAngle:x forY:centerPoint.y forZoom:dYAxis + z_dist withUrgency:0.25];
+    // Scale down zoom distance to fill more of the screen (0.4 = closer view)
+    float zoomDistance = (dYAxis + z_dist) * 0.4f;
+    NSLog(@"ZOOM: dYAxis=%.2f z_dist=%.2f raw=%.2f scaled=%.2f aspectRatio=%.2f",
+          dYAxis, z_dist, dYAxis + z_dist, zoomDistance, self.aspectRatio);
+    [self doNavigateWithAngle:x forY:centerPoint.y forZoom:zoomDistance withUrgency:0.25];
    
 }
 

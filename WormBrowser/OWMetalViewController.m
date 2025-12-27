@@ -87,7 +87,9 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     self.mtkView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.mtkView.delegate = self;
     self.mtkView.preferredFramesPerSecond = 60;
+    self.mtkView.clearColor = MTLClearColorMake(0.05, 0.05, 0.1, 1.0);  // Dark blue-gray background
     [self.view addSubview:self.mtkView];
+    [self.view sendSubviewToBack:self.mtkView];  // Ensure MTKView is behind UI elements
     
     self.sliderIsVertical = YES;
     self.currentRenderSetting = renderSettingLow;
@@ -147,6 +149,10 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
 
     [self setupMetal];
 
+    // Set aspect ratio before initial animation so zoom calculation works
+    float aspect = fabs(self.view.bounds.size.width / self.view.bounds.size.height);
+    self.mNavigate.aspectRatio = aspect;
+
     [self performSelector:@selector(animateToBaseEntity:) withObject:nil afterDelay:0.1];
 }
 
@@ -168,6 +174,14 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     desc.vertexFunction = vert;
     desc.fragmentFunction = frag;
     desc.colorAttachments[0].pixelFormat = self.mtkView.colorPixelFormat;
+    // Enable alpha blending for layer transparency
+    desc.colorAttachments[0].blendingEnabled = YES;
+    desc.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
+    desc.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
+    desc.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorSourceAlpha;
+    desc.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorSourceAlpha;
+    desc.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+    desc.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
     desc.depthAttachmentPixelFormat = self.mtkView.depthStencilPixelFormat;
 
     MTLVertexDescriptor *vd = [[MTLVertexDescriptor alloc] init];
@@ -266,6 +280,7 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     if (!group.mtlVertexBuffer || !group.mtlIndexBuffer) return;
     [enc setVertexBuffer:group.mtlVertexBuffer offset:0 atIndex:0];
     [enc setVertexBuffer:self.uniformBuffer offset:0 atIndex:1];
+    [enc setFragmentBuffer:self.uniformBuffer offset:0 atIndex:1];  // Fragment shader also needs uniforms!
     [enc drawIndexedPrimitives:MTLPrimitiveTypeTriangle indexCount:count indexType:MTLIndexTypeUInt16 indexBuffer:group.mtlIndexBuffer indexBufferOffset:offset * 2];
 }
 
@@ -281,12 +296,15 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
 
 - (void)drawOWLayer:(OWLayer *)layer withOpacity:(float)opacity encoder:(id<MTLRenderCommandEncoder>)enc {
     if (!layer.isLoaded) return;
+
     Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
     uni->mvp = self.mvpMatrix;
-    uni->lightDir = (vector_float3){0,0,1};
-    uni->ambient = 0.2f;
+    uni->lightDir = (vector_float3){-1, 0.3, 0.5};  // Light from camera direction
+    uni->ambient = 0.4f;  // Moderate ambient for visible shading
     for (OWDrawGroup *dg in layer.drawGroups) {
-        uni->color = (vector_float4){dg.diffuseColor.x, dg.diffuseColor.y, dg.diffuseColor.z, opacity};
+        // Use diffuse color from materials (resource loader provides fallback for missing materials)
+        vector_float4 color = (vector_float4){dg.diffuseColor.x, dg.diffuseColor.y, dg.diffuseColor.z, opacity};
+        uni->color = color;
         for (OWDraw *draw in dg.draws) {
             [self drawElementsForGroup:dg encoder:enc offset:draw.offset count:draw.count];
         }
@@ -393,15 +411,58 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
     Uniforms *uni = (Uniforms *)self.uniformBuffer.contents;
     uni->mvp = self.mvpMatrix;
 
-    for (NSUInteger idx = 0; idx < self.mLayers.count; idx++) {
-        OWLayer *layer = self.mLayers[idx];
-        [self prepareDrawForLayer:layer];
-        float opacity = 1.0f;
-        if (idx < self.mLayerOpacityInterpolants.count) {
-            OWInterpolant *interp = self.mLayerOpacityInterpolants[idx];
-            opacity = interp.present;
+    // Layer indices
+    const NSUInteger layerCuticle = 0;  // Outermost skin layer
+    const NSUInteger layerOrgans = 1;   // Digestive system
+    const NSUInteger layerNeurons = 2;  // Nervous system
+    const NSUInteger layerMuscle = 3;   // Muscle/reproductive
+
+    if (self.sliderIsVertical && self.mLayers.count >= 4) {
+        // Staged opacity: slider progressively reveals inner layers
+        // Render order: neurons (innermost) → muscles → organs → cuticle (outermost)
+        OWLayer *cuticleLayer = self.mLayers[layerCuticle];
+        OWLayer *organLayer = self.mLayers[layerOrgans];
+        OWLayer *neuronLayer = self.mLayers[layerNeurons];
+        OWLayer *muscleLayer = self.mLayers[layerMuscle];
+
+        [self prepareDrawForLayer:neuronLayer];
+        [self prepareDrawForLayer:muscleLayer];
+        [self prepareDrawForLayer:organLayer];
+        [self prepareDrawForLayer:cuticleLayer];
+
+        float go = self.globalOpacity;
+
+        if (go >= 0.75f) {
+            // All layers visible, cuticle fading (1.0→0.75 = cuticle 1→0)
+            [self drawOWLayer:neuronLayer withOpacity:1.0f encoder:enc];
+            [self drawOWLayer:muscleLayer withOpacity:1.0f encoder:enc];
+            [self drawOWLayer:organLayer withOpacity:1.0f encoder:enc];
+            [self drawOWLayer:cuticleLayer withOpacity:(go - 0.75f) * 4.0f encoder:enc];
+        } else if (go >= 0.5f) {
+            // Neurons + muscles visible, organs fading
+            [self drawOWLayer:neuronLayer withOpacity:1.0f encoder:enc];
+            [self drawOWLayer:muscleLayer withOpacity:1.0f encoder:enc];
+            [self drawOWLayer:organLayer withOpacity:(go - 0.5f) * 4.0f encoder:enc];
+        } else if (go >= 0.25f) {
+            // Neurons visible, muscles fading
+            [self drawOWLayer:neuronLayer withOpacity:1.0f encoder:enc];
+            [self drawOWLayer:muscleLayer withOpacity:(go - 0.25f) * 4.0f encoder:enc];
+        } else {
+            // Only neurons, fading
+            [self drawOWLayer:neuronLayer withOpacity:go * 4.0f encoder:enc];
         }
-        [self drawOWLayer:layer withOpacity:opacity encoder:enc];
+    } else {
+        // Horizontal slider mode: individual layer opacities via interpolants
+        for (NSUInteger idx = 0; idx < self.mLayers.count; idx++) {
+            OWLayer *layer = self.mLayers[idx];
+            [self prepareDrawForLayer:layer];
+            float opacity = 1.0f;
+            if (idx < self.mLayerOpacityInterpolants.count) {
+                OWInterpolant *interp = self.mLayerOpacityInterpolants[idx];
+                opacity = interp.present;
+            }
+            [self drawOWLayer:layer withOpacity:opacity encoder:enc];
+        }
     }
 
     [enc endEncoding];
@@ -439,12 +500,20 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
 
     OWCamera *cam = [self.mNavigate getCamera];
     float aspect = fabs(self.view.bounds.size.width / self.view.bounds.size.height);
+    self.mNavigate.aspectRatio = aspect;  // Set aspect ratio for zoom calculations
     matrix_float4x4 proj = matrix_perspective(OWDegreesToRadians(40.0f), aspect, 0.1f, 250.0f);
     vector_float3 eye = {cam.eye.x, cam.eye.y, cam.eye.z};
     vector_float3 target = {cam.target.x, cam.target.y, cam.target.z};
     vector_float3 up = {cam.up.x, cam.up.y, cam.up.z};
     matrix_float4x4 view = matrix_look_at(eye, target, up);
     self.mvpMatrix = matrix_multiply(proj, view);
+
+    static int logCount = 0;
+    if (logCount < 3) {
+        NSLog(@"DEBUG Camera: eye=(%.2f,%.2f,%.2f) target=(%.2f,%.2f,%.2f) up=(%.2f,%.2f,%.2f)",
+              eye.x, eye.y, eye.z, target.x, target.y, target.z, up.x, up.y, up.z);
+        logCount++;
+    }
 }
 
 #pragma mark - Public API

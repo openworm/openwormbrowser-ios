@@ -147,8 +147,16 @@
 -(OWVector4) getDiffuseColorForMaterial:(NSString *)materialName
 {
     NSDictionary* materialDict = [self.getMaterialsDictionary objectForKey:materialName];
-    
+
+    if (!materialDict) {
+        return OWVector4Make(0.5, 0.5, 0.5, 1.0); // Gray fallback for missing materials
+    }
+
     NSArray* diffuseArray = [materialDict objectForKey:@"Kd"];
+    if (!diffuseArray || diffuseArray.count < 3) {
+        return OWVector4Make(0.5, 0.5, 0.5, 1.0); // Gray fallback for missing Kd
+    }
+
     OWVector4 diffuseColor = OWVector4Make([[diffuseArray objectAtIndex:0] floatValue]/255,
                                              [[diffuseArray objectAtIndex:1] floatValue]/255,
                                              [[diffuseArray objectAtIndex:2] floatValue]/255,

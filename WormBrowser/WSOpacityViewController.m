@@ -92,10 +92,10 @@
 - (void)viewDidLoad
 {
     bSliderIsVertical = YES;
-    
+
     arrayOfHorizontalSliders = [[NSMutableArray alloc] initWithCapacity:4];
     arrayOfHorizontalValues = [[NSMutableArray alloc] initWithCapacity:4];
-    
+
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
@@ -481,7 +481,6 @@
     if([recognizer view] == sliderView)
     {
         if (bSliderIsVertical) {
-
             if(recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
             {
                 CGPoint translation = [recognizer translationInView:verticalSlider.superview];
