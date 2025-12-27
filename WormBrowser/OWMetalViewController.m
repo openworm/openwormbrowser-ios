@@ -530,7 +530,7 @@ static inline matrix_float4x4 matrix_look_at(vector_float3 eye, vector_float3 ce
 }
 
 - (void)setPaused:(BOOL)paused {
-    self.paused = paused;
+    _paused = paused;
     self.mtkView.paused = paused;
 }
 
