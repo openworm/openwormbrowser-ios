@@ -529,12 +529,11 @@ typedef enum {
     OWVector3 lookVector = OWVector3Subtract(camera.eye, camera.target);
 //    float mag = sqrtf(powf(lookVector.x, 2) + powf(lookVector.y, 2));
     float mag = 0.01f; // using this instead, zoom occurs at fixed speed invariant of position relative to model
-    
+
     OWVector3 movementVector = OWVector3MultiplyScalar(lookVector, mag*scale);
     [mTranslateLocalX setFuture:(mTranslateLocalX.future + movementVector.x) withUrgency:1.0];
     [mTranslateLocalY setFuture:(mTranslateLocalY.future + movementVector.y) withUrgency:1.0];
     [mTranslateLocalZ setFuture:(mTranslateLocalZ.future + movementVector.z) withUrgency:1.0];
-
 }
 
 
@@ -542,19 +541,15 @@ typedef enum {
 {
     switch (currentCameraState) {
         case cameraStateFree:
-
-            
             // recenter scale to 0 +/- change
             [self zoomLocalScale:(-1 * (scale - 1))];
+            break;
 
-            break;
-            
         case cameraStatePill:
-            
+        case cameraStateReturning:  // Allow zoom during return animation
             [self scaledZoom:scale];
-            
             break;
-            
+
         default:
             break;
     }
@@ -654,20 +649,12 @@ typedef enum {
 
 -(void) scaledZoom:(float) dz
 {
-
     float offset = initialDollyZ + (1 - dz)*initialDollyZ / 2;
-    
-//    float offset = (1 - (dz - 1)) * initialDollyZ/2 ;
-//    NSLog(@"dz %f, %f, %f",dz, 1 - (dz - 1) , offset);
-//    float offset = 2*initialDollyZ - ( dz * initialDollyZ );
-//    float offset = dz * initialDollyZ;
-//    NSLog(@"%f", offset);
-    
+
     [self doNavigateWithAngle:mTheta.future
                          forY:mDollyY.future
                       forZoom:offset
                   withUrgency:1.0f];
-    
 }
 
 -(void) printVector3:(OWVector3)inputVec
